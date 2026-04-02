@@ -79,17 +79,7 @@ const EducationSection = () => {
             </div>
           </div>
 
-          {/* Timeline connector */}
-          <div className="flex justify-center py-8">
-            <div className="w-px h-16 bg-gradient-to-b from-primary/50 to-transparent" />
-          </div>
 
-          {/* Future Goals */}
-          <div className="glass-card p-6 text-center">
-            <p className="text-muted-foreground italic">
-              "Continuously learning and growing to become a skilled IT professional who can make a positive impact through technology."
-            </p>
-          </div>
         </div>
       </div>
     </section>

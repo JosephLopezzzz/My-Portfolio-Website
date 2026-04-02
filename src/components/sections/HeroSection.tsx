@@ -1,6 +1,7 @@
 import { ArrowDown, FileDown, Send, ExternalLink } from 'lucide-react';
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Magnetic from '@/components/ui/Magnetic';
 import valleyDay from '@/assets/valley-day.png';
 import valleyNight from '@/assets/valley-night.jpg';
 
@@ -265,7 +266,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-              className="text-hero-subtitle text-base md:text-lg lg:text-xl text-primary font-semibold mb-3 lg:mb-4 tracking-widest uppercase"
+              className="text-hero-subtitle text-base md:text-lg lg:text-xl font-semibold mb-3 lg:mb-4 tracking-widest uppercase"
             >
               Bachelor of Science in Information Technology
             </motion.p>
@@ -273,7 +274,7 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="text-sm md:text-base lg:text-lg text-muted-foreground max-w-xl mb-6 lg:mb-8 font-light"
+              className="text-sm md:text-base lg:text-lg text-slate-200 drop-shadow-md max-w-xl mb-6 lg:mb-8 font-light"
             >
               Aspiring Web Developer, AI Engineer | BSIT Student at Bestlink College of the Philippines
             </motion.p>
@@ -285,18 +286,24 @@ const HeroSection = () => {
               transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
               className="flex flex-col sm:flex-row gap-3 lg:gap-4"
             >
-              <a href="#projects" className="glass-btn">
-                <ExternalLink size={18} />
-                View Projects
-              </a>
-              <a href="/resume.pdf" download className="glass-btn glass-btn-secondary text-hero-subtitle">
-                <FileDown size={18} />
-                Download Resume
-              </a>
-              <a href="#contact" className="glass-btn glass-btn-secondary text-hero-subtitle">
-                <Send size={18} />
-                Contact Me
-              </a>
+              <Magnetic>
+                <a href="#projects" className="glass-btn">
+                  <ExternalLink size={18} />
+                  View Projects
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href="/resume.pdf" download className="glass-btn glass-btn-secondary text-hero-subtitle">
+                  <FileDown size={18} />
+                  Download Resume
+                </a>
+              </Magnetic>
+              <Magnetic>
+                <a href="#contact" className="glass-btn glass-btn-secondary text-hero-subtitle">
+                  <Send size={18} />
+                  Contact Me
+                </a>
+              </Magnetic>
             </motion.div>
           </div>
 

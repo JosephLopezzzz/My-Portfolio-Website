@@ -277,8 +277,6 @@
     color: var(--primary-foreground);
     background: var(--gradient-primary);
     border: 1px solid var(--glass-border);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     box-shadow: var(--glass-shadow), var(--glass-inset);
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -343,7 +341,7 @@
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     border: none;
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    box-shadow: none;
     position: relative;
     overflow: hidden;
   }
@@ -353,8 +351,8 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    padding: 1.4px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 20%, transparent 40%, transparent 60%, rgba(255, 255, 255, 0.15) 80%, rgba(255, 255, 255, 0.45) 100%);
+    padding: 1px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
@@ -521,13 +519,14 @@
   /* Whispering Valley Utilities */
   .text-hero-title {
     font-family: var(--font-display);
-    text-shadow: 0 2px 20px hsl(var(--hero-glow) / 0.4),
-                 0 0 60px hsl(var(--hero-glow) / 0.15);
+    color: #f8fafc;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.4), 0 0 30px rgba(0,0,0,0.8);
   }
 
   .text-hero-subtitle {
     font-family: var(--font-body);
-    text-shadow: 0 1px 10px hsl(var(--background) / 0.6);
+    color: #e2e8f0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
   }
 }
 
@@ -578,6 +577,7 @@
                 0 0 90px rgba(77, 123, 170, 0.32);
   }
 }
+
 
 /* ── Theme Toggle ── */
 #theme-toggle-button {

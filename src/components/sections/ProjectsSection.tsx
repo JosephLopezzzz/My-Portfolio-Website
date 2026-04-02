@@ -1,5 +1,5 @@
 import { ExternalLink, Github, Folder } from 'lucide-react';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { motion, Variants } from 'framer-motion';
 
 type Project = {
   title: string;
@@ -60,54 +60,81 @@ const projects: Project[] = [
   },
 ];
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15
+    }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { type: 'spring', stiffness: 80, damping: 20 } 
+  }
+};
+
 const ProjectsSection = () => {
   const featuredProjects = projects.filter((p) => p.featured);
   const otherProjects = projects.filter((p) => !p.featured);
-  const { ref, isVisible } = useScrollAnimation({ threshold: 0.1 });
 
   return (
     <section id="projects" className="py-20 md:py-32 bg-card/30">
-      <div className="section-container" ref={ref}>
+      <motion.div 
+        className="section-container"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={containerVariants}
+      >
         {/* Section Header */}
-        <div className={`text-center mb-16 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+        <motion.div className="text-center mb-16" variants={itemVariants}>
           <h2 className="section-title">Featured Projects</h2>
           <p className="section-subtitle mx-auto">
             A showcase of my work and what I've built
           </p>
-        </div>
+        </motion.div>
 
-        {/* Featured Projects */}
-        <div className="grid lg:grid-cols-3 gap-6 mb-16">
+        {/* Featured Projects Bento Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 auto-rows-[320px] gap-6 mb-24">
           {featuredProjects.map((project, index) => (
-            <div
+            <motion.div
               key={project.title}
-              className="glass-card hover-card group relative overflow-hidden rounded-2xl"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              variants={itemVariants}
+              whileHover={{ y: -8, transition: { type: "spring", stiffness: 300, damping: 20 } }}
+              className={`glass-card hover-card group relative overflow-hidden rounded-3xl flex flex-col justify-end ${
+                index === 0 ? 'md:col-span-2 md:row-span-2' : 'md:col-span-1 md:row-span-1'
+              }`}
             >
-              {/* Image */}
-              <div className="relative h-48 overflow-hidden rounded-t-2xl">
+              {/* Image Background */}
+              <div className="absolute inset-0 z-0">
                 <img
                   src={project.image}
                   alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+                <div className={`absolute inset-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent ${index === 0 ? 'opacity-80 group-hover:opacity-90' : 'opacity-90 group-hover:opacity-95'} transition-opacity duration-300`} />
               </div>
 
               {/* Content */}
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+              <div className="relative z-10 p-6 md:p-8 flex flex-col justify-end h-full pointer-events-none">
+                <h3 className={`font-bold mb-3 group-hover:text-primary transition-colors pointer-events-auto w-fit ${index === 0 ? 'text-3xl lg:text-4xl' : 'text-xl md:text-2xl'}`}>
                   {project.title}
                 </h3>
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                <p className={`text-muted-foreground mb-6 pointer-events-auto ${index === 0 ? 'text-base lg:text-lg max-w-xl line-clamp-3' : 'text-sm line-clamp-2'}`}>
                   {project.description}
                 </p>
 
-                <div className="flex flex-wrap gap-2 mb-4">
+                <div className="flex flex-wrap gap-2 mb-6 pointer-events-auto">
                   {project.technologies.map((tech) => (
                     <span
                       key={tech}
-                      className="skill-badge"
+                      className="skill-badge bg-background/50 backdrop-blur-md border-border/50 text-foreground"
                     >
                       {tech}
                     </span>
@@ -115,16 +142,16 @@ const ProjectsSection = () => {
                 </div>
 
                 {/* Links */}
-                <div className="flex gap-3">
+                <div className="flex gap-4 mt-auto pointer-events-auto">
                   {project.github && (
                     <a
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+                      className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
                     >
-                      <Github size={16} />
-                      Code
+                      <Github size={20} />
+                      <span className={index === 0 ? 'block' : 'hidden md:block'}>Code</span>
                     </a>
                   )}
                   {project.live && (
@@ -132,30 +159,35 @@ const ProjectsSection = () => {
                       href={project.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+                      className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
                     >
-                      <ExternalLink size={16} />
-                      Live Demo
+                      <ExternalLink size={20} />
+                      <span className={index === 0 ? 'block' : 'hidden md:block'}>Live Demo</span>
                     </a>
                   )}
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
         {/* Other Projects */}
-        <h3 className="text-2xl font-semibold text-center mb-8">Other Projects</h3>
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {otherProjects.map((project, index) => (
-            <div
+        <motion.h3 className="text-2xl font-semibold text-center mb-10" variants={itemVariants}>Other Projects</motion.h3>
+        <motion.div 
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+          variants={containerVariants}
+        >
+          {otherProjects.map((project) => (
+            <motion.div
               key={project.title}
-              className="glass-card hover-card p-6 group"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              variants={itemVariants}
+              whileHover={{ y: -8, scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className="glass-card hover-card p-6 group flex flex-col h-full"
             >
-              <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors">
-                  <Folder className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
+              <div className="flex items-start justify-between mb-6">
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center group-hover:bg-primary transition-colors duration-300">
+                  <Folder className="w-7 h-7 text-primary group-hover:text-primary-foreground transition-colors duration-300" />
                 </div>
                 <div className="flex gap-2">
                   {project.github && (
@@ -163,9 +195,9 @@ const ProjectsSection = () => {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-lg hover:bg-muted transition-colors"
+                      className="p-2.5 rounded-xl hover:bg-muted transition-colors"
                     >
-                      <Github size={18} className="text-muted-foreground hover:text-foreground" />
+                      <Github size={20} className="text-muted-foreground hover:text-foreground" />
                     </a>
                   )}
                   {project.live && (
@@ -173,33 +205,33 @@ const ProjectsSection = () => {
                       href={project.live}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-2 rounded-lg hover:bg-muted transition-colors"
+                      className="p-2.5 rounded-xl hover:bg-muted transition-colors"
                     >
-                      <ExternalLink size={18} className="text-muted-foreground hover:text-foreground" />
+                      <ExternalLink size={20} className="text-muted-foreground hover:text-foreground" />
                     </a>
                   )}
                 </div>
               </div>
-              <h4 className="text-lg font-semibold mb-2 group-hover:text-primary transition-colors">
+              <h4 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">
                 {project.title}
               </h4>
-              <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+              <p className="text-muted-foreground mb-6 line-clamp-3 text-sm leading-relaxed flex-grow">
                 {project.description}
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-border/50">
                 {project.technologies.map((tech) => (
                   <span
                     key={tech}
-                    className="skill-badge text-[10px] px-2 py-0.5"
+                    className="skill-badge text-xs px-2.5 py-1 bg-background/30"
                   >
                     {tech}
                   </span>
                 ))}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
