@@ -1,0 +1,113 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Raleway:wght@300;400;500&display=swap');
+
+@layer base {
+  :root {
+    --background: 150 20% 8%;
+    --foreground: 45 30% 92%;
+
+    --card: 150 15% 12%;
+    --card-foreground: 45 30% 92%;
+
+    --popover: 150 15% 12%;
+    --popover-foreground: 45 30% 92%;
+
+    --primary: 140 40% 45%;
+    --primary-foreground: 45 30% 95%;
+
+    --secondary: 200 30% 25%;
+    --secondary-foreground: 45 30% 92%;
+
+    --muted: 150 10% 18%;
+    --muted-foreground: 150 10% 60%;
+
+    --accent: 35 60% 55%;
+    --accent-foreground: 150 20% 8%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 150 15% 20%;
+    --input: 150 15% 20%;
+    --ring: 140 40% 45%;
+
+    --radius: 0.5rem;
+
+    --font-display: 'Cinzel', serif;
+    --font-body: 'Raleway', sans-serif;
+
+    --hero-glow: 140 50% 40%;
+    --hero-mist: 200 30% 70%;
+    --hero-gold: 40 70% 60%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .text-hero-title {
+    font-family: var(--font-display);
+    color: hsl(var(--foreground));
+    text-shadow: 0 2px 20px hsl(var(--hero-glow) / 0.4),
+                 0 0 60px hsl(var(--hero-glow) / 0.15);
+  }
+
+  .text-hero-subtitle {
+    font-family: var(--font-body);
+    color: hsl(var(--foreground) / 0.8);
+    text-shadow: 0 1px 10px hsl(var(--background) / 0.6);
+  }
+}
+
+@keyframes hero-dolly {
+  0% { transform: scale(1) translateY(0); }
+  100% { transform: scale(1.15) translateY(-3%); }
+}
+
+@keyframes float-petal {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.8; }
+  90% { opacity: 0.6; }
+  100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot)); opacity: 0; }
+}
+
+@keyframes mist-drift {
+  0% { transform: translateX(-5%) scaleX(1); opacity: 0.12; }
+  50% { transform: translateX(3%) scaleX(1.05); opacity: 0.18; }
+  100% { transform: translateX(-5%) scaleX(1); opacity: 0.12; }
+}
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4A9FD8;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#2E7BC8;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#1E5A9E;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0D3A6B;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <!-- Hexagon with facets -->
+  <path d="M50 8 L88 28 L88 72 L50 92 L12 72 L12 28 Z" fill="url(#hexGrad)" stroke="#0D3A6B" stroke-width="0.5"/>
+  <!-- Facet divisions for 3D effect -->
+  <path d="M50 8 L88 28 L50 50 Z" fill="#4A9FD8" opacity="0.6"/>
+  <path d="M12 28 L50 8 L50 50 Z" fill="#4A9FD8" opacity="0.4"/>
+  <path d="M88 72 L50 92 L50 50 Z" fill="#0D3A6B" opacity="0.8"/>
+  <path d="M12 72 L50 92 L50 50 Z" fill="#1E5A9E" opacity="0.6"/>
+  <!-- White C letter -->
+  <text x="50" y="68" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="900" fill="white" text-anchor="middle" letter-spacing="-2">C</text>
+</svg>
+
