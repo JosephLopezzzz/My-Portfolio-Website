@@ -1,0 +1,400 @@
+{
+  "metadata": {
+    "skill_name": "backend-development",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-07-31T07:24:41Z",
+    "evals_run": [
+      0,
+      1,
+      2
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 0,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.875,
+        "passed": 7,
+        "failed": 1,
+        "total": 8,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Route file created at src/app/api/vehicles/dispatch-board/route.js exporting a GET handler",
+          "passed": true,
+          "evidence": "outputs/src/app/api/vehicles/dispatch-board/route.js exists with `export async function GET(req)`."
+        },
+        {
+          "text": "Handler calls requireAuth, wraps logic in try/catch ending with handleError, returns ok(...)",
+          "passed": true,
+          "evidence": "Lines 6-34: `await requireAuth(req)`, `try { ... } catch (e) { return handleError(e); }`, `return ok(rows)`."
+        },
+        {
+          "text": "SQL runs through query() from @/lib/db with $n placeholders; no user input interpolated into SQL strings",
+          "passed": true,
+          "evidence": "Imports `query` from @/lib/db; the only interpolation is the module-level ACTIVE_TRIP_STATUSES constant, not request data. No user-supplied values reach SQL."
+        },
+        {
+          "text": "Returns one row per vehicle with an active_trip object (trip_id, trip_status, origin, destination) or null when no active trip",
+          "passed": true,
+          "evidence": "LEFT JOIN LATERAL builds `at.active_trip` via json_build_object with trip_id, trip_status, origin, destination, driver_name; ORDER BY start_time DESC LIMIT 1 guarantees one row per vehicle; null when no active trip."
+        },
+        {
+          "text": "Active trip filtered by in-flight statuses consistent with the repo's trips/active convention and excludes soft-deleted trips (deleted_at IS NULL)",
+          "passed": true,
+          "evidence": "ACTIVE_TRIP_STATUSES = 'Dispatched','Driver Accepted','Trip Started','En Route','Arrived' matches src/app/api/trips/active/route.js; both `t.deleted_at IS NULL` and `v.deleted_at IS NULL` filtered."
+        },
+        {
+          "text": "Driver full name included in the active trip payload (joined through drivers -> employees)",
+          "passed": true,
+          "evidence": "`'driver_name', (e.first_name || ' ' || e.last_name)` via `LEFT JOIN drivers d ON t.driver_id = d.driver_id LEFT JOIN employees e ON d.employee_id = e.employee_id`."
+        },
+        {
+          "text": "getDispatchBoard() added to src/services/vehicle.service.js using apiFetch",
+          "passed": true,
+          "evidence": "vehicle.service.js line 27: `getDispatchBoard(filters = {})` -> `apiFetch('/api/vehicles/dispatch-board${buildQuery(filters)}')`."
+        },
+        {
+          "text": "SQL references columns that exist in the LATEST migration state: origin/destination resolved via trips.origin_location_id/destination_location_id -> locations (migration 007 drops trips.origin/destination), not the dropped columns",
+          "passed": false,
+          "evidence": "The query reads `t.origin` and `t.destination` directly (lines 16-17), but migration 007_normalization.sql (lines 162-166) drops those columns from trips. The agent's own NOTES.md flags this caveat. Should join locations via origin_location_id/destination_location_id like the existing trips JOIN_SELECT."
+        }
+      ],
+      "notes": [
+        "trips.origin/destination are dropped in migration 007; endpoint relies on the base-schema columns",
+        "Whether the deployed schema has trips.origin/destination or the locations FKs"
+      ]
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "GET /api/fuel response changed to ok({ rows, total }); rows is the existing list shape",
+          "passed": true,
+          "evidence": "Line 73: `return ok({ rows, total })`. The rows SELECT keeps the same column list (fr.*, row_to_json(v.*) as vehicles, json_build_object(...) as drivers) and ORDER BY fr.fuel_record_id DESC."
+        },
+        {
+          "text": "total is computed by a COUNT query (not rows.length) honoring the same WHERE filters as the rows query, before LIMIT/OFFSET is applied",
+          "passed": true,
+          "evidence": "Lines 48-50: `SELECT COUNT(*) AS count${JOINS}${where}` executed with the filter-only params, before LIMIT/OFFSET placeholders are appended. Coerced via Number(countRows[0]?.count)."
+        },
+        {
+          "text": "COUNT query keeps the JOINs to vehicles/drivers/employees so search filters on joined columns (plate_number, employee names) still work",
+          "passed": true,
+          "evidence": "The shared JOINS block (lines 9-14) is reused verbatim in the COUNT query, so `v.plate_number`/`e.first_name`/`e.last_name` search conditions resolve. The agent's NOTES.md explicitly explains why (search references joined columns)."
+        },
+        {
+          "text": "Existing filters (vehicle_id, driver_id, fuel_type, status, search, from_date, to_date) and pagination (page/pageSize -> LIMIT/OFFSET) preserved",
+          "passed": true,
+          "evidence": "All six filter branches preserved byte-for-byte, including `status !== 'all'`, ILIKE with `%search%`, and the `LIMIT $n OFFSET $n` gate on page && pageSize (lines 65-70)."
+        },
+        {
+          "text": "All user input reaches SQL only through $n placeholders",
+          "passed": true,
+          "evidence": "Every filter value pushed into the params array and referenced as $1..$n; no string interpolation of request data."
+        },
+        {
+          "text": "src/services/fuel.service.js still passes page/pageSize through via buildQuery and works with the new response shape",
+          "passed": true,
+          "evidence": "fuel.service.js unchanged: getFuelRecords(filters) -> apiFetch(`/api/fuel${buildQuery(filters)}`); buildQuery serializes page/pageSize, and apiFetch returns the { rows, total } JSON transparently."
+        }
+      ],
+      "notes": [
+        "COUNT may return a string via exec_query RPC \u00e2\u20ac\u201d handled with Number()"
+      ]
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Route file created at src/app/api/reports/fuel-summary/route.js exporting a GET handler",
+          "passed": true,
+          "evidence": "outputs/src/app/api/reports/fuel-summary/route.js exists with `export async function GET(req)`."
+        },
+        {
+          "text": "Handler calls requireAuth, wraps logic in try/catch ending with handleError, returns ok(...)",
+          "passed": true,
+          "evidence": "Lines 4-23: `await requireAuth(req)`, try/catch ending `return handleError(e)`, `return ok(rows)`."
+        },
+        {
+          "text": "Aggregation done in SQL with GROUP BY (no JS reduce/forEach over fetched rows)",
+          "passed": true,
+          "evidence": "Single parameterized query with GROUP BY vehicle + TO_CHAR(fuel_date,'YYYY-MM'); no client-side accumulation."
+        },
+        {
+          "text": "Groups by vehicle and month (TO_CHAR/DATE_TRUNC on fuel_date), returning vehicle plate_number/vehicle_name",
+          "passed": true,
+          "evidence": "SELECT v.vehicle_id, v.plate_number, v.vehicle_name, TO_CHAR(f.fuel_date,'YYYY-MM') AS month ... GROUP BY v.vehicle_id, v.plate_number, v.vehicle_name, TO_CHAR(...); JOIN vehicles."
+        },
+        {
+          "text": "Returns total liters (SUM), total amount (SUM), and average price per liter (AVG(price_per_liter) or SUM(amount)/NULLIF(SUM(liters),0))",
+          "passed": true,
+          "evidence": "SUM(f.liters) AS total_liters, SUM(f.amount) AS total_amount, AVG(f.price_per_liter) AS avg_price_per_liter."
+        },
+        {
+          "text": "from/to params are parameterized with $1/$2 placeholders and default to a wide range",
+          "passed": true,
+          "evidence": "`const from = sp.get('from') || '1970-01-01', to = sp.get('to') || '2100-01-01'` passed as [from, to] to $1/$2."
+        },
+        {
+          "text": "Filters soft-deleted records (deleted_at IS NULL)",
+          "passed": true,
+          "evidence": "WHERE clause includes `f.deleted_at IS NULL`."
+        },
+        {
+          "text": "getFuelSummary() added to src/services/fuel.service.js using apiFetch + buildQuery",
+          "passed": true,
+          "evidence": "fuel.service.js line 34: `getFuelSummary(filters = {})` -> apiFetch(`/api/reports/fuel-summary${buildQuery(filters)}`)."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 0,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Route file created at src/app/api/vehicles/dispatch-board/route.js exporting a GET handler",
+          "passed": true,
+          "evidence": "outputs/src/app/api/vehicles/dispatch-board/route.js exists with `export async function GET(req)`."
+        },
+        {
+          "text": "Handler calls requireAuth, wraps logic in try/catch ending with handleError, returns ok(...)",
+          "passed": true,
+          "evidence": "Lines 5-47: `await requireAuth(req)`, `try { ... } catch (e) { return handleError(e); }`, `return ok(rows)`."
+        },
+        {
+          "text": "SQL runs through query() from @/lib/db with $n placeholders; no user input interpolated into SQL strings",
+          "passed": true,
+          "evidence": "Imports `query` from @/lib/db; the query uses no params at all (no user input). Status list is a static literal."
+        },
+        {
+          "text": "Returns one row per vehicle with an active_trip object (trip_id, trip_status, origin, destination) or null when no active trip",
+          "passed": true,
+          "evidence": "DISTINCT ON (v.vehicle_id) with `activetrip` json_build_object (trip_id, trip_status, start_time, end_time, origin, destination, origin_location, destination_location, drivers). LEFT JOIN means activetrip is null when no active trip."
+        },
+        {
+          "text": "Active trip filtered by in-flight statuses consistent with the repo's trips/active convention and excludes soft-deleted trips (deleted_at IS NULL)",
+          "passed": true,
+          "evidence": "trip_status IN ('Dispatched','Driver Accepted','Trip Started','En Route','Arrived','In Progress') on the join condition plus `t.deleted_at IS NULL`; vehicle soft-delete via `v.deleted_at IS NULL`."
+        },
+        {
+          "text": "Driver full name included in the active trip payload (joined through drivers -> employees)",
+          "passed": true,
+          "evidence": "activetrip.drivers -> json_build_object with employees -> {first_name, last_name}, joined via drivers.employee_id -> employees."
+        },
+        {
+          "text": "getDispatchBoard() added to src/services/vehicle.service.js using apiFetch",
+          "passed": true,
+          "evidence": "vehicle.service.js line 27: `getDispatchBoard()` -> `apiFetch('/api/vehicles/dispatch-board')`."
+        },
+        {
+          "text": "SQL references columns that exist in the LATEST migration state: origin/destination resolved via trips.origin_location_id/destination_location_id -> locations (migration 007 drops trips.origin/destination), not the dropped columns",
+          "passed": true,
+          "evidence": "Joins `LEFT JOIN locations ol ON t.origin_location_id = ol.location_id` and `dl ON t.destination_location_id = dl.location_id`, resolving origin/destination via `COALESCE(ol.name, r.origin)` \u00e2\u20ac\u201d matches the post-007 schema and the trips JOIN_SELECT convention."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "GET /api/fuel response changed to ok({ rows, total }); rows is the existing list shape",
+          "passed": true,
+          "evidence": "Line 74: `return ok({ rows, total })`. rows SELECT preserves fr.*, row_to_json(v.*) as vehicles, json_build_object(...) as drivers, ORDER BY fr.fuel_record_id DESC."
+        },
+        {
+          "text": "total is computed by a COUNT query (not rows.length) honoring the same WHERE filters as the rows query, before LIMIT/OFFSET is applied",
+          "passed": true,
+          "evidence": "Lines 70-73: `SELECT COUNT(*)::int AS total ${JOINS} ${where}` via Promise.all with countParams (no pagination appended). Cast to int so it serializes through exec_query RPC."
+        },
+        {
+          "text": "COUNT query keeps the JOINs to vehicles/drivers/employees so search filters on joined columns (plate_number, employee names) still work",
+          "passed": true,
+          "evidence": "COUNT query uses the same JOINS block (lines 41-46) so search conditions on v.plate_number / e.first_name / e.last_name resolve. NOTES.md explains the 1:1 parent joins make COUNT(*) safe."
+        },
+        {
+          "text": "Existing filters (vehicle_id, driver_id, fuel_type, status, search, from_date, to_date) and pagination (page/pageSize -> LIMIT/OFFSET) preserved",
+          "passed": true,
+          "evidence": "All six filter branches preserved; data query clones countParams and appends LIMIT/OFFSET. `status !== 'all'`, ILIKE search, from_date/to_date all intact."
+        },
+        {
+          "text": "All user input reaches SQL only through $n placeholders",
+          "passed": true,
+          "evidence": "All filter values appended to countParams and referenced as $1..$n; params for the data query are a clone of countParams plus LIMIT/OFFSET values."
+        },
+        {
+          "text": "src/services/fuel.service.js still passes page/pageSize through via buildQuery and works with the new response shape",
+          "passed": true,
+          "evidence": "fuel.service.js unchanged; getFuelRecords(filters) -> apiFetch with buildQuery, which passes page/pageSize and returns { rows, total } transparently."
+        }
+      ],
+      "notes": [
+        "UI page (fuel/page.js) currently treats response as an array; frontend update out of scope for this backend task"
+      ]
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 0.0,
+        "tokens": 0,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Route file created at src/app/api/reports/fuel-summary/route.js exporting a GET handler",
+          "passed": true,
+          "evidence": "outputs/src/app/api/reports/fuel-summary/route.js exists with `export async function GET(req)`."
+        },
+        {
+          "text": "Handler calls requireAuth, wraps logic in try/catch ending with handleError, returns ok(...)",
+          "passed": true,
+          "evidence": "Lines 4-27: `await requireAuth(req)`, try/catch ending `return handleError(e)`, `return ok(rows || [])`."
+        },
+        {
+          "text": "Aggregation done in SQL with GROUP BY (no JS reduce/forEach over fetched rows)",
+          "passed": true,
+          "evidence": "Single parameterized query with GROUP BY f.vehicle_id + to_char(fuel_date,'YYYY-MM'); no client-side accumulation."
+        },
+        {
+          "text": "Groups by vehicle and month (TO_CHAR/DATE_TRUNC on fuel_date), returning vehicle plate_number/vehicle_name",
+          "passed": true,
+          "evidence": "SELECT f.vehicle_id, v.plate_number, v.vehicle_name, to_char(f.fuel_date,'YYYY-MM') AS month ... GROUP BY f.vehicle_id, v.plate_number, v.vehicle_name, to_char(...); JOIN vehicles."
+        },
+        {
+          "text": "Returns total liters (SUM), total amount (SUM), and average price per liter (AVG(price_per_liter) or SUM(amount)/NULLIF(SUM(liters),0))",
+          "passed": true,
+          "evidence": "COALESCE(SUM(f.liters),0), COALESCE(SUM(f.amount),0), and COALESCE(AVG(f.price_per_liter), SUM(f.amount)/NULLIF(SUM(f.liters),0)) \u00e2\u20ac\u201d includes the NULLIF fallback."
+        },
+        {
+          "text": "from/to params are parameterized with $1/$2 placeholders and default to a wide range",
+          "passed": true,
+          "evidence": "`const from = sp.get('from') || '1970-01-01', to = sp.get('to') || '2100-01-01'` passed as [from, to] to $1/$2."
+        },
+        {
+          "text": "Filters soft-deleted records (deleted_at IS NULL)",
+          "passed": true,
+          "evidence": "WHERE includes `f.deleted_at IS NULL AND v.deleted_at IS NULL`."
+        },
+        {
+          "text": "getFuelSummary() added to src/services/fuel.service.js using apiFetch + buildQuery",
+          "passed": true,
+          "evidence": "fuel.service.js line 34: `getFuelSummary(from, to)` -> apiFetch(`/api/reports/fuel-summary${buildQuery({ from, to })}`)."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.9583,
+        "stddev": 0.0722,
+        "min": 0.875,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "tokens": {
+        "mean": 0.0,
+        "stddev": 0.0,
+        "min": 0,
+        "max": 0
+      }
+    },
+    "delta": {
+      "pass_rate": "-0.04",
+      "time_seconds": "+0.0",
+      "tokens": "+0"
+    }
+  },
+  "notes": []
+}

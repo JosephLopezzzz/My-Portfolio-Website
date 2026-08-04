@@ -25,6 +25,7 @@ const skillCategories: SkillCategory[] = [
     title: 'Frameworks & Tools',
     skills: [
       { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+      { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg' },
       { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
       { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg' },
       { name: 'Tailwind CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
@@ -123,7 +124,7 @@ const SkillsSection = () => {
                   <img
                     src={skill.icon}
                     alt={skill.name}
-                    className="w-full h-full object-contain dark:invert-0 group-hover:scale-110 transition-transform duration-300"
+                    className={`w-full h-full object-contain group-hover:scale-110 transition-transform duration-300 ${skill.name === 'Next.js' ? 'dark:invert' : 'dark:invert-0'}`}
                     loading="lazy"
                   />
                 </div>
@@ -146,7 +147,7 @@ const SkillsSection = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <img src={skill.icon} alt="" className="w-4 h-4" />
+                <img src={skill.icon} alt="" className={`w-4 h-4 ${skill.name === 'Next.js' ? 'dark:invert' : ''}`} />
                 {skill.name}
               </motion.span>
             ))}

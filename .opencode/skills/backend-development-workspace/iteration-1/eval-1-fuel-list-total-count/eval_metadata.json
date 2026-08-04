@@ -1,0 +1,13 @@
+{
+  "eval_id": 1,
+  "eval_name": "fuel-list-total-count",
+  "prompt": "The fuel history page uses GET /api/fuel with page/pageSize for pagination, but it only gets back the rows so the table can't know how many total pages there are. Modify the GET handler so the response is { rows, total } where total is the count of fuel records matching the current filters (before LIMIT/OFFSET), and keep the rows field as the existing list. The UI calls getFuelRecords() from src/services/fuel.service.js — make sure it still works and passes pagination through.",
+  "assertions": [
+    "GET /api/fuel response changed to ok({ rows, total }); rows is the existing list shape",
+    "total is computed by a COUNT query (not rows.length) honoring the same WHERE filters as the rows query, before LIMIT/OFFSET is applied",
+    "COUNT query keeps the JOINs to vehicles/drivers/employees so search filters on joined columns (plate_number, employee names) still work",
+    "Existing filters (vehicle_id, driver_id, fuel_type, status, search, from_date, to_date) and pagination (page/pageSize -> LIMIT/OFFSET) preserved",
+    "All user input reaches SQL only through $n placeholders",
+    "src/services/fuel.service.js still passes page/pageSize through via buildQuery and works with the new response shape"
+  ]
+}

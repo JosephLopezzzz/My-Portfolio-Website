@@ -1,0 +1,78 @@
+{
+  "expectations": [
+    {
+      "text": "Route file created at src/app/api/vehicles/dispatch-board/route.js exporting a GET handler",
+      "passed": true,
+      "evidence": "outputs/src/app/api/vehicles/dispatch-board/route.js exists with `export async function GET(req)`."
+    },
+    {
+      "text": "Handler calls requireAuth, wraps logic in try/catch ending with handleError, returns ok(...)",
+      "passed": true,
+      "evidence": "Lines 6-34: `await requireAuth(req)`, `try { ... } catch (e) { return handleError(e); }`, `return ok(rows)`."
+    },
+    {
+      "text": "SQL runs through query() from @/lib/db with $n placeholders; no user input interpolated into SQL strings",
+      "passed": true,
+      "evidence": "Imports `query` from @/lib/db; the only interpolation is the module-level ACTIVE_TRIP_STATUSES constant, not request data. No user-supplied values reach SQL."
+    },
+    {
+      "text": "Returns one row per vehicle with an active_trip object (trip_id, trip_status, origin, destination) or null when no active trip",
+      "passed": true,
+      "evidence": "LEFT JOIN LATERAL builds `at.active_trip` via json_build_object with trip_id, trip_status, origin, destination, driver_name; ORDER BY start_time DESC LIMIT 1 guarantees one row per vehicle; null when no active trip."
+    },
+    {
+      "text": "Active trip filtered by in-flight statuses consistent with the repo's trips/active convention and excludes soft-deleted trips (deleted_at IS NULL)",
+      "passed": true,
+      "evidence": "ACTIVE_TRIP_STATUSES = 'Dispatched','Driver Accepted','Trip Started','En Route','Arrived' matches src/app/api/trips/active/route.js; both `t.deleted_at IS NULL` and `v.deleted_at IS NULL` filtered."
+    },
+    {
+      "text": "Driver full name included in the active trip payload (joined through drivers -> employees)",
+      "passed": true,
+      "evidence": "`'driver_name', (e.first_name || ' ' || e.last_name)` via `LEFT JOIN drivers d ON t.driver_id = d.driver_id LEFT JOIN employees e ON d.employee_id = e.employee_id`."
+    },
+    {
+      "text": "getDispatchBoard() added to src/services/vehicle.service.js using apiFetch",
+      "passed": true,
+      "evidence": "vehicle.service.js line 27: `getDispatchBoard(filters = {})` -> `apiFetch('/api/vehicles/dispatch-board${buildQuery(filters)}')`."
+    },
+    {
+      "text": "SQL references columns that exist in the LATEST migration state: origin/destination resolved via trips.origin_location_id/destination_location_id -> locations (migration 007 drops trips.origin/destination), not the dropped columns",
+      "passed": false,
+      "evidence": "The query reads `t.origin` and `t.destination` directly (lines 16-17), but migration 007_normalization.sql (lines 162-166) drops those columns from trips. The agent's own NOTES.md flags this caveat. Should join locations via origin_location_id/destination_location_id like the existing trips JOIN_SELECT."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 1,
+    "total": 8,
+    "pass_rate": 0.875
+  },
+  "claims": [
+    {
+      "claim": "LEFT JOIN LATERAL ensures exactly one row per vehicle with the most recent active trip",
+      "type": "process",
+      "verified": true,
+      "evidence": "ORDER BY t.start_time DESC NULLS LAST, t.trip_id DESC LIMIT 1 within the LATERAL subquery."
+    },
+    {
+      "claim": "Driver name assembled as first_name + ' ' + last_name",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Confirmed UI callers in trips/active/page.js assemble names the same way (per NOTES.md)."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": ["trips.origin/destination are dropped in migration 007; endpoint relies on the base-schema columns"],
+    "needs_review": ["Whether the deployed schema has trips.origin/destination or the locations FKs"],
+    "workarounds": []
+  },
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "SQL references columns that exist in the LATEST migration state",
+        "reason": "Good catch by the baseline run — it read migration 007 and joined locations instead of the dropped trips.origin/destination columns. The skill's with_skill run referenced the base-schema columns and flagged the caveat in notes rather than adapting."
+      }
+    ],
+    "overall": "Assertions check real correctness. The single failure is a genuine schema-awareness issue worth addressing in the skill: instruct agents to verify column existence against the LATEST migration file, not just 001_schema.sql."
+  }
+}

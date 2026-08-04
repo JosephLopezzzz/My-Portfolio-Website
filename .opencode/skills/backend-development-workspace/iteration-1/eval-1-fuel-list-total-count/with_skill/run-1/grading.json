@@ -1,0 +1,59 @@
+{
+  "expectations": [
+    {
+      "text": "GET /api/fuel response changed to ok({ rows, total }); rows is the existing list shape",
+      "passed": true,
+      "evidence": "Line 73: `return ok({ rows, total })`. The rows SELECT keeps the same column list (fr.*, row_to_json(v.*) as vehicles, json_build_object(...) as drivers) and ORDER BY fr.fuel_record_id DESC."
+    },
+    {
+      "text": "total is computed by a COUNT query (not rows.length) honoring the same WHERE filters as the rows query, before LIMIT/OFFSET is applied",
+      "passed": true,
+      "evidence": "Lines 48-50: `SELECT COUNT(*) AS count${JOINS}${where}` executed with the filter-only params, before LIMIT/OFFSET placeholders are appended. Coerced via Number(countRows[0]?.count)."
+    },
+    {
+      "text": "COUNT query keeps the JOINs to vehicles/drivers/employees so search filters on joined columns (plate_number, employee names) still work",
+      "passed": true,
+      "evidence": "The shared JOINS block (lines 9-14) is reused verbatim in the COUNT query, so `v.plate_number`/`e.first_name`/`e.last_name` search conditions resolve. The agent's NOTES.md explicitly explains why (search references joined columns)."
+    },
+    {
+      "text": "Existing filters (vehicle_id, driver_id, fuel_type, status, search, from_date, to_date) and pagination (page/pageSize -> LIMIT/OFFSET) preserved",
+      "passed": true,
+      "evidence": "All six filter branches preserved byte-for-byte, including `status !== 'all'`, ILIKE with `%search%`, and the `LIMIT $n OFFSET $n` gate on page && pageSize (lines 65-70)."
+    },
+    {
+      "text": "All user input reaches SQL only through $n placeholders",
+      "passed": true,
+      "evidence": "Every filter value pushed into the params array and referenced as $1..$n; no string interpolation of request data."
+    },
+    {
+      "text": "src/services/fuel.service.js still passes page/pageSize through via buildQuery and works with the new response shape",
+      "passed": true,
+      "evidence": "fuel.service.js unchanged: getFuelRecords(filters) -> apiFetch(`/api/fuel${buildQuery(filters)}`); buildQuery serializes page/pageSize, and apiFetch returns the { rows, total } JSON transparently."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1.0
+  },
+  "claims": [
+    {
+      "claim": "Shared WHERE builder guarantees total and rows never drift apart",
+      "type": "process",
+      "verified": true,
+      "evidence": "One `where` string and one params array built once, reused by COUNT and rows SELECT."
+    },
+    {
+      "claim": "COUNT keeps joins because search references v.plate_number and employee names",
+      "type": "process",
+      "verified": true,
+      "evidence": "JOINS reused in COUNT; search clause references v.plate_number, e.first_name, e.last_name."
+    }
+  ],
+  "user_notes_summary": {
+    "uncertainties": ["COUNT may return a string via exec_query RPC — handled with Number()"],
+    "needs_review": [],
+    "workarounds": []
+  }
+}

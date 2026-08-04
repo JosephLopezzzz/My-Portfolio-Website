@@ -1,0 +1,15 @@
+{
+  "eval_id": 0,
+  "eval_name": "dispatch-board-endpoint",
+  "prompt": "For the dispatch dashboard I need a new endpoint that lists every vehicle together with its currently active trip, if it has one. Each row should be the vehicle plus its active trip's trip_id, trip_status, the driver's full name, and origin/destination. I want it as GET /api/vehicles/dispatch-board, and I also need a getDispatchBoard() function added to src/services/vehicle.service.js so the dashboard component can call it.",
+  "assertions": [
+    "Route file created at src/app/api/vehicles/dispatch-board/route.js exporting a GET handler",
+    "Handler calls requireAuth, wraps logic in try/catch ending with handleError, returns ok(...)",
+    "SQL runs through query() from @/lib/db with $n placeholders; no user input interpolated into SQL strings",
+    "Returns one row per vehicle with an active_trip object (trip_id, trip_status, origin, destination) or null when no active trip",
+    "Active trip filtered by in-flight statuses consistent with the repo's trips/active convention and excludes soft-deleted trips (deleted_at IS NULL)",
+    "Driver full name included in the active trip payload (joined through drivers -> employees)",
+    "getDispatchBoard() added to src/services/vehicle.service.js using apiFetch",
+    "SQL references columns that exist in the LATEST migration state: origin/destination resolved via trips.origin_location_id/destination_location_id -> locations (migration 007 drops trips.origin/destination), not the dropped columns"
+  ]
+}
