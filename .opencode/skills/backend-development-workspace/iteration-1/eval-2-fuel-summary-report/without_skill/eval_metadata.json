@@ -1,6 +1,0 @@
-{
-  "eval_id": 2,
-  "eval_name": "fuel-summary-report",
-  "prompt": "I need a monthly fuel summary report: for each vehicle, broken down by month, total liters, total amount, and average price per liter. It should accept from/to date params (defaulting to a wide range) and be served at GET /api/reports/fuel-summary. Add a getFuelSummary() service function too. Do the grouping in SQL with GROUP BY — the existing /api/reports/fuel-consumption endpoint pulls every row into JS and computes there, which is slow, so don't copy that approach.",
-  "assertions": []
-}

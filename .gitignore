@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Opencode skills (kept local, not version-controlled)
+.opencode/skills/

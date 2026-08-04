@@ -1,6 +1,0 @@
-{
-  "eval_id": 1,
-  "eval_name": "fuel-list-total-count",
-  "prompt": "The fuel history page uses GET /api/fuel with page/pageSize for pagination, but it only gets back the rows so the table can't know how many total pages there are. Modify the GET handler so the response is { rows, total } where total is the count of fuel records matching the current filters (before LIMIT/OFFSET), and keep the rows field as the existing list. The UI calls getFuelRecords() from src/services/fuel.service.js — make sure it still works and passes pagination through.",
-  "assertions": []
-}

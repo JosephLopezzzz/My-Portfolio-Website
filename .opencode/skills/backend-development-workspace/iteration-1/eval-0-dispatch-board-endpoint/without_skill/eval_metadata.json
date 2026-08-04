@@ -1,6 +1,0 @@
-{
-  "eval_id": 0,
-  "eval_name": "dispatch-board-endpoint",
-  "prompt": "For the dispatch dashboard I need a new endpoint that lists every vehicle together with its currently active trip, if it has one. Each row should be the vehicle plus its active trip's trip_id, trip_status, the driver's full name, and origin/destination. I want it as GET /api/vehicles/dispatch-board, and I also need a getDispatchBoard() function added to src/services/vehicle.service.js so the dashboard component can call it.",
-  "assertions": []
-}
