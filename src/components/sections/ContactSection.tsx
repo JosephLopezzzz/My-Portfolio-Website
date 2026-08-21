@@ -19,8 +19,8 @@ const contactInfo = [
   {
     icon: Linkedin,
     label: 'LinkedIn',
-    value: 'Connect with me',
-    href: 'https://linkedin.com/in/josephlopez',
+    value: 'joseph-lopez-5a2090412',
+    href: 'https://www.linkedin.com/in/joseph-lopez-5a2090412',
   },
 ];
 

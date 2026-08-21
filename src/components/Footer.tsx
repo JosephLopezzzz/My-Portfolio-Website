@@ -8,7 +8,7 @@ const socialLinks = [
   },
   {
     icon: Linkedin,
-    href: 'https://linkedin.com/in/josephlopez',
+    href: 'https://www.linkedin.com/in/joseph-lopez-5a2090412',
     label: 'LinkedIn',
   },
   {

@@ -1,4 +1,4 @@
-import { FileDown, Eye, FileText, Mail, Phone, MapPin, User, Briefcase, GraduationCap, Award, Code, Github } from 'lucide-react';
+import { FileDown, Eye, FileText, Mail, Phone, MapPin, User, Briefcase, GraduationCap, Award, Code, Github, Linkedin } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const ResumeSection = () => {
@@ -44,6 +44,10 @@ const ResumeSection = () => {
                   <div className="flex items-center gap-2">
                     <Github size={16} />
                     <span>github.com/JosephLopezzzz</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Linkedin size={16} />
+                    <span>linkedin.com/in/joseph-lopez-5a2090412</span>
                   </div>
                 </div>
               </div>

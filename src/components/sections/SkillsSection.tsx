@@ -26,7 +26,7 @@ const skillCategories: SkillCategory[] = [
     skills: [
       { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
       { name: 'React Native', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
-      { name: 'Expo Go', icon: '/placeholder.svg' },
+      { name: 'Expo Go', icon: '/expo-go-app-logo-png_seeklogo-457073.png' },
       { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg' },
       { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
       { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg' },
@@ -39,18 +39,18 @@ const skillCategories: SkillCategory[] = [
   {
     title: 'AI Tools',
     skills: [
-      { name: 'OpenAI Codex', icon: '/placeholder.svg' },
-      { name: 'Claude', icon: '/placeholder.svg' },
-      { name: 'Gemini', icon: '/placeholder.svg' },
-      { name: 'DeepSeek', icon: '/placeholder.svg' },
-      { name: 'LLMs', icon: '/placeholder.svg' },
-      { name: 'Obsidian', icon: '/placeholder.svg' },
+      { name: 'OpenAI Codex', icon: '/codex-color.svg' },
+      { name: 'Claude', icon: '/claude-color.svg' },
+      { name: 'Gemini', icon: '/gemini-color.svg' },
+      { name: 'DeepSeek', icon: '/deepseek-color.svg' },
+      { name: 'Obsidian', icon: '/obsidian-color.svg' },
     ],
   },
   {
     title: 'Databases',
     skills: [
       { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
+      { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
       { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
     ],
   },
