@@ -54,7 +54,7 @@ const EducationSection = () => {
               <div className="flex flex-wrap gap-4 mb-6 text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <Calendar size={18} />
-                  <span>3rd Year, 2nd Semester</span>
+                  <span>4th Year, 1st Semester</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <BookOpen size={18} />

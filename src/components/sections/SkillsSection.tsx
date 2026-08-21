@@ -25,6 +25,8 @@ const skillCategories: SkillCategory[] = [
     title: 'Frameworks & Tools',
     skills: [
       { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+      { name: 'React Native', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
+      { name: 'Expo Go', icon: '/placeholder.svg' },
       { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg' },
       { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
       { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg' },
@@ -32,6 +34,17 @@ const skillCategories: SkillCategory[] = [
       { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
       { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg' },
       { name: 'VS Code', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' },
+    ],
+  },
+  {
+    title: 'AI Tools',
+    skills: [
+      { name: 'OpenAI Codex', icon: '/placeholder.svg' },
+      { name: 'Claude', icon: '/placeholder.svg' },
+      { name: 'Gemini', icon: '/placeholder.svg' },
+      { name: 'DeepSeek', icon: '/placeholder.svg' },
+      { name: 'LLMs', icon: '/placeholder.svg' },
+      { name: 'Obsidian', icon: '/placeholder.svg' },
     ],
   },
   {

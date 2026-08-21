@@ -69,9 +69,9 @@ const AboutSection = () => {
           {/* Left Content */}
           <motion.div className="space-y-6" variants={itemVariants}>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Hello! I'm <span className="text-foreground font-semibold">Joseph Lopez</span>, 
+              Hello! I'm <span className="text-foreground font-semibold">Joseph T. Lopez</span>, 
               a passionate BSIT student at Bestlink College of the Philippines. I'm currently 
-              in my 3rd year, second semester, and I'm deeply invested in building web 
+              in my 4th year, first semester, and I'm deeply invested in building web 
               applications and learning modern technologies.
             </p>
             <p className="text-lg text-muted-foreground leading-relaxed">
@@ -82,7 +82,7 @@ const AboutSection = () => {
             <div className="pt-4">
               <h3 className="text-xl font-semibold mb-4">Areas of Interest</h3>
               <div className="flex flex-wrap gap-3">
-                {['Web Development', 'Artificial Intelligence', 'Networking', 'Cybersecurity', 'Database Management'].map((interest, idx) => (
+                {['Web Development', 'App Development', 'Artificial Intelligence', 'Networking', 'Cybersecurity', 'Database Management'].map((interest, idx) => (
                   <motion.span
                     key={interest}
                     className="skill-badge hover:bg-primary hover:text-primary-foreground cursor-default"

@@ -46,7 +46,16 @@ const HeroSection = () => {
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
-  const name = "Joseph Lopez";
+  const [fontIndex, setFontIndex] = useState(0);
+  const name = "Joseph T. Lopez";
+
+  const fontFamilies = [
+    "inherit",
+    "'Playfair Display', serif",
+    "'Space Mono', monospace",
+    "'Caveat', cursive",
+    "Georgia, serif"
+  ];
 
   const handleScroll = useCallback(() => {
     setScrollY(window.scrollY);
@@ -99,6 +108,7 @@ const HeroSection = () => {
         } else {
           setIsDeleting(false);
           setTypingSpeed(500); // pause before re-typing
+          setFontIndex((prev) => (prev + 1) % fontFamilies.length);
         }
       }
     }, typingSpeed);
@@ -253,7 +263,8 @@ const HeroSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-hero-title text-4xl md:text-5xl lg:text-7xl font-bold mb-3 lg:mb-4 tracking-tight min-h-[1.2em] flex items-center"
+              className="text-hero-title text-4xl md:text-5xl lg:text-7xl font-bold mb-3 lg:mb-4 tracking-tight min-h-[1.2em] inline-flex items-center whitespace-nowrap"
+              style={{ fontFamily: fontFamilies[fontIndex] }}
             >
               <span>{text}</span>
               <motion.span

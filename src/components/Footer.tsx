@@ -28,7 +28,7 @@ const Footer = () => {
           {/* Logo & Copyright */}
           <div className="text-center md:text-left">
             <a href="#home" className="text-xl font-bold gradient-text">
-              Joseph Lopez
+              Joseph T. Lopez
             </a>
             <p className="text-sm text-muted-foreground mt-1">
               © {currentYear} All rights reserved.
