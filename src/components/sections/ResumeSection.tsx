@@ -126,40 +126,58 @@ const ResumeSection = () => {
                   <Award className="text-primary" size={24} />
                   <h4 className="text-xl font-semibold">Certifications & Trainings</h4>
                 </div>
-                <div className="space-y-3">
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">Prompt Like an Engineer</h5>
-                    <p className="text-sm text-muted-foreground">Cisco Networking Academy</p>
+                <div className="space-y-6">
+                  {/* Web Development */}
+                  <div>
+                    <h5 className="text-sm font-semibold text-primary/80 uppercase tracking-wider mb-3">Web Development</h5>
+                    <div className="space-y-3">
+                      <div className="pl-4 border-l-2 border-primary/20">
+                        <h6 className="font-medium">HTML Fundamentals</h6>
+                        <p className="text-sm text-muted-foreground">Coddy Team</p>
+                      </div>
+                      <div className="pl-4 border-l-2 border-primary/20">
+                        <h6 className="font-medium">HTML Styling with CSS</h6>
+                        <p className="text-sm text-muted-foreground">Coddy Team</p>
+                      </div>
+                      <div className="pl-4 border-l-2 border-primary/20">
+                        <h6 className="font-medium">HTML CSS Mastery</h6>
+                        <p className="text-sm text-muted-foreground">Coddy Team</p>
+                      </div>
+                      <div className="pl-4 border-l-2 border-primary/20">
+                        <h6 className="font-medium">HTML JavaScript in Action</h6>
+                        <p className="text-sm text-muted-foreground">Coddy Team</p>
+                      </div>
+                      <div className="pl-4 border-l-2 border-primary/20">
+                        <h6 className="font-medium">HTML Practical Frontend</h6>
+                        <p className="text-sm text-muted-foreground">Coddy Team</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">HTML Fundamentals</h5>
-                    <p className="text-sm text-muted-foreground">Coddy Team</p>
+
+                  {/* Core Programming */}
+                  <div>
+                    <h5 className="text-sm font-semibold text-primary/80 uppercase tracking-wider mb-3">Core Programming</h5>
+                    <div className="space-y-3">
+                      <div className="pl-4 border-l-2 border-primary/20">
+                        <h6 className="font-medium">Python Developer Certification</h6>
+                        <p className="text-sm text-muted-foreground">freeCodeCamp</p>
+                      </div>
+                      <div className="pl-4 border-l-2 border-primary/20">
+                        <h6 className="font-medium">C Fundamentals</h6>
+                        <p className="text-sm text-muted-foreground">Coddy Team</p>
+                      </div>
+                    </div>
                   </div>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">HTML Styling with CSS</h5>
-                    <p className="text-sm text-muted-foreground">Coddy Team</p>
-                  </div>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">HTML CSS Mastery</h5>
-                    <p className="text-sm text-muted-foreground">Coddy Team</p>
-                  </div>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">HTML JavaScript in Action</h5>
-                    <p className="text-sm text-muted-foreground">Coddy Team</p>
-                  </div>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">HTML Practical Frontend</h5>
-                    <p className="text-sm text-muted-foreground">Coddy Team</p>
-                  </div>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">C Fundamentals</h5>
-                    <p className="text-sm text-muted-foreground">Coddy Team</p>
-                  </div>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">Python Certification</h5>
-                  </div>
-                  <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">freeCodeCamp</h5>
+
+                  {/* Artificial Intelligence */}
+                  <div>
+                    <h5 className="text-sm font-semibold text-primary/80 uppercase tracking-wider mb-3">Artificial Intelligence</h5>
+                    <div className="space-y-3">
+                      <div className="pl-4 border-l-2 border-primary/20">
+                        <h6 className="font-medium">Prompt Like an Engineer</h6>
+                        <p className="text-sm text-muted-foreground">Cisco Networking Academy</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
