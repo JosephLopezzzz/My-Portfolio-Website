@@ -128,10 +128,20 @@ const ResumeSection = () => {
                 </div>
                 <div className="space-y-3">
                   <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">Python Certification</h5>
+                    <h5 className="font-medium">Prompt Like an Engineer</h5>
+                    <p className="text-sm text-muted-foreground">Cisco Networking Academy</p>
                   </div>
                   <div className="pl-4 border-l-2 border-primary/20">
-                    <h5 className="font-medium">freeCodeCamp</h5>
+                    <h5 className="font-medium">HTML Fundamentals</h5>
+                    <p className="text-sm text-muted-foreground">Coddy Team</p>
+                  </div>
+                  <div className="pl-4 border-l-2 border-primary/20">
+                    <h5 className="font-medium">HTML Styling with CSS</h5>
+                    <p className="text-sm text-muted-foreground">Coddy Team</p>
+                  </div>
+                  <div className="pl-4 border-l-2 border-primary/20">
+                    <h5 className="font-medium">HTML CSS Mastery</h5>
+                    <p className="text-sm text-muted-foreground">Coddy Team</p>
                   </div>
                   <div className="pl-4 border-l-2 border-primary/20">
                     <h5 className="font-medium">HTML JavaScript in Action</h5>
@@ -140,6 +150,16 @@ const ResumeSection = () => {
                   <div className="pl-4 border-l-2 border-primary/20">
                     <h5 className="font-medium">HTML Practical Frontend</h5>
                     <p className="text-sm text-muted-foreground">Coddy Team</p>
+                  </div>
+                  <div className="pl-4 border-l-2 border-primary/20">
+                    <h5 className="font-medium">C Fundamentals</h5>
+                    <p className="text-sm text-muted-foreground">Coddy Team</p>
+                  </div>
+                  <div className="pl-4 border-l-2 border-primary/20">
+                    <h5 className="font-medium">Python Certification</h5>
+                  </div>
+                  <div className="pl-4 border-l-2 border-primary/20">
+                    <h5 className="font-medium">freeCodeCamp</h5>
                   </div>
                 </div>
               </div>
