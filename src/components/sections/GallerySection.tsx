@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const HACKATHON_IMAGES = [
@@ -68,6 +68,7 @@ const GallerySection = () => {
             <button 
               className="absolute -top-10 right-0 text-muted-foreground hover:text-foreground font-mono text-sm tracking-widest transition-colors uppercase"
               onClick={() => setSelectedImage(null)}
+              aria-label="Close image"
             >
               [ Close ]
             </button>

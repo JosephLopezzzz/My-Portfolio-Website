@@ -1,3 +1,4 @@
+import React from 'react';
 import { GraduationCap } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
@@ -8,12 +9,12 @@ const EducationSection = () => {
     <section id="education" className="w-full relative py-20" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
-        <div className="mb-12">
-          <h2 className="section-title flex items-center gap-4">
-            <GraduationCap className="text-foreground" size={40} />
-            Education
-          </h2>
-          <div className="w-12 h-1 bg-foreground mb-4" />
+        <div className="mb-12 flex items-center gap-4">
+          <GraduationCap className="text-foreground flex-shrink-0" size={36} aria-hidden="true" />
+          <div>
+            <h2 className="section-title">Education</h2>
+            <div className="w-12 h-1 bg-foreground mt-4" />
+          </div>
         </div>
 
         <div className="minimal-card flex flex-col md:flex-row md:items-start justify-between gap-6">

@@ -1,46 +1,48 @@
-import { ExternalLink, Github, ArrowRight } from 'lucide-react';
+import React from 'react';
+import { Github, ArrowRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const projects = [
   {
     title: 'Nokma',
+    initials: 'NK',
+    accentChar: 'ノ',
     description: 'This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love.',
-    image: '',
-    tags: ['TypeScript'],
+    tags: ['TypeScript', 'React Native', 'Expo'],
     github: 'https://github.com/JosephLopezzzz/Nokma',
-    live: 'https://github.com/JosephLopezzzz/Nokma',
   },
   {
     title: 'HR Management System G1',
+    initials: 'HR',
+    accentChar: '///',
     description: 'Human Resources Management System for managing employee data, attendance, and payroll efficiently.',
-    image: '',
-    tags: ['TypeScript'],
+    tags: ['TypeScript', 'React'],
     github: 'https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1',
-    live: 'https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1',
   },
   {
     title: 'Fraud Detection in Microfinance',
+    initials: 'FD',
+    accentChar: '∑',
     description: 'A system designed to detect fraudulent activities and transactions within microfinance institutions.',
-    image: '',
-    tags: ['TypeScript'],
+    tags: ['TypeScript', 'Node.js'],
     github: 'https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance',
-    live: 'https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance',
   },
   {
     title: 'Microfinance SMS',
+    initials: 'MS',
+    accentChar: '◈',
     description: 'An automated SMS notification system for microfinance clients for payment reminders and alerts.',
-    image: '',
     tags: ['TypeScript', 'Node.js'],
     github: 'https://github.com/JosephLopezzzz/Microfinance-SMS',
-    live: 'https://github.com/JosephLopezzzz/Microfinance-SMS',
   },
   {
-    title: 'hmscore1last1',
-    description: 'A core management system built for scalable institutional operations.',
-    image: '',
-    tags: ['PHP'],
-    github: 'https://github.com/JosephLopezzzz/hmscore1last1',
-    live: 'https://github.com/JosephLopezzzz/hmscore1last1',
+    title: 'Fleet & Transport Management',
+    initials: 'FT',
+    accentChar: '△',
+    description: 'Capstone project — a full fleet and transportation management system built for a hotel and restaurant management context. Built in collaboration with ro-mee.',
+    tags: ['TypeScript', 'React', 'Node.js'],
+    github: 'https://github.com/ro-mee/fleet-transpo',
+    isCapstone: true,
   },
 ];
 
@@ -56,7 +58,7 @@ const ProjectsSection = () => {
             <h2 className="section-title">Featured Projects</h2>
             <div className="w-12 h-1 bg-foreground mb-4" />
             <p className="section-subtitle mb-0 max-w-xl">
-              A selection of my recent work in web development, AI integration, and hackathons.
+              A selection of my real work — systems built and shipped from concept to code.
             </p>
           </div>
           <a href="https://github.com/JosephLopezzzz" target="_blank" rel="noreferrer" className="minimal-btn-secondary whitespace-nowrap">
@@ -72,16 +74,36 @@ const ProjectsSection = () => {
               className="minimal-card flex flex-col group p-0 overflow-hidden"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="w-full h-48 bg-muted relative overflow-hidden">
-                <div className="absolute inset-0 bg-foreground/10 group-hover:bg-transparent transition-colors z-10" />
-                <div className="absolute inset-0 flex items-center justify-center text-muted-foreground z-0">
-                   {/* Fallback pattern if image is missing */}
-                   <span className="font-mono text-xs uppercase tracking-widest">{project.title.replace(/\s+/g, '-').toLowerCase()}</span>
-                </div>
+              {/* Stylized project identity thumbnail */}
+              <div className="w-full h-44 bg-foreground relative overflow-hidden flex items-center justify-center select-none">
+                {/* Grid lines */}
+                <div className="absolute inset-0" style={{
+                  backgroundImage: 'linear-gradient(hsl(var(--background)/0.08) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--background)/0.08) 1px, transparent 1px)',
+                  backgroundSize: '24px 24px'
+                }} />
+                {/* Accent character — large, behind */}
+                <span className="absolute font-mono text-8xl font-bold select-none pointer-events-none" style={{ color: 'hsl(var(--background)/0.12)', letterSpacing: '-0.05em' }}>
+                  {project.accentChar}
+                </span>
+                {/* Initials — front */}
+                <span className="relative z-10 font-mono text-5xl font-bold tracking-tighter" style={{ color: 'hsl(var(--background)/0.9)' }}>
+                  {project.initials}
+                </span>
+                {/* Corner tag */}
+                <span aria-hidden="true" className="absolute bottom-3 right-4 font-mono text-[10px] uppercase tracking-widest" style={{ color: 'hsl(var(--background)/0.4)' }}>
+                  {project.tags[0]}
+                </span>
               </div>
               
               <div className="p-6 flex flex-col flex-grow">
-                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+                <div className="flex items-start justify-between gap-2 mb-2">
+                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">{project.title}</h3>
+                  {project.isCapstone && (
+                    <span className="flex-shrink-0 text-[10px] font-mono uppercase tracking-widest border border-foreground/30 px-2 py-0.5 text-muted-foreground whitespace-nowrap">
+                      Capstone
+                    </span>
+                  )}
+                </div>
                 <p className="text-muted-foreground text-sm mb-6 flex-grow leading-relaxed">
                   {project.description}
                 </p>
@@ -99,17 +121,10 @@ const ProjectsSection = () => {
                     href={project.github}
                     target="_blank"
                     rel="noreferrer"
+                    aria-label={`View ${project.title} on GitHub`}
                     className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-sm font-medium"
                   >
-                    <Github size={16} /> Code
-                  </a>
-                  <a 
-                    href={project.live}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-sm font-medium ml-auto"
-                  >
-                    Live Site <ExternalLink size={16} />
+                    <Github size={16} /> View on GitHub
                   </a>
                 </div>
               </div>

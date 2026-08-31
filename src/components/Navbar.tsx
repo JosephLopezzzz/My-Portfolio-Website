@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import GlassSurface from './GlassSurface';
 import { useActiveSection } from '@/hooks/useActiveSection';
 
 const navLinks = [
@@ -9,23 +10,12 @@ const navLinks = [
   { name: 'Projects', href: '#projects', id: 'projects' },
   { name: 'Skills', href: '#skills', id: 'skills' },
   { name: 'Gallery', href: '#gallery', id: 'gallery' },
-  { name: 'Education', href: '#education', id: 'education' },
-  { name: 'Certifications', href: '#certifications', id: 'certifications' },
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const activeSection = useActiveSection();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <>
@@ -37,15 +27,17 @@ const Navbar = () => {
         />
       )}
       
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
-          scrolled
-            ? 'bg-background/90 backdrop-blur-md border-border'
-            : 'bg-transparent border-transparent'
-        }`}
-      >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 md:h-16">
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl transition-all duration-300">
+        <GlassSurface
+          width="100%"
+          height={64}
+          borderRadius={32}
+          borderWidth={0.02}
+          backgroundOpacity={0.1}
+          opacity={0.8}
+          blur={10}
+        >
+          <div className="w-full flex items-center justify-between px-6">
             {/* Logo */}
             <a
               href="#home"
@@ -76,31 +68,34 @@ const Navbar = () => {
               <ThemeToggle />
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden p-2 rounded-md hover:bg-secondary transition-colors z-50 relative"
+                className="md:hidden p-2 hover:bg-secondary transition-colors z-50 relative"
                 aria-label="Toggle menu"
+                aria-expanded={isOpen}
               >
                 {isOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
           </div>
+        </GlassSurface>
 
-          {/* Mobile Navigation */}
-          <div
-            className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out relative z-50 ${
-              isOpen ? 'max-h-[32rem] pb-4 opacity-100' : 'max-h-0 opacity-0'
-            }`}
-          >
-            {isOpen && (
-              <div className="flex flex-col gap-1 pt-2 pb-4 px-2 bg-card border border-border rounded-lg shadow-xl animate-fade-in mx-2 mb-2">
+        {/* Mobile Navigation */}
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out relative z-50 mt-4 ${
+            isOpen ? 'max-h-[32rem] opacity-100' : 'max-h-0 opacity-0'
+          }`}
+        >
+          {isOpen && (
+            <GlassSurface width="100%" height="auto" borderRadius={16}>
+              <div className="w-full flex flex-col gap-1 p-4">
                 {navLinks.map((link, index) => (
                   <a
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`px-4 py-3 rounded-md transition-all duration-300 ${
+                    className={`px-4 py-3 transition-all duration-300 ${
                       activeSection === link.id
-                        ? 'bg-secondary text-foreground font-semibold'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
+                        ? 'bg-secondary/50 text-foreground font-semibold'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-secondary/30'
                     }`}
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >
@@ -108,10 +103,10 @@ const Navbar = () => {
                   </a>
                 ))}
               </div>
-            )}
-          </div>
+            </GlassSurface>
+          )}
         </div>
-      </nav>
+      </div>
     </>
   );
 };

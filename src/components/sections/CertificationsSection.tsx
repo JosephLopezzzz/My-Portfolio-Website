@@ -1,4 +1,5 @@
-import { Award, ExternalLink } from 'lucide-react';
+import React from 'react';
+import { ExternalLink } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const certifications = [
@@ -54,10 +55,7 @@ const CertificationsSection = () => {
       <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
         <div className="mb-12">
-          <h2 className="section-title flex items-center gap-4">
-            <Award className="text-foreground" size={40} />
-            Certifications
-          </h2>
+          <h2 className="section-title">Certifications</h2>
           <div className="w-12 h-1 bg-foreground mb-4" />
         </div>
 

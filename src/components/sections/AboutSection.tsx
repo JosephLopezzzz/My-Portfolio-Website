@@ -1,3 +1,4 @@
+import React from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const AboutSection = () => {
@@ -28,24 +29,24 @@ const AboutSection = () => {
             </div>
           </div>
           
-          <div className="flex-1 grid grid-cols-2 gap-4">
-            <div className="minimal-card flex flex-col justify-center">
-              <h3 className="text-4xl font-bold text-foreground mb-2">3+</h3>
-              <p className="text-sm text-muted-foreground uppercase tracking-wider">Years Coding</p>
+            <div className="flex-1 grid grid-cols-2 gap-4">
+              <div className="minimal-card flex flex-col justify-center">
+                <h3 className="text-4xl font-bold text-foreground mb-2">3+</h3>
+                <p className="text-sm text-muted-foreground uppercase tracking-wider">Years Coding</p>
+              </div>
+              <div className="minimal-card flex flex-col justify-center">
+                <h3 className="text-4xl font-bold text-foreground mb-2">5</h3>
+                <p className="text-sm text-muted-foreground uppercase tracking-wider">GitHub Projects</p>
+              </div>
+              <div className="minimal-card flex flex-col justify-center">
+                <h3 className="text-4xl font-bold text-foreground mb-2">1</h3>
+                <p className="text-sm text-muted-foreground uppercase tracking-wider">Hackathon</p>
+              </div>
+              <div className="minimal-card flex flex-col justify-center">
+                <h3 className="text-4xl font-bold text-foreground mb-2">7</h3>
+                <p className="text-sm text-muted-foreground uppercase tracking-wider">Certifications</p>
+              </div>
             </div>
-            <div className="minimal-card flex flex-col justify-center">
-              <h3 className="text-4xl font-bold text-foreground mb-2">15+</h3>
-              <p className="text-sm text-muted-foreground uppercase tracking-wider">Projects Shipped</p>
-            </div>
-            <div className="minimal-card flex flex-col justify-center">
-              <h3 className="text-4xl font-bold text-foreground mb-2">1</h3>
-              <p className="text-sm text-muted-foreground uppercase tracking-wider">Hackathon</p>
-            </div>
-            <div className="minimal-card flex flex-col justify-center">
-              <h3 className="text-4xl font-bold text-foreground mb-2">10K+</h3>
-              <p className="text-sm text-muted-foreground uppercase tracking-wider">Lines of Code</p>
-            </div>
-          </div>
         </div>
 
       </div>

@@ -1,70 +1,256 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-31T21:26:00Z",
+  "generatedAt": "2026-08-31T23:55:00Z",
   "title": "Design System: Joseph's Digital Showcase",
   "extensions": {
     "colorMeta": {
-      "primary": { "role": "primary", "displayName": "Deep Ocean Slate", "canonical": "hsl(209, 38%, 48%)", "tonalRamp": ["hsl(209, 38%, 15%)", "hsl(209, 38%, 30%)", "hsl(209, 38%, 48%)", "hsl(209, 38%, 70%)", "hsl(209, 38%, 90%)"] },
-      "secondary": { "role": "secondary", "displayName": "Muted Steel", "canonical": "hsl(210, 28%, 32%)", "tonalRamp": ["hsl(210, 28%, 15%)", "hsl(210, 28%, 32%)", "hsl(210, 28%, 50%)", "hsl(210, 28%, 75%)", "hsl(210, 28%, 95%)"] },
-      "accent": { "role": "accent", "displayName": "Glowing Sapphire", "canonical": "hsl(209, 35%, 59%)", "tonalRamp": ["hsl(209, 35%, 20%)", "hsl(209, 35%, 40%)", "hsl(209, 35%, 59%)", "hsl(209, 35%, 75%)", "hsl(209, 35%, 95%)"] }
+      "ink": {
+        "role": "primary",
+        "displayName": "Ink",
+        "canonical": "hsl(240, 10%, 4%)",
+        "tonalRamp": [
+          "hsl(240, 10%, 4%)",
+          "hsl(240, 10%, 12%)",
+          "hsl(240, 8%, 22%)",
+          "hsl(240, 6%, 35%)",
+          "hsl(240, 5%, 50%)",
+          "hsl(240, 5%, 65%)",
+          "hsl(240, 4%, 80%)",
+          "hsl(240, 3%, 95%)"
+        ]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Canvas",
+        "canonical": "hsl(0, 0%, 100%)",
+        "tonalRamp": [
+          "hsl(0, 0%, 10%)",
+          "hsl(0, 0%, 22%)",
+          "hsl(0, 0%, 35%)",
+          "hsl(0, 0%, 50%)",
+          "hsl(0, 0%, 65%)",
+          "hsl(0, 0%, 80%)",
+          "hsl(0, 0%, 92%)",
+          "hsl(0, 0%, 100%)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "hsl(0, 0%, 98%)",
+        "tonalRamp": [
+          "hsl(240, 4%, 8%)",
+          "hsl(240, 4%, 14%)",
+          "hsl(240, 3%, 22%)",
+          "hsl(240, 3%, 35%)",
+          "hsl(240, 2%, 55%)",
+          "hsl(240, 2%, 75%)",
+          "hsl(240, 1%, 90%)",
+          "hsl(0, 0%, 98%)"
+        ]
+      },
+      "muted-text": {
+        "role": "neutral",
+        "displayName": "Muted Text",
+        "canonical": "hsl(240, 3.8%, 46.1%)",
+        "tonalRamp": [
+          "hsl(240, 4%, 10%)",
+          "hsl(240, 4%, 20%)",
+          "hsl(240, 4%, 32%)",
+          "hsl(240, 4%, 46%)",
+          "hsl(240, 4%, 58%)",
+          "hsl(240, 3%, 70%)",
+          "hsl(240, 3%, 82%)",
+          "hsl(240, 2%, 94%)"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border",
+        "canonical": "hsl(240, 5.9%, 90%)",
+        "tonalRamp": [
+          "hsl(240, 6%, 15%)",
+          "hsl(240, 6%, 25%)",
+          "hsl(240, 6%, 38%)",
+          "hsl(240, 6%, 52%)",
+          "hsl(240, 6%, 65%)",
+          "hsl(240, 6%, 78%)",
+          "hsl(240, 6%, 88%)",
+          "hsl(240, 6%, 96%)"
+        ]
+      }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Hero headlines only." },
-      "body": { "displayName": "Body", "purpose": "Standard readable content." }
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero name only. Joseph T. Lopez on the landing section. One instance per page."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles: About, Projects, Skills, Gallery, Certifications, Contact."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All descriptive prose, bio text, project summaries. Max 65-75ch."
+      },
+      "label": {
+        "displayName": "Label (Mono)",
+        "purpose": "Role descriptor, tech tags, certification dates, stat labels. JetBrains Mono exclusively."
+      }
     },
-    "shadows": [
-      { "name": "ambient-soft", "value": "0 4px 20px -4px hsl(209 38% 48% / 0.15)", "purpose": "Resting state for elevated elements." },
-      { "name": "elevated-hover", "value": "0 20px 40px -15px hsl(209 38% 48% / 0.2)", "purpose": "Lifted hover state." },
-      { "name": "glass-shadow", "value": "0 4px 30px rgba(0, 0, 0, 0.05)", "purpose": "Used with glass surfaces." }
+    "shadows": [],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "fade-up scroll reveal entrance — 0.6s duration, 20px Y offset."
+      },
+      {
+        "name": "ease-standard",
+        "value": "cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "All hover state transitions — border, color, translate — 300ms."
+      },
+      {
+        "name": "theme-wipe",
+        "value": "cubic-bezier(0.8, 0, 0.2, 1)",
+        "purpose": "View Transitions API radial-wipe from cursor origin. 700ms. Triggered by theme toggle click."
+      },
+      {
+        "name": "photo-crossfade",
+        "value": "opacity 700ms ease-in-out",
+        "purpose": "Profile photo switches between white1x1.png and black1x1.png on theme change."
+      },
+      {
+        "name": "spin-toggle",
+        "value": "400ms (Spin component internal)",
+        "purpose": "Theme toggle icon morphs from sun to moon SVG paths using Tailwind dark: utilities."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
     ]
   },
   "components": [
     {
-      "name": "Glass Button",
+      "name": "Primary Button",
       "kind": "button",
-      "refersTo": "glass-btn",
-      "description": "Primary action button with inner glass shimmer.",
-      "html": "<button class=\"ds-glass-btn\">GET IN TOUCH</button>",
-      "css": ".ds-glass-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-family: 'Inter', sans-serif; color: hsl(214, 30%, 97%); background: linear-gradient(135deg, hsl(209, 38%, 48%), hsl(210, 35%, 40%)); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.1); cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); } .ds-glass-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -15px hsl(209 38% 48% / 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.6); filter: brightness(1.1); }"
+      "refersTo": "button-primary",
+      "description": "Main CTA — 'View Projects'. Sharp corners, ink fill, canvas text.",
+      "html": "<a href='#projects' class='ds-btn-primary'>View Projects <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M5 12h14M12 5l7 7-7 7'/></svg></a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: hsl(240, 10%, 4%); color: hsl(0, 0%, 98%); font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500; border-radius: 0; border: none; cursor: pointer; text-decoration: none; transition: opacity 0.3s ease, transform 0.3s ease; } .ds-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }"
     },
     {
-      "name": "Glass Card",
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action — 'Resume Download'. Sharp corners, transparent fill, border stroke.",
+      "html": "<a href='/resume.pdf' class='ds-btn-ghost'>Resume</a>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: transparent; color: hsl(240, 10%, 4%); font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500; border-radius: 0; border: 1px solid hsl(240, 5.9%, 90%); cursor: pointer; text-decoration: none; transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease; } .ds-btn-ghost:hover { background: hsl(240, 4.8%, 95.9%); border-color: hsl(240, 5.9%, 70%); transform: translateY(-1px); }"
+    },
+    {
+      "name": "Minimal Card",
       "kind": "card",
-      "refersTo": "glass-card",
-      "description": "Content container with heavy background blur.",
-      "html": "<div class=\"ds-glass-card\"><h3 style=\"margin: 0; color: hsl(214, 30%, 97%); font-family: 'Inter', sans-serif;\">Project Title</h3><p style=\"margin-top: 8px; color: hsl(211, 31%, 86%); font-family: 'Raleway', sans-serif;\">A brief description of the project.</p></div>",
-      "css": ".ds-glass-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 0.75rem; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.1); padding: 1.5rem; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1); } .ds-glass-card:hover { transform: translateY(-5px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.1); }"
+      "refersTo": "card-minimal",
+      "description": "Project and skill container. Sharp corners, quiet border, no shadow. Border brightens on hover.",
+      "html": "<div class='ds-card'><h3 class='ds-card-title'>Project Name</h3><p class='ds-card-body'>Short description of the project and what it does.</p></div>",
+      "css": ".ds-card { position: relative; background: hsl(0, 0%, 98%); border: 1px solid hsl(240, 5.9%, 90%); padding: 1.5rem; transition: border-color 0.3s ease; } .ds-card:hover { border-color: hsl(240, 5.9%, 10%, 0.3); } .ds-card-title { font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600; color: hsl(240, 10%, 4%); margin: 0 0 8px 0; letter-spacing: -0.01em; } .ds-card-body { font-family: 'Inter', sans-serif; font-size: 0.875rem; color: hsl(240, 3.8%, 46.1%); line-height: 1.65; margin: 0; }"
+    },
+    {
+      "name": "Tech Pill",
+      "kind": "chip",
+      "refersTo": "tech-pill",
+      "description": "Technology tag. Fully rounded, mono font, inverts on hover.",
+      "html": "<span class='ds-pill'>TypeScript</span>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 8px; padding: 4px 12px; background: hsl(240, 4.8%, 95.9%, 0.5); color: hsl(240, 3.8%, 46.1%); font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 400; border-radius: 9999px; border: 1px solid hsl(240, 5.9%, 90%); cursor: default; transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease; } .ds-pill:hover { background: hsl(240, 10%, 4%); color: hsl(0, 0%, 98%); border-color: hsl(240, 10%, 4%); }"
+    },
+    {
+      "name": "Nav Link",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Navigation anchor inside the glass pill. Muted at rest, full foreground on hover/active.",
+      "html": "<a href='#about' class='ds-nav-link ds-nav-link--active'>About</a>",
+      "css": ".ds-nav-link { font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 500; color: hsl(240, 3.8%, 46.1%); text-decoration: none; transition: color 0.3s ease; cursor: pointer; } .ds-nav-link:hover, .ds-nav-link--active { color: hsl(240, 10%, 4%); }"
+    },
+    {
+      "name": "Section Title",
+      "kind": "custom",
+      "refersTo": "section-title",
+      "description": "Headline for each major section. Bold, tight tracking, full width.",
+      "html": "<h2 class='ds-section-title'>Projects</h2>",
+      "css": ".ds-section-title { font-family: 'Inter', sans-serif; font-size: clamp(1.875rem, 4vw, 3rem); font-weight: 700; color: hsl(240, 10%, 4%); letter-spacing: -0.03em; line-height: 1.1; margin: 0 0 1rem 0; }"
+    },
+    {
+      "name": "Mono Label",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "Small uppercase tag for role descriptors, stat labels, certification categories.",
+      "html": "<p class='ds-mono-label'>Hello, I Am</p>",
+      "css": ".ds-mono-label { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 400; color: hsl(240, 3.8%, 46.1%); letter-spacing: 0.1em; text-transform: uppercase; margin: 0; }"
     }
   ],
   "narrative": {
-    "northStar": "The Ambient Space",
-    "overview": "The aesthetic philosophy of this site is clean and minimal, letting the work speak for itself without distractions. It uses glowing, atmospheric, and soft visual cues like liquid glass effects to bring life to an otherwise restrained canvas. It avoids aggressive visual noise and focuses on creating a tactile, immersive environment.",
+    "northStar": "The Proof-of-Work Canvas",
+    "overview": "This system is built on the belief that the work is the spectacle. Every visual decision serves legibility and speed of conviction — a recruiter should understand who Joseph is and what he builds within 60 seconds of landing on the page. The palette is achromatic: ink-black on pure white in light mode, near-white on near-black in dark mode. No brand color competes with the content. The only curves are reserved for the floating glass navbar pill; everything else is sharp-cornered and direct.\n\nThe typography does the heavy lifting. Display text at 6–8rem with -0.04em tracking creates immediate visual hierarchy without decoration. Mono-spaced labels in JetBrains Mono signal technical credibility at a glance. The body copy is airy and readable at 1.65 line-height.\n\nMotion is purposeful and restrained: fade-up entrances (20px, 0.6s, cubic-bezier 0.16/1/0.3/1), theme transitions via the View Transitions API as a circular radial wipe from the click point, and the GlassSurface SVG-filter navbar that creates genuine optical glass distortion.",
     "keyCharacteristics": [
-      "Glowing, atmospheric glassmorphism over clean backgrounds.",
-      "Minimal structural clutter, allowing content to breathe.",
-      "Tactile interactions with soft hover lift and ambient shadows."
+      "Achromatic two-tone palette — ink and canvas, each flipped per mode.",
+      "Sharp (0px) radius everywhere except the floating glass nav pill (32px) and tech pills (rounded-full).",
+      "Inter for all prose and headings; JetBrains Mono for labels, tags, and code hints.",
+      "Theme switching via View Transitions API radial-wipe from cursor origin.",
+      "GlassSurface navbar: SVG displacement-map glass distortion, floats 24px from top.",
+      "Dual profile photo crossfade (700ms opacity) synchronized to the resolved theme."
     ],
     "rules": [
       {
-        "name": "The Glass Blur Rule",
-        "body": "Liquid glass elements rely on a 16px blur and 180% saturation filter to pull the background through organically. Solid backgrounds should be avoided where glass can create ambient depth.",
+        "name": "The Achromatic Discipline Rule",
+        "body": "No hue is introduced as a brand accent. Primary actions use Ink directly. Decorative color (backgrounds, glows, tints) is not permitted. The only exception is the SVG glass distortion filter on the navbar, which introduces optical chromatic aberration as a mechanical artifact, not a brand color.",
         "section": "colors"
       },
       {
-        "name": "The Glowing Lift Rule",
-        "body": "Depth is not just structural; it is energetic. When elements lift on hover, their shadow spreads and their opacity or blur shifts to feel like they are catching light.",
+        "name": "The Rarity Rule",
+        "body": "Colored text (text-primary, i.e. Ink on Canvas) appears only when a full visual shift is needed. Muted text (text-muted-foreground) carries all secondary information. Swapping these dilutes the hierarchy.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Display Rule",
+        "body": "The display scale (name, hero heading) appears on exactly one element per page. Using display-weight tracking (-0.04em) or display sizing outside the hero is prohibited.",
+        "section": "typography"
+      },
+      {
+        "name": "The Mono Signal Rule",
+        "body": "JetBrains Mono is used only for labels, tags, tech pills, and code. Body copy never adopts a monospaced face.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces rest flat. The only depth signal is border contrast (border-border) and background distinction (bg-card vs. bg-background). Hover states shift border opacity, not shadow size.",
         "section": "elevation"
+      },
+      {
+        "name": "The Two Exceptions Rule",
+        "body": "Right angles everywhere — with exactly three permitted round forms: the glass nav pill (32px, by material necessity), tech pills (fully round, by convention), and the hero profile photo (rounded-full / circle crop, by photographic convention — approved in critique run 2, 2026-09-01). Any fourth rounded form must be explicitly approved.",
+        "section": "shapes"
       }
     ],
     "dos": [
-      "Do rely on the 16px backdrop blur to create visual separation instead of relying solely on solid borders.",
-      "Do ensure interactive elements lift and glow softly on hover.",
-      "Do maintain the generous 6rem vertical padding between major sections."
+      "Do use hsl(240, 10%, 4%) (Ink) and hsl(0, 0%, 100%) (Canvas) as the only two base colors; let mode-switching handle the inversion automatically.",
+      "Do keep all cards and buttons at 0px border-radius. Only the nav pill (32px) and tech pills (rounded-full) break this rule.",
+      "Do use Inter 700 at clamp(3rem, 8vw, 6rem) tracking-tighter for the hero display, and nowhere else.",
+      "Do use JetBrains Mono for all labels, tags, and inline code — never for body text.",
+      "Do apply the View Transitions API radial-wipe for theme changes by reading --x, --y, and --r from cursor position.",
+      "Do maintain max-width: 64rem on all section containers.",
+      "Do let border-color carry hover state on cards (border-foreground/30), not shadows or background shifts.",
+      "Do crossfade the profile photo opacity on theme change at 700ms."
     ],
     "donts": [
-      "Don't use flat, solid backgrounds for cards unless absolutely necessary; use the established liquid glass classes.",
-      "Don't mix aggressive, sharp corners into the soft 0.75rem radius layout.",
-      "Don't clutter the page with noise; let the ambient space breathe."
+      "Don't introduce any hue as a brand accent — no blue CTAs, no green badges, no gradient fills on text.",
+      "Don't add box-shadows to cards, buttons, or content containers.",
+      "Don't use rounded corners on cards or buttons. The 0px radius is a core identity signal.",
+      "Don't fabricate project data, credentials, or testimonials.",
+      "Don't use display-weight tracking (tracking-tighter at large size) on any heading outside the hero name.",
+      "Don't apply motion for motion's sake. Only fade-up on scroll reveal and the View Transitions wipe on theme toggle."
     ]
   }
 }

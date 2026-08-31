@@ -1,3 +1,4 @@
+import React from 'react';
 import { ArrowRight, FileDown, Github, Linkedin, Mail } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
@@ -21,16 +22,12 @@ const HeroSection = () => {
         
         {/* Left Side — Content */}
         <div className="flex flex-col items-start text-left animate-fade-up">
-          <p className="font-mono text-sm md:text-base text-muted-foreground mb-4 uppercase tracking-widest">
-            Hello, I am
-          </p>
-          
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter text-foreground mb-6">
             Joseph T.<br />Lopez
           </h1>
           
           <p className="text-xl md:text-2xl text-foreground font-medium mb-4">
-            Full-Stack Web Developer & AI Engineer
+            Full-Stack Developer & AI Engineer
           </p>
           
           <p className="text-base md:text-lg text-muted-foreground max-w-xl mb-10 leading-relaxed">

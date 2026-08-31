@@ -15,13 +15,13 @@ import { useDocumentMetadata } from '@/hooks/useDocumentMetadata';
 
 const Index = () => {
   useDocumentMetadata({
-    title: 'Joseph Lopez - Portfolio',
-    description: 'Joseph Lopez - BSIT Student | Aspiring Web Developer & AI Engineer',
-    ogTitle: 'Joseph Lopez - Portfolio',
-    ogDescription: 'BSIT Student | Aspiring Web Developer & AI Engineer',
-    ogImage: '/profile/prof-day.jpg',
+    title: 'Joseph T. Lopez — Full-Stack Developer & AI Engineer',
+    description: 'Portfolio of Joseph T. Lopez — BSIT student at Bestlink College, building modern web apps and AI-integrated systems.',
+    ogTitle: 'Joseph T. Lopez — Full-Stack Developer & AI Engineer',
+    ogDescription: 'BSIT student at Bestlink College of the Philippines. Building modern web applications and AI-integrated systems.',
+    ogImage: '/pfp/white1x1.png',
     twitterCard: 'summary_large_image',
-    twitterImage: '/profile/prof-day.jpg',
+    twitterImage: '/pfp/white1x1.png',
   });
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
