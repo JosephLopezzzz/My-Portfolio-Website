@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-31T21:26:00Z",
+  "title": "Design System: Joseph's Digital Showcase",
+  "extensions": {
+    "colorMeta": {
+      "primary": { "role": "primary", "displayName": "Deep Ocean Slate", "canonical": "hsl(209, 38%, 48%)", "tonalRamp": ["hsl(209, 38%, 15%)", "hsl(209, 38%, 30%)", "hsl(209, 38%, 48%)", "hsl(209, 38%, 70%)", "hsl(209, 38%, 90%)"] },
+      "secondary": { "role": "secondary", "displayName": "Muted Steel", "canonical": "hsl(210, 28%, 32%)", "tonalRamp": ["hsl(210, 28%, 15%)", "hsl(210, 28%, 32%)", "hsl(210, 28%, 50%)", "hsl(210, 28%, 75%)", "hsl(210, 28%, 95%)"] },
+      "accent": { "role": "accent", "displayName": "Glowing Sapphire", "canonical": "hsl(209, 35%, 59%)", "tonalRamp": ["hsl(209, 35%, 20%)", "hsl(209, 35%, 40%)", "hsl(209, 35%, 59%)", "hsl(209, 35%, 75%)", "hsl(209, 35%, 95%)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero headlines only." },
+      "body": { "displayName": "Body", "purpose": "Standard readable content." }
+    },
+    "shadows": [
+      { "name": "ambient-soft", "value": "0 4px 20px -4px hsl(209 38% 48% / 0.15)", "purpose": "Resting state for elevated elements." },
+      { "name": "elevated-hover", "value": "0 20px 40px -15px hsl(209 38% 48% / 0.2)", "purpose": "Lifted hover state." },
+      { "name": "glass-shadow", "value": "0 4px 30px rgba(0, 0, 0, 0.05)", "purpose": "Used with glass surfaces." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Glass Button",
+      "kind": "button",
+      "refersTo": "glass-btn",
+      "description": "Primary action button with inner glass shimmer.",
+      "html": "<button class=\"ds-glass-btn\">GET IN TOUCH</button>",
+      "css": ".ds-glass-btn { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.5rem; border-radius: 0.75rem; font-weight: 600; font-family: 'Inter', sans-serif; color: hsl(214, 30%, 97%); background: linear-gradient(135deg, hsl(209, 38%, 48%), hsl(210, 35%, 40%)); border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.1); cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); } .ds-glass-btn:hover { transform: translateY(-2px); box-shadow: 0 20px 40px -15px hsl(209 38% 48% / 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.6); filter: brightness(1.1); }"
+    },
+    {
+      "name": "Glass Card",
+      "kind": "card",
+      "refersTo": "glass-card",
+      "description": "Content container with heavy background blur.",
+      "html": "<div class=\"ds-glass-card\"><h3 style=\"margin: 0; color: hsl(214, 30%, 97%); font-family: 'Inter', sans-serif;\">Project Title</h3><p style=\"margin-top: 8px; color: hsl(211, 31%, 86%); font-family: 'Raleway', sans-serif;\">A brief description of the project.</p></div>",
+      "css": ".ds-glass-card { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 0.75rem; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.1); padding: 1.5rem; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1); } .ds-glass-card:hover { transform: translateY(-5px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 -1px 0 rgba(255, 255, 255, 0.1); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Ambient Space",
+    "overview": "The aesthetic philosophy of this site is clean and minimal, letting the work speak for itself without distractions. It uses glowing, atmospheric, and soft visual cues like liquid glass effects to bring life to an otherwise restrained canvas. It avoids aggressive visual noise and focuses on creating a tactile, immersive environment.",
+    "keyCharacteristics": [
+      "Glowing, atmospheric glassmorphism over clean backgrounds.",
+      "Minimal structural clutter, allowing content to breathe.",
+      "Tactile interactions with soft hover lift and ambient shadows."
+    ],
+    "rules": [
+      {
+        "name": "The Glass Blur Rule",
+        "body": "Liquid glass elements rely on a 16px blur and 180% saturation filter to pull the background through organically. Solid backgrounds should be avoided where glass can create ambient depth.",
+        "section": "colors"
+      },
+      {
+        "name": "The Glowing Lift Rule",
+        "body": "Depth is not just structural; it is energetic. When elements lift on hover, their shadow spreads and their opacity or blur shifts to feel like they are catching light.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do rely on the 16px backdrop blur to create visual separation instead of relying solely on solid borders.",
+      "Do ensure interactive elements lift and glow softly on hover.",
+      "Do maintain the generous 6rem vertical padding between major sections."
+    ],
+    "donts": [
+      "Don't use flat, solid backgrounds for cards unless absolutely necessary; use the established liquid glass classes.",
+      "Don't mix aggressive, sharp corners into the soft 0.75rem radius layout.",
+      "Don't clutter the page with noise; let the ambient space breathe."
+    ]
+  }
+}

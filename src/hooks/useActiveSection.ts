@@ -15,8 +15,8 @@ export const useActiveSection = () => {
         });
       },
       { 
-        threshold: 0.3,
-        rootMargin: '-20% 0px -70% 0px'
+        threshold: 0,
+        rootMargin: '-40% 0px -40% 0px'
       }
     );
 

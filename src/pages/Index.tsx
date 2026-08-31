@@ -7,6 +7,7 @@ import EducationSection from '@/components/sections/EducationSection';
 import CertificationsSection from '@/components/sections/CertificationsSection';
 import ResumeSection from '@/components/sections/ResumeSection';
 import ContactSection from '@/components/sections/ContactSection';
+import GallerySection from '@/components/sections/GallerySection';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
 import ScrollProgress from '@/components/ScrollProgress';
@@ -29,8 +30,9 @@ const Index = () => {
       <main>
         <HeroSection />
         <AboutSection />
-        <SkillsSection />
         <ProjectsSection />
+        <SkillsSection />
+        <GallerySection />
         <EducationSection />
         <CertificationsSection />
         <ResumeSection />

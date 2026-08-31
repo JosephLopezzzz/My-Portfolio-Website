@@ -6,8 +6,9 @@ import { useActiveSection } from '@/hooks/useActiveSection';
 const navLinks = [
   { name: 'Home', href: '#home', id: 'home' },
   { name: 'About', href: '#about', id: 'about' },
-  { name: 'Skills', href: '#skills', id: 'skills' },
   { name: 'Projects', href: '#projects', id: 'projects' },
+  { name: 'Skills', href: '#skills', id: 'skills' },
+  { name: 'Gallery', href: '#gallery', id: 'gallery' },
   { name: 'Education', href: '#education', id: 'education' },
   { name: 'Certifications', href: '#certifications', id: 'certifications' },
   { name: 'Contact', href: '#contact', id: 'contact' },
@@ -31,38 +32,38 @@ const Navbar = () => {
       {/* Mobile Menu Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-background/60 backdrop-blur-md z-40 md:hidden animate-fade-in"
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden animate-fade-in"
           onClick={() => setIsOpen(false)}
         />
       )}
       
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
           scrolled
-            ? 'liquid-glass'
-            : 'bg-transparent'
+            ? 'bg-background/90 backdrop-blur-md border-border'
+            : 'bg-transparent border-transparent'
         }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-12 md:h-14">
+          <div className="flex items-center justify-between h-14 md:h-16">
             {/* Logo */}
             <a
               href="#home"
-              className="text-xl md:text-2xl font-bold gradient-text hover:opacity-80 transition-opacity"
+              className="text-xl font-bold tracking-tighter hover:opacity-70 transition-opacity"
             >
-              JL
+              JTL.
             </a>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
                 <a 
                   key={link.name} 
                   href={link.href} 
-                  className={`nav-link text-sm transition-colors duration-300 ${
+                  className={`nav-link ${
                     activeSection === link.id 
-                      ? 'text-primary font-semibold' 
-                      : 'text-muted-foreground hover:text-foreground'
+                      ? 'active font-semibold' 
+                      : ''
                   }`}
                 >
                   {link.name}
@@ -75,7 +76,7 @@ const Navbar = () => {
               <ThemeToggle />
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden p-2 rounded-lg bg-muted/50 hover:bg-muted transition-colors z-50 relative"
+                className="md:hidden p-2 rounded-md hover:bg-secondary transition-colors z-50 relative"
                 aria-label="Toggle menu"
               >
                 {isOpen ? <X size={20} /> : <Menu size={20} />}
@@ -86,29 +87,20 @@ const Navbar = () => {
           {/* Mobile Navigation */}
           <div
             className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out relative z-50 ${
-              isOpen ? 'max-h-96 pb-4 opacity-100' : 'max-h-0 opacity-0'
+              isOpen ? 'max-h-[32rem] pb-4 opacity-100' : 'max-h-0 opacity-0'
             }`}
           >
             {isOpen && (
-              <div
-                className="flex flex-col gap-1.5 pt-2 pb-2 px-2 animate-fade-in rounded-xl mx-1 mb-2"
-                style={{
-                  background: 'var(--glass-bg)',
-                  backdropFilter: 'blur(var(--glass-blur)) saturate(var(--glass-saturate))',
-                  WebkitBackdropFilter: 'blur(var(--glass-blur)) saturate(var(--glass-saturate))',
-                  border: '1px solid var(--glass-border)',
-                  boxShadow: 'var(--glass-shadow)',
-                }}
-              >
+              <div className="flex flex-col gap-1 pt-2 pb-4 px-2 bg-card border border-border rounded-lg shadow-xl animate-fade-in mx-2 mb-2">
                 {navLinks.map((link, index) => (
                   <a
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`px-4 py-2.5 rounded-lg transition-all duration-300 ${
+                    className={`px-4 py-3 rounded-md transition-all duration-300 ${
                       activeSection === link.id
-                        ? 'bg-primary/15 text-primary font-semibold'
-                        : 'text-muted-foreground hover:text-foreground hover:bg-white/10'
+                        ? 'bg-secondary text-foreground font-semibold'
+                        : 'text-muted-foreground hover:text-foreground hover:bg-secondary/50'
                     }`}
                     style={{ animationDelay: `${index * 0.05}s` }}
                   >

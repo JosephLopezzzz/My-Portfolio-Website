@@ -18,26 +18,39 @@ const ThemeToggle = () => {
 
   const isDark = resolvedTheme === 'dark';
 
-  const toggleTheme = () => {
-    // Apply transition class before changing theme
-    document.documentElement.classList.add('theme-transitioning');
-    
-    setTheme(isDark ? 'light' : 'dark');
-    
-    // Remove transition class after animation completes
-    setTimeout(() => {
-      document.documentElement.classList.remove('theme-transitioning');
-    }, 500);
+  const toggleTheme = (e: React.MouseEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    const x = e.clientX;
+    const y = e.clientY;
+
+    const nextTheme = isDark ? 'light' : 'dark';
+
+    if (!document.startViewTransition) {
+      setTheme(nextTheme);
+      return;
+    }
+
+    const right = window.innerWidth - x;
+    const bottom = window.innerHeight - y;
+    const maxRadius = Math.hypot(Math.max(x, right), Math.max(y, bottom));
+
+    document.documentElement.style.setProperty('--x', `${x}px`);
+    document.documentElement.style.setProperty('--y', `${y}px`);
+    document.documentElement.style.setProperty('--r', `${maxRadius}px`);
+
+    document.startViewTransition(() => {
+      setTheme(nextTheme);
+    });
   };
 
   return (
     <Magnetic pullFactor={0.15}>
-      <label id="theme-toggle-button" aria-label="Toggle theme">
+      <label id="theme-toggle-button" aria-label="Toggle theme" onClick={toggleTheme}>
         <input 
           type="checkbox" 
           id="toggle" 
           checked={isDark}
-          onChange={toggleTheme}
+          readOnly
         />
         <svg viewBox="0 0 69.667 44" xmlns="http://www.w3.org/2000/svg">
           <defs>

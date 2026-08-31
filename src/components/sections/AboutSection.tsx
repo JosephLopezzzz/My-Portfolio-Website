@@ -1,128 +1,54 @@
-import { User, Target, Heart, Lightbulb } from 'lucide-react';
-import { motion, Variants } from 'framer-motion';
-
-const highlights = [
-  {
-    icon: User,
-    title: 'Who I Am',
-    description: 'A dedicated BSIT student with a passion for technology and continuous learning.',
-    colSpan: 'sm:col-span-2'
-  },
-  {
-    icon: Target,
-    title: 'My Goal',
-    description: 'To become a skilled full-stack developer and contribute to innovative tech.',
-    colSpan: 'sm:col-span-1'
-  },
-  {
-    icon: Heart,
-    title: 'What I Love',
-    description: 'Building web applications, exploring AI/ML, and solving complex problems.',
-    colSpan: 'sm:col-span-1'
-  },
-  {
-    icon: Lightbulb,
-    title: 'My Approach',
-    description: 'Combining creativity with technical skills to create impactful digital experiences.',
-    colSpan: 'sm:col-span-2'
-  },
-];
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15
-    }
-  }
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { type: 'spring', stiffness: 80, damping: 20 } 
-  }
-};
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 const AboutSection = () => {
+  const { ref, isVisible } = useScrollAnimation();
+
   return (
-    <section id="about" className="py-20 md:py-32 bg-card/30">
-      <motion.div 
-        className="section-container"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={containerVariants}
-      >
-        {/* Section Header */}
-        <motion.div className="text-center mb-16" variants={itemVariants}>
-          <h2 className="section-title">About Me</h2>
-          <p className="section-subtitle mx-auto">
-            Get to know the person behind the code
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <motion.div className="space-y-6" variants={itemVariants}>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Hello! I'm <span className="text-foreground font-semibold">Joseph T. Lopez</span>, 
-              a passionate BSIT student at Bestlink College of the Philippines. I'm currently 
-              in my 4th year, first semester, and I'm deeply invested in building web 
-              applications and learning modern technologies.
-            </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              I chose Information Technology because of my fascination with how technology 
-              shapes our world. From creating simple websites to exploring the possibilities 
-              of artificial intelligence, I'm constantly driven to learn and grow.
-            </p>
-            <div className="pt-4">
-              <h3 className="text-xl font-semibold mb-4">Areas of Interest</h3>
-              <div className="flex flex-wrap gap-3">
-                {['Web Development', 'App Development', 'Artificial Intelligence', 'Networking', 'Cybersecurity', 'Database Management'].map((interest, idx) => (
-                  <motion.span
-                    key={interest}
-                    className="skill-badge hover:bg-primary hover:text-primary-foreground cursor-default"
-                    whileHover={{ scale: 1.05 }}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 * idx }}
-                  >
-                    {interest}
-                  </motion.span>
-                ))}
-              </div>
+    <section id="about" className="w-full relative py-20 bg-card/50" ref={ref as React.RefObject<HTMLDivElement>}>
+      <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        
+        <div className="flex flex-col lg:flex-row gap-16 lg:gap-24">
+          <div className="flex-1">
+            <h2 className="section-title">About Me</h2>
+            <div className="w-12 h-1 bg-foreground mb-8" />
+            
+            <div className="space-y-6 text-muted-foreground text-lg leading-relaxed">
+              <p>
+                I'm a passionate Full-Stack Web Developer and AI Engineer currently pursuing my Bachelor of Science in Information Technology at Bestlink College of the Philippines.
+              </p>
+              <p>
+                My journey into tech started with a curiosity about how things work behind the screen. Today, I specialize in building robust, scalable web applications using modern technologies like React, TailwindCSS, and Node.js.
+              </p>
+              <p>
+                Beyond traditional web development, I am deeply invested in generative AI. I enjoy exploring how large language models can be integrated into everyday tools to create smarter, more intuitive user experiences.
+              </p>
+              <p>
+                When I'm not coding, you'll likely find me participating in hackathons, learning new frameworks, or organizing events for the local developer community.
+              </p>
             </div>
-          </motion.div>
-
-          {/* Right Content - Highlight Cards in Bento Style */}
-          <motion.div 
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4"
-            variants={containerVariants}
-          >
-            {highlights.map((item) => (
-              <motion.div
-                key={item.title}
-                variants={itemVariants}
-                whileHover={{ y: -5, scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                className={`glass-card hover-card p-6 group flex flex-col justify-center ${item.colSpan}`}
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:scale-110 transition-all duration-300 shrink-0">
-                    <item.icon className="w-6 h-6 text-primary group-hover:text-primary-foreground transition-colors" />
-                  </div>
-                  <h4 className="text-lg font-semibold">{item.title}</h4>
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
+          </div>
+          
+          <div className="flex-1 grid grid-cols-2 gap-4">
+            <div className="minimal-card flex flex-col justify-center">
+              <h3 className="text-4xl font-bold text-foreground mb-2">3+</h3>
+              <p className="text-sm text-muted-foreground uppercase tracking-wider">Years Coding</p>
+            </div>
+            <div className="minimal-card flex flex-col justify-center">
+              <h3 className="text-4xl font-bold text-foreground mb-2">15+</h3>
+              <p className="text-sm text-muted-foreground uppercase tracking-wider">Projects Shipped</p>
+            </div>
+            <div className="minimal-card flex flex-col justify-center">
+              <h3 className="text-4xl font-bold text-foreground mb-2">1</h3>
+              <p className="text-sm text-muted-foreground uppercase tracking-wider">Hackathon</p>
+            </div>
+            <div className="minimal-card flex flex-col justify-center">
+              <h3 className="text-4xl font-bold text-foreground mb-2">10K+</h3>
+              <p className="text-sm text-muted-foreground uppercase tracking-wider">Lines of Code</p>
+            </div>
+          </div>
         </div>
-      </motion.div>
+
+      </div>
     </section>
   );
 };

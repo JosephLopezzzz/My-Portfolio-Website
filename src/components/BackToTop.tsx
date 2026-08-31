@@ -22,10 +22,17 @@ const BackToTop = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-8 right-8 z-50 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 animate-fade-in"
+      className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 p-3 rounded-full transition-all duration-300 hover:scale-110 animate-fade-in group flex items-center justify-center text-muted-foreground hover:text-primary"
+      style={{
+        background: 'var(--glass-bg)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+        border: '1px solid var(--glass-border)',
+        boxShadow: 'var(--glass-shadow)',
+      }}
       aria-label="Back to top"
     >
-      <ArrowUp size={20} />
+      <ArrowUp size={20} className="transition-transform group-hover:-translate-y-1" />
     </button>
   );
 };

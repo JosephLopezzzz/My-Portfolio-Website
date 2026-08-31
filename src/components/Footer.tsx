@@ -1,56 +1,12 @@
-import { Github, Linkedin, Mail } from 'lucide-react';
-
-const socialLinks = [
-  {
-    icon: Github,
-    href: 'https://github.com/josephlopez102004',
-    label: 'GitHub',
-  },
-  {
-    icon: Linkedin,
-    href: 'https://www.linkedin.com/in/joseph-lopez-5a2090412',
-    label: 'LinkedIn',
-  },
-  {
-    icon: Mail,
-    href: 'mailto:josephlopez102004@gmail.com',
-    label: 'Email',
-  },
-];
-
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="py-8 border-t border-border">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Logo & Copyright */}
-          <div className="text-center md:text-left">
-            <a href="#home" className="text-xl font-bold gradient-text">
-              Joseph T. Lopez
-            </a>
-            <p className="text-sm text-muted-foreground mt-1">
-              © {currentYear} All rights reserved.
-            </p>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex items-center gap-4">
-            {socialLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-full bg-muted/50 flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-all duration-300 group"
-                aria-label={link.label}
-              >
-                <link.icon size={18} className="group-hover:scale-110 transition-transform" />
-              </a>
-            ))}
-          </div>
-
+    <footer className="w-full py-8 border-t border-border bg-background">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="text-sm text-muted-foreground font-mono uppercase tracking-widest">
+          © {new Date().getFullYear()} Joseph T. Lopez.
+        </div>
+        <div className="text-sm text-muted-foreground">
+          Built with React, Tailwind & Minimalist Design.
         </div>
       </div>
     </footer>

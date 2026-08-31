@@ -1,252 +1,123 @@
-import { useEffect, useState } from "react";
-import { ExternalLink, Github } from "lucide-react";
-import { motion, Variants } from "framer-motion";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-  type CarouselApi,
-} from "@/components/ui/carousel";
+import { ExternalLink, Github, ArrowRight } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-type Project = {
-  title: string;
-  description: string;
-  technologies: string[];
-  image: string;
-  github?: string;
-  live?: string;
-  featured?: boolean;
-};
-
-const projects: Project[] = [
+const projects = [
   {
-    title: "Coach-Hoo",
-    description:
-      "A food-tracking mobile app that helps you log meals, understand your macros, and make better food choices — from home-cooked dishes to takeout — without giving up the meals you love.",
-    technologies: ["React Native", "Expo", "TypeScript", "Zustand"],
-    image:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&h=400&fit=crop",
-    github: "https://github.com/JosephLopezzzz/Coach-Hoo",
-    featured: true,
+    title: 'Nokma',
+    description: 'This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love.',
+    image: '',
+    tags: ['TypeScript'],
+    github: 'https://github.com/JosephLopezzzz/Nokma',
+    live: 'https://github.com/JosephLopezzzz/Nokma',
   },
   {
-    title: "Fraud Detection System in Microfinance",
-    description:
-      "My BPM Project on my 3rd year — a full-stack fintech dashboard for Philippine microfinance institutions. A risk-scoring engine flags duplicate, rapid, large, and off-hours transactions, then auto-freezes suspicious activity.",
-    technologies: ["React", "TypeScript", "Express", "Supabase"],
-    image:
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop",
-    github:
-      "https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance",
-    featured: true,
+    title: 'HR Management System G1',
+    description: 'Human Resources Management System for managing employee data, attendance, and payroll efficiently.',
+    image: '',
+    tags: ['TypeScript'],
+    github: 'https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1',
+    live: 'https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1',
   },
   {
-    title: "My-Portfolio-Website",
-    description:
-      "The site you\u2019re browsing — a responsive portfolio with liquid-glass cards, day/night theming, and motion design, built with React, TypeScript, and Tailwind CSS.",
-    technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
-    image:
-      "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=600&h=400&fit=crop",
-    github: "https://github.com/JosephLopezzzz/My-Portfolio-Website",
-    live: "/",
-    featured: true,
+    title: 'Fraud Detection in Microfinance',
+    description: 'A system designed to detect fraudulent activities and transactions within microfinance institutions.',
+    image: '',
+    tags: ['TypeScript'],
+    github: 'https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance',
+    live: 'https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance',
   },
   {
-    title: "Hotel and Restaurant Fleet and Transportation Management",
-    description:
-      "A fleet and transportation management system for the hospitality industry — dispatch vehicles, manage drivers and trips, and coordinate guest and delivery transportation end to end.",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Supabase", "PostgreSQL"],
-    image:
-      "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=600&h=400&fit=crop",
-    github: "https://github.com/ro-mee/fleet-transpo",
-    featured: true,
+    title: 'Microfinance SMS',
+    description: 'An automated SMS notification system for microfinance clients for payment reminders and alerts.',
+    image: '',
+    tags: ['TypeScript', 'Node.js'],
+    github: 'https://github.com/JosephLopezzzz/Microfinance-SMS',
+    live: 'https://github.com/JosephLopezzzz/Microfinance-SMS',
   },
   {
-    title: "Human Resources Management System",
-    description:
-      "A full-featured HR platform covering employees, departments, attendance, leave, performance reviews, and payroll — secured with role-based access on Supabase.",
-    technologies: ["React", "TypeScript", "Supabase", "Vite"],
-    image:
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop",
-    github:
-      "https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1",
-    featured: true,
+    title: 'hmscore1last1',
+    description: 'A core management system built for scalable institutional operations.',
+    image: '',
+    tags: ['PHP'],
+    github: 'https://github.com/JosephLopezzzz/hmscore1last1',
+    live: 'https://github.com/JosephLopezzzz/hmscore1last1',
   },
 ];
 
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 80, damping: 20 },
-  },
-};
-
 const ProjectsSection = () => {
-  const [api, setApi] = useState<CarouselApi>();
-  const [current, setCurrent] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  useEffect(() => {
-    if (!api) return;
-    setCurrent(api.selectedScrollSnap());
-    const onSelect = () => setCurrent(api.selectedScrollSnap());
-    api.on("select", onSelect);
-    api.on("reInit", onSelect);
-    return () => {
-      api.off("select", onSelect);
-      api.off("reInit", onSelect);
-    };
-  }, [api]);
-
-  useEffect(() => {
-    if (!api) return;
-    if (paused) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = window.setInterval(() => {
-      if (api.canScrollNext()) api.scrollNext();
-      else api.scrollTo(0);
-    }, 6000);
-    return () => window.clearInterval(id);
-  }, [api, paused, current]);
+  const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="projects" className="py-20 md:py-32 bg-card/30">
-      <motion.div
-        className="section-container"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={containerVariants}
-      >
-        {/* Section Header */}
-        <motion.div className="text-center mb-16" variants={itemVariants}>
-          <h2 className="section-title">Featured Projects</h2>
-          <p className="section-subtitle mx-auto">
-            Apps and systems I've built, open-sourced on GitHub
-          </p>
-        </motion.div>
-
-        {/* Projects Photo Carousel */}
-        <motion.div
-          className="max-w-5xl mx-auto"
-          variants={itemVariants}
-          onMouseEnter={() => setPaused(true)}
-          onMouseLeave={() => setPaused(false)}
-        >
-          <Carousel
-            setApi={setApi}
-            opts={{ align: "center", loop: true, containScroll: "trimSnaps" }}
-            aria-label="Featured projects"
-          >
-            <CarouselContent>
-              {projects.map((project) => (
-                <CarouselItem
-                  key={project.title}
-                  className="basis-full md:basis-[85%] lg:basis-[75%]"
-                >
-                  <motion.div
-                    whileHover={{ y: -8 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="glass-card hover-card group relative overflow-hidden rounded-3xl flex flex-col justify-end h-[400px]"
-                  >
-                    {/* Image Background */}
-                    <div className="absolute inset-0 z-0">
-                      <img
-                        src={project.image}
-                        alt={project.title}
-                        loading="lazy"
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/95 via-background/60 to-transparent opacity-90 group-hover:opacity-95 transition-opacity duration-300" />
-                    </div>
-
-                    {/* Content */}
-                    <div className="relative z-10 p-6 md:p-8 flex flex-col justify-end h-full pointer-events-none">
-                      <h3 className="font-bold mb-3 group-hover:text-primary transition-colors pointer-events-auto w-fit text-xl md:text-2xl">
-                        {project.title}
-                      </h3>
-                      <p className="text-muted-foreground mb-6 pointer-events-auto text-sm line-clamp-2">
-                        {project.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-2 mb-6 pointer-events-auto">
-                        {project.technologies.map((tech) => (
-                          <span
-                            key={tech}
-                            className="skill-badge bg-background/50 backdrop-blur-md border-border/50 text-foreground"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Links */}
-                      <div className="flex gap-4 mt-auto pointer-events-auto">
-                        {project.github && (
-                          <a
-                            href={project.github}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
-                          >
-                            <Github size={20} />
-                            <span className="block">Code</span>
-                          </a>
-                        )}
-                        {project.live && (
-                          <a
-                            href={project.live}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2 text-sm font-medium text-foreground hover:text-primary transition-colors"
-                          >
-                            <ExternalLink size={20} />
-                            <span className="block">Live Demo</span>
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </motion.div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-
-            <CarouselPrevious className="left-3 md:-left-5 z-20 h-11 w-11 bg-background/70 backdrop-blur-md border-border/60 text-foreground shadow-lg hover:bg-background/90 hover:text-primary" />
-            <CarouselNext className="right-3 md:-right-5 z-20 h-11 w-11 bg-background/70 backdrop-blur-md border-border/60 text-foreground shadow-lg hover:bg-background/90 hover:text-primary" />
-          </Carousel>
-
-          {/* Dots */}
-          <div className="flex items-center justify-center gap-2.5 mt-8">
-            {projects.map((project, index) => (
-              <button
-                key={project.title}
-                type="button"
-                aria-label={`Go to ${project.title}`}
-                onClick={() => api?.scrollTo(index)}
-                className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                  index === current
-                    ? "w-8 bg-primary"
-                    : "w-2.5 bg-primary/30 hover:bg-primary/50"
-                }`}
-              />
-            ))}
+    <section id="projects" className="w-full relative py-20" ref={ref as React.RefObject<HTMLDivElement>}>
+      <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+          <div>
+            <h2 className="section-title">Featured Projects</h2>
+            <div className="w-12 h-1 bg-foreground mb-4" />
+            <p className="section-subtitle mb-0 max-w-xl">
+              A selection of my recent work in web development, AI integration, and hackathons.
+            </p>
           </div>
-        </motion.div>
-      </motion.div>
+          <a href="https://github.com/JosephLopezzzz" target="_blank" rel="noreferrer" className="minimal-btn-secondary whitespace-nowrap">
+            View All Projects
+            <ArrowRight size={16} />
+          </a>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((project, index) => (
+            <div 
+              key={index} 
+              className="minimal-card flex flex-col group p-0 overflow-hidden"
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <div className="w-full h-48 bg-muted relative overflow-hidden">
+                <div className="absolute inset-0 bg-foreground/10 group-hover:bg-transparent transition-colors z-10" />
+                <div className="absolute inset-0 flex items-center justify-center text-muted-foreground z-0">
+                   {/* Fallback pattern if image is missing */}
+                   <span className="font-mono text-xs uppercase tracking-widest">{project.title.replace(/\s+/g, '-').toLowerCase()}</span>
+                </div>
+              </div>
+              
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{project.title}</h3>
+                <p className="text-muted-foreground text-sm mb-6 flex-grow leading-relaxed">
+                  {project.description}
+                </p>
+                
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tags.map((tag) => (
+                    <span key={tag} className="tech-pill">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                
+                <div className="flex items-center gap-4 mt-auto pt-4 border-t border-border">
+                  <a 
+                    href={project.github}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-sm font-medium"
+                  >
+                    <Github size={16} /> Code
+                  </a>
+                  <a 
+                    href={project.live}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-sm font-medium ml-auto"
+                  >
+                    Live Site <ExternalLink size={16} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
     </section>
   );
 };
