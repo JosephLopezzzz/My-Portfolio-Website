@@ -49,57 +49,22 @@ const ContactSection = () => {
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-12 lg:gap-24">
-          {/* Left: Contact methods */}
-          <div className="flex-1 space-y-6">
-            {socialLinks.map(({ label, value, href, icon: Icon, cta }) => (
-              <a
-                key={label}
-                href={href}
-                target={href.startsWith('mailto') ? undefined : '_blank'}
-                rel={href.startsWith('mailto') ? undefined : 'noreferrer'}
-                className="group flex items-start gap-4 minimal-card hover:border-foreground/40 block transition-all duration-300"
-                aria-label={`${label}: ${value}`}
-              >
-                <div className="w-12 h-12 bg-secondary/50 border border-border flex items-center justify-center text-foreground flex-shrink-0 transition-colors group-hover:bg-foreground group-hover:text-background group-hover:border-foreground">
-                  <Icon size={20} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-1">{label}</p>
-                  <p className="text-base font-medium text-foreground truncate">{value}</p>
-                </div>
-                <div className="flex items-center gap-1 text-xs font-mono text-muted-foreground group-hover:text-foreground transition-colors self-center uppercase tracking-widest whitespace-nowrap">
-                  {cta} <ArrowRight size={12} />
-                </div>
-              </a>
-            ))}
-
-            <div className="flex items-start gap-4 pt-2">
-              <div className="w-12 h-12 bg-secondary/50 border border-border flex items-center justify-center text-foreground flex-shrink-0">
-                <MapPin size={20} />
-              </div>
+        <div className="w-full max-w-3xl">
+          <SpotlightCard className="flex flex-col gap-6 bg-secondary/30 border-none">
+            <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">Quickest way to reach me</p>
+            <p className="text-2xl font-bold text-foreground tracking-tight leading-tight">
+              Drop me a line and I'll respond within 24 hours.
+            </p>
+            <a
+              href="mailto:josephlopez102004@gmail.com"
+              className="minimal-btn self-start"
+            >
+              <Mail size={16} />
+              josephlopez102004@gmail.com
+            </a>
+            
+            <div className="border-t border-border pt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
               <div>
-                <p className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-1">Location</p>
-                <p className="text-base font-medium text-foreground">Quezon City, Philippines</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Direct email CTA */}
-          <div className="flex-1 flex flex-col justify-center">
-            <SpotlightCard className="flex flex-col gap-6 bg-secondary/30 border-none">
-              <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">Quickest way to reach me</p>
-              <p className="text-2xl font-bold text-foreground tracking-tight leading-tight">
-                Drop me a line and I'll respond within 24 hours.
-              </p>
-              <a
-                href="mailto:josephlopez102004@gmail.com"
-                className="minimal-btn self-start"
-              >
-                <Mail size={16} />
-                josephlopez102004@gmail.com
-              </a>
-              <div className="border-t border-border pt-6">
                 <p className="text-sm text-muted-foreground mb-4">Or find me on</p>
                 <div className="flex items-center gap-4">
                   <a href="https://github.com/JosephLopezzzz" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground transition-colors" aria-label="GitHub">
@@ -113,8 +78,18 @@ const ContactSection = () => {
                   </a>
                 </div>
               </div>
-            </SpotlightCard>
-          </div>
+              
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-background/50 border border-border flex items-center justify-center text-foreground flex-shrink-0">
+                  <MapPin size={18} />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xs font-mono text-muted-foreground uppercase tracking-widest">Location</span>
+                  <span className="text-sm font-medium text-foreground">Quezon City, Philippines</span>
+                </div>
+              </div>
+            </div>
+          </SpotlightCard>
         </div>
 
       </div>
