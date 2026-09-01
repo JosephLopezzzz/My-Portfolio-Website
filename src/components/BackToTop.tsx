@@ -22,7 +22,7 @@ const BackToTop = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-50 p-3 rounded-full transition-all duration-300 hover:scale-110 animate-fade-in group flex items-center justify-center text-muted-foreground hover:text-primary"
+      className="fixed bottom-24 right-6 md:bottom-24 md:right-8 z-50 p-3 rounded-full transition-all duration-300 hover:scale-110 animate-fade-in group flex items-center justify-center text-muted-foreground hover:text-primary"
       style={{
         background: 'var(--glass-bg)',
         backdropFilter: 'blur(12px)',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Mail, MapPin, Github, Linkedin, Facebook, ArrowRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import SpotlightCard from '@/components/ui/SpotlightCard';
 
 const socialLinks = [
   {
@@ -86,7 +87,7 @@ const ContactSection = () => {
 
           {/* Right: Direct email CTA */}
           <div className="flex-1 flex flex-col justify-center">
-            <div className="minimal-card flex flex-col gap-6 bg-secondary/30">
+            <SpotlightCard className="flex flex-col gap-6 bg-secondary/30 border-none">
               <p className="font-mono text-xs text-muted-foreground uppercase tracking-widest">Quickest way to reach me</p>
               <p className="text-2xl font-bold text-foreground tracking-tight leading-tight">
                 Drop me a line and I'll respond within 24 hours.
@@ -112,7 +113,7 @@ const ContactSection = () => {
                   </a>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
           </div>
         </div>
 

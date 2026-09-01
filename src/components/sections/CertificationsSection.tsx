@@ -1,47 +1,48 @@
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import SpotlightCard from '@/components/ui/SpotlightCard';
 
 const certifications = [
   {
     title: 'Prompt Like an Engineer',
-    issuer: 'Certification',
+    issuer: 'Cisco Networking Academy',
     date: '2026',
     link: '/certs/PromptLikeanEngineer20260828-21-b83sda.pdf',
   },
   {
     title: 'HTML & CSS Mastery',
-    issuer: 'Certification',
+    issuer: 'Coddy Team',
     date: '2026',
     link: '/certs/html-css-mastery.pdf',
   },
   {
     title: 'HTML Fundamentals',
-    issuer: 'Certification',
+    issuer: 'Coddy Team',
     date: '2026',
     link: '/certs/html-fundamentals.pdf',
   },
   {
     title: 'HTML Styling with CSS',
-    issuer: 'Certification',
+    issuer: 'Coddy Team',
     date: '2026',
     link: '/certs/html-styling-with-css.pdf',
   },
   {
     title: 'Practical Frontend',
-    issuer: 'Certification',
+    issuer: 'Coddy Team',
     date: '2026',
     link: '/certs/practical-frontend.pdf',
   },
   {
     title: 'C Programming',
-    issuer: 'Certification',
+    issuer: 'Coddy Team',
     date: '2026',
     link: '/certs/c.pdf',
   },
   {
     title: 'Python Programming',
-    issuer: 'Certification',
+    issuer: 'Coddy Team',
     date: '2026',
     link: '/certs/pyy.pdf',
   },
@@ -61,10 +62,9 @@ const CertificationsSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {certifications.map((cert, index) => (
-            <div 
+            <SpotlightCard 
               key={index}
-              className="minimal-card flex flex-col justify-between"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="flex flex-col justify-between border-none bg-card"
             >
               <div>
                 <h3 className="text-lg font-bold text-foreground mb-2 leading-tight">{cert.title}</h3>
@@ -81,7 +81,7 @@ const CertificationsSection = () => {
                   Credential <ExternalLink size={14} />
                 </a>
               </div>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
 

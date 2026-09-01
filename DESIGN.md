@@ -14,7 +14,7 @@ colors:
   border-dark: "hsl(240, 3.7%, 15.9%)"
 typography:
   display:
-    fontFamily: "Inter, system-ui, sans-serif"
+    fontFamily: "Syne, system-ui, sans-serif"
     fontSize: "clamp(3rem, 8vw, 6rem)"
     fontWeight: 700
     lineHeight: 0.95
@@ -113,17 +113,19 @@ The palette is deliberately achromatic — rarity of color means the content is 
 
 ## Typography
 
-**Display / Heading Font:** Inter (with system-ui, sans-serif fallback)
-**Label / Code Font:** JetBrains Mono (with monospace fallback)
+**Display Font:** Syne Bold (700/800) — geometric, wide, architectural. Used *exclusively* for the hero name `<h1>`. One weight loaded (`700`). Syne's distinctive letterform geometry separates the display role from all other Inter text without creating a clash — same achromatic register, different presence.
+**Body / Headline Font:** Inter (300–800) — clinical precision, correct for developer prose. Used for all headings, body text, nav, and buttons.
+**Label / Code Font:** JetBrains Mono (400–600) — signals "I actually write code" without explanation.
 
 **Character:** Inter brings clinical precision with no personality overhead — the right choice for a developer portfolio where the copy is the credential. JetBrains Mono signals "I actually write code" without explanation.
 
 ### Hierarchy
-- **Display** (700, `clamp(3rem, 8vw, 6rem)`, leading 0.95, -0.04em): Reserved for the hero name `Joseph T. Lopez`. Maximum typographic impact; appears exactly once.
-- **Headline** (700, `clamp(1.875rem, 4vw, 3rem)`, leading 1.1, -0.03em): Section titles — About, Projects, Skills, Gallery, etc. Uses `.section-title` utility.
-- **Title** (600, `1.25rem`, leading 1.3): Card titles, project names, certification names.
-- **Body** (400, `1rem`, leading 1.65): Section descriptions, project summaries, bio text. Optimal at 65–75ch max-width.
-- **Label** (JetBrains Mono, 400, `0.75rem`, 0.1em tracking, uppercase): Role descriptor ("Hello, I am"), tech pills, stat labels. Signals taxonomy without shouting.
+- **Display** (Syne 700, `clamp(3rem, 8vw, 6rem)` via `text-5xl → text-7xl → text-8xl`, leading 0.95, -0.04em): Reserved for the hero name `Joseph T. Lopez`. Maximum typographic impact; appears exactly once. Class: `font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter`.
+- **Headline** (Inter 700, `text-3xl md:text-5xl`, leading 1.1, -0.03em): Section titles. Uses `.section-title` utility.
+- **Title** (Inter 700, `text-xl`, leading 1.3, `tracking-tight`): Card titles, project names, certification names.
+- **Body** (Inter 400, `text-base` (1rem), leading 1.65): Section descriptions, project summaries, bio text. Minimum 1rem — never `text-sm` for prose.
+- **Label** (JetBrains Mono 400, `text-xs` (0.75rem), 0.1em tracking, uppercase): Role descriptor, tech pills, stat labels.
+- **Micro-label** (JetBrains Mono 400, `text-[11px]`, `aria-hidden`): Purely decorative thumbnail tags. Not announced by screen readers.
 
 ### Named Rules
 **The One Display Rule.** The display scale (name, hero heading) appears on exactly one element per page. Using display-weight tracking (-0.04em) or display sizing outside the hero is prohibited.

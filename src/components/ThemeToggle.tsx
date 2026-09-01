@@ -34,7 +34,7 @@ const ThemeToggle = () => {
   return (
     <Spin
       id="theme-toggle-button"
-      className="relative flex items-center justify-center w-12 h-12 rounded-md hover:bg-secondary transition-colors text-[32px] text-foreground"
+      className="relative flex items-center justify-center w-8 h-8 rounded-full hover:bg-secondary/50 transition-colors text-[24px] text-foreground"
       onClick={toggleTheme}
       duration={500}
     />

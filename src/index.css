@@ -2,7 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/pixel-operator');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Syne:wght@700;800&display=swap');
 
 @layer base {
   :root {
@@ -35,7 +39,7 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
 
-    --radius: 0rem; /* Sharp edges for brutalist/minimalist look */
+    --radius: 0.75rem; /* Smoothened border radius */
   }
 
   .dark {
@@ -114,6 +118,12 @@
     @apply tracking-tight font-semibold text-foreground;
   }
 
+  /* Hero display — Syne only for the one <h1> */
+  .font-display {
+    font-family: 'Syne', system-ui, sans-serif;
+    font-weight: 700;
+  }
+
   code, pre {
     font-family: 'JetBrains Mono', monospace;
   }
@@ -134,7 +144,7 @@
 
   /* Minimal Cards */
   .minimal-card {
-    @apply relative border border-border bg-card p-6 md:p-8 transition-colors duration-300;
+    @apply relative border border-border bg-card p-6 md:p-8 rounded-2xl transition-colors duration-300;
   }
   .minimal-card:hover {
     @apply border-foreground/30;
@@ -142,14 +152,14 @@
 
   /* Minimal Button Base */
   .minimal-btn {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-primary-foreground bg-primary transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-primary-foreground bg-primary rounded-xl transition-all duration-300;
   }
   .minimal-btn:hover {
     @apply opacity-90 -translate-y-1;
   }
 
   .minimal-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-foreground border border-border bg-transparent transition-all duration-300;
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-foreground border border-border bg-transparent rounded-xl transition-all duration-300;
   }
   .minimal-btn-secondary:hover {
     @apply bg-accent text-accent-foreground border-foreground/30 -translate-y-1;
@@ -193,3 +203,21 @@
 }
 
 
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee-reverse {
+  animation: marquee 30s linear infinite reverse;
+}
+
+.animate-marquee:hover,
+.animate-marquee-reverse:hover {
+  animation-play-state: paused;
+}

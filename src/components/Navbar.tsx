@@ -6,7 +6,6 @@ import { useActiveSection } from '@/hooks/useActiveSection';
 
 const navLinks = [
   { name: 'Home', href: '#home', id: 'home' },
-  { name: 'About', href: '#about', id: 'about' },
   { name: 'Projects', href: '#projects', id: 'projects' },
   { name: 'Skills', href: '#skills', id: 'skills' },
   { name: 'Gallery', href: '#gallery', id: 'gallery' },
@@ -27,7 +26,7 @@ const Navbar = () => {
         />
       )}
       
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-4xl transition-all duration-300">
+      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95%] transition-all duration-300">
         <GlassSurface
           width="100%"
           height={64}
@@ -37,15 +36,7 @@ const Navbar = () => {
           opacity={0.8}
           blur={10}
         >
-          <div className="w-full flex items-center justify-between px-6">
-            {/* Logo */}
-            <a
-              href="#home"
-              className="text-xl font-bold tracking-tighter hover:opacity-70 transition-opacity"
-            >
-              JTL.
-            </a>
-
+          <div className="w-full flex items-center gap-6 px-8">
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
@@ -63,9 +54,8 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* Theme Toggle & Mobile Menu Button */}
+            {/* Mobile Menu Button */}
             <div className="flex items-center gap-4">
-              <ThemeToggle />
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="md:hidden p-2 hover:bg-secondary transition-colors z-50 relative"

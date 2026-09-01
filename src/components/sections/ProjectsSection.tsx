@@ -1,6 +1,7 @@
 import React from 'react';
 import { Github, ArrowRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import SpotlightCard from '@/components/ui/SpotlightCard';
 
 const projects = [
   {
@@ -69,42 +70,41 @@ const ProjectsSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
-            <div 
+            <SpotlightCard 
               key={index} 
-              className="minimal-card flex flex-col group p-0 overflow-hidden"
-              style={{ animationDelay: `${index * 0.1}s` }}
+              className="flex flex-col group p-0 border-none bg-card"
             >
               {/* Stylized project identity thumbnail */}
-              <div className="w-full h-44 bg-foreground relative overflow-hidden flex items-center justify-center select-none">
+              <div className="w-full h-44 bg-foreground relative overflow-hidden flex items-center justify-center select-none z-10">
                 {/* Grid lines */}
-                <div className="absolute inset-0" style={{
-                  backgroundImage: 'linear-gradient(hsl(var(--background)/0.08) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--background)/0.08) 1px, transparent 1px)',
+                <div className="absolute inset-0 opacity-20" style={{
+                  backgroundImage: 'linear-gradient(hsl(var(--background)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--background)) 1px, transparent 1px)',
                   backgroundSize: '24px 24px'
                 }} />
                 {/* Accent character — large, behind */}
-                <span className="absolute font-mono text-8xl font-bold select-none pointer-events-none" style={{ color: 'hsl(var(--background)/0.12)', letterSpacing: '-0.05em' }}>
+                <span className="absolute font-mono text-8xl font-bold select-none pointer-events-none" style={{ color: 'hsl(var(--background)/0.3)', letterSpacing: '-0.05em' }}>
                   {project.accentChar}
                 </span>
                 {/* Initials — front */}
-                <span className="relative z-10 font-mono text-5xl font-bold tracking-tighter" style={{ color: 'hsl(var(--background)/0.9)' }}>
+                <span className="relative z-10 font-mono text-5xl font-bold tracking-tighter" style={{ color: 'hsl(var(--background))' }}>
                   {project.initials}
                 </span>
                 {/* Corner tag */}
-                <span aria-hidden="true" className="absolute bottom-3 right-4 font-mono text-[10px] uppercase tracking-widest" style={{ color: 'hsl(var(--background)/0.4)' }}>
+                <span aria-hidden="true" className="absolute bottom-3 right-4 font-mono text-[11px] uppercase tracking-widest" style={{ color: 'hsl(var(--background)/0.6)' }}>
                   {project.tags[0]}
                 </span>
               </div>
               
-              <div className="p-6 flex flex-col flex-grow">
+              <div className="p-6 flex flex-col flex-grow relative z-10">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">{project.title}</h3>
                   {project.isCapstone && (
-                    <span className="flex-shrink-0 text-[10px] font-mono uppercase tracking-widest border border-foreground/30 px-2 py-0.5 text-muted-foreground whitespace-nowrap">
+                    <span className="flex-shrink-0 text-[11px] font-mono uppercase tracking-widest border border-foreground/30 px-2 py-0.5 text-muted-foreground whitespace-nowrap">
                       Capstone
                     </span>
                   )}
                 </div>
-                <p className="text-muted-foreground text-sm mb-6 flex-grow leading-relaxed">
+                <p className="text-muted-foreground text-base mb-6 flex-grow leading-relaxed">
                   {project.description}
                 </p>
                 
@@ -122,13 +122,13 @@ const ProjectsSection = () => {
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`View ${project.title} on GitHub`}
-                    className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-sm font-medium"
+                    className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-sm font-medium relative z-20"
                   >
                     <Github size={16} /> View on GitHub
                   </a>
                 </div>
               </div>
-            </div>
+            </SpotlightCard>
           ))}
         </div>
 

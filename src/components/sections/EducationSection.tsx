@@ -1,6 +1,7 @@
 import React from 'react';
 import { GraduationCap } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import SpotlightCard from '@/components/ui/SpotlightCard';
 
 const EducationSection = () => {
   const { ref, isVisible } = useScrollAnimation();
@@ -17,7 +18,7 @@ const EducationSection = () => {
           </div>
         </div>
 
-        <div className="minimal-card flex flex-col md:flex-row md:items-start justify-between gap-6">
+        <SpotlightCard className="flex flex-col md:flex-row md:items-start justify-between gap-6 border-none bg-card">
           <div>
             <h3 className="text-2xl font-bold text-foreground mb-2">Bachelor of Science in Information Technology</h3>
             <p className="text-lg text-muted-foreground font-medium mb-4">Bestlink College of the Philippines</p>
@@ -30,7 +31,7 @@ const EducationSection = () => {
               Expected 2027
             </span>
           </div>
-        </div>
+        </SpotlightCard>
 
       </div>
     </section>
