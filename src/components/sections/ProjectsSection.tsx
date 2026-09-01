@@ -90,7 +90,7 @@ const ProjectsSection = () => {
                   {project.initials}
                 </span>
                 {/* Corner tag */}
-                <span aria-hidden="true" className="absolute bottom-3 right-4 font-mono text-[11px] uppercase tracking-widest" style={{ color: 'hsl(var(--background)/0.6)' }}>
+                <span aria-hidden="true" className="absolute bottom-3 right-4 font-mono text-xs uppercase tracking-widest" style={{ color: 'hsl(var(--background)/0.6)' }}>
                   {project.tags[0]}
                 </span>
               </div>
@@ -99,7 +99,7 @@ const ProjectsSection = () => {
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">{project.title}</h3>
                   {project.isCapstone && (
-                    <span className="flex-shrink-0 text-[11px] font-mono uppercase tracking-widest border border-foreground/30 px-2 py-0.5 text-muted-foreground whitespace-nowrap">
+                    <span className="flex-shrink-0 text-xs font-mono uppercase tracking-widest border border-foreground/30 px-2 py-0.5 text-muted-foreground whitespace-nowrap">
                       Capstone
                     </span>
                   )}

@@ -1,4 +1,5 @@
 import { useTheme } from 'next-themes';
+import { flushSync } from 'react-dom';
 import { Spin } from '@/components/ui/spin';
 
 const ThemeToggle = () => {
@@ -27,14 +28,23 @@ const ThemeToggle = () => {
     document.documentElement.style.setProperty('--r', `${maxRadius}px`);
 
     document.startViewTransition(() => {
-      setTheme(nextTheme);
+      if (nextTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+        document.documentElement.style.colorScheme = 'dark';
+      } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.style.colorScheme = 'light';
+      }
+      flushSync(() => {
+        setTheme(nextTheme);
+      });
     });
   };
 
   return (
     <Spin
       id="theme-toggle-button"
-      className="relative flex items-center justify-center w-8 h-8 rounded-full hover:bg-secondary/50 transition-colors text-[24px] text-foreground"
+      className="relative flex items-center justify-center w-8 h-8 rounded-full hover:bg-secondary/50 transition-colors [&>svg]:w-6 [&>svg]:h-6 text-foreground"
       onClick={toggleTheme}
       duration={500}
     />

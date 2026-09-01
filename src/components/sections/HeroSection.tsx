@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Github, Linkedin, Mail, MessageCircle, ChevronRight } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import ThemeToggle from '@/components/ThemeToggle';
+import { ChatBot } from '@/components/ui/ChatBot';
 
 const InlineBadge = ({ children }: { children: React.ReactNode }) => (
   <span className="inline-flex items-center gap-1.5 px-2 py-0.5 mx-1 text-xs font-mono rounded-md border border-border bg-secondary/50 text-foreground translate-y-[-1px]">
@@ -66,7 +67,7 @@ const HeroSection = () => {
     <>
       <section 
         id="home" 
-        className="relative w-full min-h-screen flex items-center justify-center bg-background pt-24 pb-12"
+        className="relative w-full min-h-screen flex items-center justify-center pt-24 pb-12"
       >
         <div className="w-full max-w-3xl mx-auto px-6 flex flex-col items-start animate-fade-up z-10 relative">
           
@@ -162,13 +163,7 @@ const HeroSection = () => {
       </section>
 
       {/* Floating Chat Button */}
-      <a 
-        href="mailto:josephlopez102004@gmail.com"
-        className="fixed bottom-6 right-6 z-50 inline-flex items-center gap-2 px-4 py-3 font-medium text-foreground bg-card rounded-xl border border-border hover:bg-muted transition-colors"
-      >
-        <MessageCircle size={20} />
-        <span className="inline">Chat with Joseph</span>
-      </a>
+      <ChatBot />
     </>
   );
 };

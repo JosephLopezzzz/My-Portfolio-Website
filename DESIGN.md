@@ -1,6 +1,6 @@
 ---
 name: Joseph's Digital Showcase
-description: Minimalist portfolio for a full-stack developer — technical substance, zero fabrication.
+description: Modern glassmorphic portfolio for a full-stack developer — technical substance meets highly polished interaction.
 colors:
   ink: "hsl(240, 10%, 4%)"
   canvas: "hsl(0, 0%, 100%)"
@@ -36,7 +36,9 @@ typography:
     fontWeight: 400
     letterSpacing: "0.1em"
 rounded:
-  none: "0px"
+  md: "0.5rem"
+  lg: "1rem"
+  xl: "1.5rem"
   full: "9999px"
   glass-pill: "32px"
 spacing:
@@ -49,7 +51,7 @@ components:
   button-primary:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.canvas}"
-    rounded: "{rounded.none}"
+    rounded: "{rounded.lg}"
     padding: "12px 24px"
   button-primary-hover:
     backgroundColor: "{colors.ink}"
@@ -57,15 +59,15 @@ components:
   button-ghost:
     backgroundColor: "transparent"
     textColor: "{colors.ink}"
-    rounded: "{rounded.none}"
+    rounded: "{rounded.lg}"
     padding: "12px 24px"
   button-ghost-hover:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-  card-minimal:
+  card-glass:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.none}"
+    rounded: "{rounded.xl}"
     padding: "{spacing.card-pad}"
   nav-glass-pill:
     backgroundColor: "transparent"
@@ -77,55 +79,53 @@ components:
 
 ## Overview
 
-**Creative North Star: "The Proof-of-Work Canvas"**
+**Creative North Star: "The Polished Workshop"**
 
-This system is built on the belief that the work is the spectacle. Every visual decision serves legibility and speed of conviction — a recruiter should understand who Joseph is and what he builds within 60 seconds of landing on the page. The palette is achromatic: ink-black on pure white in light mode, near-white on near-black in dark mode. No brand color competes with the content. The only curves are reserved for the floating glass navbar pill; everything else is sharp-cornered and direct.
+This system embraces modern glassmorphism, interactive depth, and highly polished tactile surfaces. Rather than brutalist rigidity, it uses generous border radiuses and translucent layers to create an environment that feels alive and premium. A recruiter should understand who Joseph is within 60 seconds, captivated by smooth micro-interactions, floating components, and an immersive background. The palette remains largely achromatic to let the content and lighting effects shine.
 
-The typography does the heavy lifting. Display text at 6–8rem with -0.04em tracking creates immediate visual hierarchy without decoration. Mono-spaced labels in JetBrains Mono signal technical credibility at a glance. The body copy is airy and readable at 1.65 line-height.
+The typography does the heavy lifting. Display text at 6–8rem with -0.04em tracking creates immediate visual hierarchy. Mono-spaced labels in JetBrains Mono signal technical credibility. 
 
-Motion is purposeful and restrained: fade-up entrances (20px, 0.6s, cubic-bezier 0.16/1/0.3/1), theme transitions via the View Transitions API as a circular radial wipe from the click point, and the GlassSurface SVG-filter navbar that creates genuine optical glass distortion. Nothing moves decoratively.
+Motion and depth are central to the experience: interactive particle backgrounds, glowing spotlight cards, fade-up entrances, and the View Transitions API radial wipe.
 
 **Key Characteristics:**
 - Achromatic two-tone palette — ink and canvas, each flipped per mode.
-- Sharp (0px) radius everywhere except the floating glass nav pill (32px).
+- Generous, soft radiuses (`1rem` to `1.5rem`) on cards, buttons, and floating panels.
 - Inter for all prose and headings; JetBrains Mono for labels, tags, and code hints.
+- Extensive use of glassmorphism (translucency + backdrop-blur) to create depth.
 - Theme switching via View Transitions API radial-wipe from cursor origin.
 - GlassSurface navbar: SVG displacement-map glass distortion, floats 24px from top.
-- Dual profile photo crossfade (700ms opacity transition) synchronized to the resolved theme.
+- Interactive components like SpotlightCards, ClickSpark, and ambient Particles.
 
 ## Colors
 
-The palette is deliberately achromatic — rarity of color means the content is never in competition with decoration.
+The palette is deliberately achromatic — rarity of color means the content and the interactive lighting effects (like the spotlight glow) take center stage.
 
 ### Primary
 - **Ink** (`hsl(240, 10%, 4%)` / dark: `hsl(0, 0%, 98%)`): The foreground text and primary button fill. Used for all headings, body text, primary CTA, nav active state, and icon strokes.
 
 ### Neutral
 - **Canvas** (`hsl(0, 0%, 100%)` / dark: `hsl(240, 10%, 4%)`): The page background. Pure white in light mode; near-black in dark mode.
-- **Surface** (`hsl(0, 0%, 98%)` / dark: `hsl(240, 4%, 8%)`): Raised surfaces — card backgrounds, navbar glass substrate.
+- **Surface** (`hsl(0, 0%, 98%)` / dark: `hsl(240, 4%, 8%)`): Raised surfaces — card backgrounds, navbar glass substrate. Often used with transparency (e.g., `bg-card/90`) to allow background elements to shine through.
 - **Muted Text** (`hsl(240, 3.8%, 46.1%)` / dark: `hsl(240, 5%, 64.9%)`): Supporting text — descriptions, labels, nav links at rest.
 - **Border** (`hsl(240, 5.9%, 90%)` / dark: `hsl(240, 3.7%, 15.9%)`): Dividers, card outlines, input strokes. Intentionally quiet.
 
 ### Named Rules
 **The Achromatic Discipline Rule.** No hue is introduced as an accent. Primary actions use Ink directly. Decorative color (backgrounds, glows, tints) is not permitted. The only exception is the SVG glass distortion filter on the navbar, which introduces optical chromatic aberration as a mechanical artifact, not a brand color.
 
-**The Rarity Rule.** Colored text (`text-primary`, i.e. Ink on Canvas) appears only when a full visual shift is needed. Muted text (`text-muted-foreground`) carries all secondary information. Swapping these dilutes the hierarchy.
-
 ## Typography
 
-**Display Font:** Syne Bold (700/800) — geometric, wide, architectural. Used *exclusively* for the hero name `<h1>`. One weight loaded (`700`). Syne's distinctive letterform geometry separates the display role from all other Inter text without creating a clash — same achromatic register, different presence.
+**Display Font:** Syne Bold (700/800) — geometric, wide, architectural. Used *exclusively* for the hero name `<h1>`. 
 **Body / Headline Font:** Inter (300–800) — clinical precision, correct for developer prose. Used for all headings, body text, nav, and buttons.
 **Label / Code Font:** JetBrains Mono (400–600) — signals "I actually write code" without explanation.
 
 **Character:** Inter brings clinical precision with no personality overhead — the right choice for a developer portfolio where the copy is the credential. JetBrains Mono signals "I actually write code" without explanation.
 
 ### Hierarchy
-- **Display** (Syne 700, `clamp(3rem, 8vw, 6rem)` via `text-5xl → text-7xl → text-8xl`, leading 0.95, -0.04em): Reserved for the hero name `Joseph T. Lopez`. Maximum typographic impact; appears exactly once. Class: `font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter`.
+- **Display** (Syne 700, `clamp(3rem, 8vw, 6rem)` via `text-5xl → text-7xl → text-8xl`, leading 0.95, -0.04em): Reserved for the hero name `Joseph T. Lopez`. Maximum typographic impact.
 - **Headline** (Inter 700, `text-3xl md:text-5xl`, leading 1.1, -0.03em): Section titles. Uses `.section-title` utility.
 - **Title** (Inter 700, `text-xl`, leading 1.3, `tracking-tight`): Card titles, project names, certification names.
-- **Body** (Inter 400, `text-base` (1rem), leading 1.65): Section descriptions, project summaries, bio text. Minimum 1rem — never `text-sm` for prose.
+- **Body** (Inter 400, `text-base` (1rem), leading 1.65): Section descriptions, project summaries, bio text. Minimum 1rem.
 - **Label** (JetBrains Mono 400, `text-xs` (0.75rem), 0.1em tracking, uppercase): Role descriptor, tech pills, stat labels.
-- **Micro-label** (JetBrains Mono 400, `text-[11px]`, `aria-hidden`): Purely decorative thumbnail tags. Not announced by screen readers.
 
 ### Named Rules
 **The One Display Rule.** The display scale (name, hero heading) appears on exactly one element per page. Using display-weight tracking (-0.04em) or display sizing outside the hero is prohibited.
@@ -134,94 +134,78 @@ The palette is deliberately achromatic — rarity of color means the content is 
 
 ## Layout
 
-The site is a single-page smooth-scroll app with `scroll-padding-top: 5rem` to account for the fixed navbar. The main content lives in a `.section-container` utility: `max-width: 64rem`, `margin: 0 auto`, `padding: 1.5rem`, `py-20 md:py-32` (5rem / 8rem vertical rhythm).
+The site is a single-page smooth-scroll app with `scroll-padding-top: 5rem` to account for the fixed navbar. The main content lives in a `.section-container` utility: `max-width: 64rem`, `margin: 0 auto`, `padding: 1.5rem`, `py-20 md:py-32`.
 
-Sections use a consistent 2-column grid on desktop (`grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24`) for the hero, and single-column or 2–3 card grids for content sections. The container never exceeds 64rem, creating generous whitespace on large viewports that reinforces the editorial density.
+Sections use a consistent 2-column grid on desktop (`grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24`) for the hero, and single-column or 2–3 card grids for content sections. The container never exceeds 64rem.
 
-The navbar floats `top: 1.5rem` above the content, centered, capped at `max-width: 56rem`, at `95%` viewport width. It sits in a `z-index: 50` stacking context above all content.
+The navbar floats `top: 1.5rem` above the content, centered, capped at `max-width: 56rem`, at `95%` viewport width. It sits in a `z-index: 50` stacking context above all content. Global interactive backgrounds (like Particles) sit at `z-index: 0`.
 
 **Breakpoints:** sm 640px, md 768px, lg 1024px. Mobile is 1-column throughout.
 
 ## Elevation & Depth
 
-This system is **flat by default**. Surfaces do not use drop shadows to communicate hierarchy. Depth is conveyed through background color contrast (`canvas` → `surface`), border strokes, and the achromatic border-hover treatment (`border-foreground/30` on card hover).
+This system uses **translucency, blur, and interactive lighting** to communicate hierarchy and depth, rather than traditional drop shadows.
 
-The sole exception is the **GlassSurface navbar**: it uses SVG `feDisplacementMap` filters to create real optical glass distortion — chromatic aberration with separate red/green/blue displacement channels at scale -180/-170/-160 — giving the nav genuine physical depth without a box-shadow.
-
-### Shadow Vocabulary
-- **No decorative shadows.** The system deliberately avoids box-shadows on cards, buttons, or section containers.
-- **Glass optical distortion** (`SVG feDisplacementMap, scale ≈ -180`): Navbar only. Not a shadow — a physical-material simulation.
+- **Spotlight Glow:** Cards use an interactive radial gradient (`SpotlightCard`) that follows the mouse, creating a sense of physical material reacting to light.
+- **Glassmorphism:** Overlays, floating panels (like the ChatBot), and the navbar use `backdrop-blur` and translucent backgrounds to float above the content and ambient particles.
 
 ### Named Rules
-**The Flat-By-Default Rule.** Surfaces rest flat. The only depth signal is border contrast (`border-border`) and background distinction (`bg-card` vs. `bg-background`). Hover states shift border opacity, not shadow size.
+**The Glass Substrate Rule.** Floating UI elements (navbars, chat windows, sticky headers) must use translucency (`bg-background/90`, `bg-card/90`) and backdrop-blur to create optical depth. Completely opaque floating panels break the immersion of the ambient background layers.
 
 ## Shapes
 
-The form language is **brutally sharp**. `--radius: 0rem` — every card, button, and input is square-cornered. This is a deliberate rejection of rounded "softness" in favor of precision and directness.
+The form language is **soft and tactile**. Corners are generously rounded to invite interaction and complement the fluid motion of the background.
 
-The sole exception is the **glass nav pill** (32px border-radius) and **tech pills** (fully rounded, `rounded-full`). These two shapes act as signature accent forms against the otherwise uncompromising right angles.
+- **Cards and Panels:** `1rem` to `1.5rem` (`rounded-2xl` to `rounded-3xl`) for large container elements like Project cards, Spotlight cards, and the Chatbot window.
+- **Buttons:** `0.5rem` to `1rem` (`rounded-lg` to `rounded-xl`) to match the softer aesthetic.
+- **Tech pills:** `rounded-full`, mono font, small horizontal padding.
+- **Glass nav pill**: 32px radius.
+- **Profile photo**: fully circular (`rounded-full`).
 
-- **Cards** (`.minimal-card`): 0px radius, border-color `border-border`, hover border-color `border-foreground/30`.
-- **Primary button** (`.minimal-btn`): 0px radius, solid ink fill.
-- **Ghost button** (`.minimal-btn-secondary`): 0px radius, border stroke, transparent fill.
-- **Tech pills** (`.tech-pill`): `rounded-full`, mono font, small horizontal padding (12px/4px). On hover: inverts to ink background, canvas text.
-- **Profile photo**: fully circular (`rounded-full`), 256–384px diameter, `overflow-hidden`.
-- **Glass nav pill**: 32px radius, GlassSurface SVG displacement filter, 64px height.
-
-**Named Rules**
-**The Two Exceptions Rule.** Right angles everywhere — with exactly two permitted round forms: the glass nav pill (32px, by material necessity) and tech pills (fully round, by convention). Any third rounded form must be explicitly approved.
+### Named Rules
+**The Soft Interface Rule.** Sharp 0px right angles are deprecated. Standardize on `rounded-2xl` (`1rem`) for primary interactive cards, `1.5rem` for large feature panels, and `rounded-lg` for buttons. 
 
 ## Components
 
 ### Buttons
-- **Shape:** 0px radius (square corners)
-- **Primary** (`.minimal-btn`): Ink background (`hsl(240, 10%, 4%)` light / near-white dark), canvas text. `padding: 12px 24px`. Flex row with 8px gap for icon.
-- **Hover / Focus:** -1px Y-translate (`-translate-y-1`), opacity 0.9. No box-shadow.
-- **Ghost** (`.minimal-btn-secondary`): Transparent background, ink text, `border-border` stroke. Hover: `bg-accent`, `border-foreground/30`, -1px Y-translate.
+- **Shape:** `rounded-lg` (0.5rem radius)
+- **Primary:** Ink background (`hsl(240, 10%, 4%)` light / near-white dark), canvas text. `padding: 12px 24px`.
+- **Hover / Focus:** -1px Y-translate (`-translate-y-1`), opacity 0.9.
+- **Ghost:** Transparent background, ink text, `border-border` stroke. Hover: `bg-accent`, `border-foreground/30`, -1px Y-translate.
 
-### Cards
-- **Corner Style:** 0px radius (sharp)
-- **Background:** `hsl(0, 0%, 98%)` light / `hsl(240, 4%, 8%)` dark
-- **Shadow Strategy:** None (flat system)
-- **Border:** `1px solid hsl(240, 5.9%, 90%)` at rest; hover shifts to `hsl(240, 5.9%, 10% / 0.3)`
+### Cards / SpotlightCards
+- **Corner Style:** `rounded-3xl` (1.5rem radius) or `rounded-2xl` (1rem radius)
+- **Background:** `hsl(0, 0%, 98%)` light / `hsl(240, 4%, 8%)` dark. Often slightly translucent when floating.
+- **Shadow Strategy:** Interactive radial spotlight glow on hover/focus-within.
+- **Border:** `1px solid hsl(240, 5.9%, 90%)` at rest.
 - **Internal Padding:** `1.5rem` (mobile) / `2rem` (md+)
-- **Hover:** Border brightens toward foreground; no transform.
 
 ### Chips / Tech Pills
-- **Style** (`.tech-pill`): `rounded-full`, `hsl(240, 4.8%, 95.9% / 0.5)` background, `hsl(240, 3.8%, 46.1%)` text, mono font 0.75rem, `1px solid border-border`.
+- **Style:** `rounded-full`, `hsl(240, 4.8%, 95.9% / 0.5)` background, `hsl(240, 3.8%, 46.1%)` text, mono font 0.75rem, `1px solid border-border`.
 - **State:** Hover inverts — ink background (`bg-foreground`), canvas text (`text-background`), ink border.
 
 ### Navigation
 - **Style:** Floating GlassSurface pill, 32px border-radius, 64px height, `width: 95%`, `max-width: 56rem`, `top: 1.5rem`, centered.
 - **Links:** `text-sm font-medium text-muted-foreground`. Active / hover: `text-foreground`. No underlines.
-- **Logo:** `JTL.` — 20px bold, tight tracking.
-- **Theme toggle:** Spin SVG button (toggles.dev), 32px icon, no visible border at rest, `hover:bg-secondary` subtle fill.
-- **Mobile:** Links collapse into a secondary GlassSurface dropdown below the pill.
+- **Theme toggle:** Spin SVG button (toggles.dev), 32px icon, `hover:bg-secondary` subtle fill.
 
-### Profile Photo
-- Circular crop (`rounded-full`), `overflow-hidden`, white border ring.
-- Two images crossfade on theme change — `white1x1.png` (light) and `black1x1.png` (dark) — via `opacity` transition at 700ms. Only one is visible at a time.
-
-### GlassSurface (Signature)
-The navbar uses a React Bits `GlassSurface` component that applies an SVG `feDisplacementMap` filter as a `backdrop-filter`. Three displacement channels (red, green, blue) at slightly offset scales create chromatic aberration. Falls back to `backdrop-filter: blur(12px)` on Safari/Firefox. This is the one decorative flourish in the system — architecturally justified by anchoring the nav visually without a solid background.
+### ChatBot Window
+- **Style:** Floating panel at bottom right. Uses `rounded-2xl` or `rounded-3xl` and `SpotlightCard` container for interactive glow.
+- **Background:** `bg-card/90` with `backdrop-blur-xl` to float gracefully above the background particles.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** use `hsl(240, 10%, 4%)` (Ink) and `hsl(0, 0%, 100%)` (Canvas) as the only two base colors; let mode-switching handle the inversion automatically.
-- **Do** keep all cards and buttons at 0px border-radius. Only the nav pill (32px) and tech pills (`rounded-full`) break this rule.
+- **Do** use `hsl(240, 10%, 4%)` (Ink) and `hsl(0, 0%, 100%)` (Canvas) as the only two base colors.
+- **Do** standardize border radiuses around `1rem` and `1.5rem` for cards to maintain the soft glassmorphic feel.
+- **Do** use `backdrop-blur` and slight transparency for floating elements to maintain depth.
 - **Do** use Inter 700 at `clamp(3rem, 8vw, 6rem)` tracking-tighter for the hero display, and nowhere else.
-- **Do** use JetBrains Mono for all labels, tags, and inline code — never for body text.
-- **Do** apply the View Transitions API radial-wipe for theme changes by reading `--x`, `--y`, and `--r` from cursor position.
-- **Do** maintain `max-width: 64rem` on all section containers. Content wider than this breaks the editorial feel.
-- **Do** let border-color carry hover state on cards (`border-foreground/30`), not shadows or background shifts.
-- **Do** crossfade the profile photo opacity on theme change at 700ms; never show a missing or broken image state.
+- **Do** use JetBrains Mono for all labels, tags, and inline code.
+- **Do** maintain `max-width: 64rem` on all section containers.
 
 ### Don't:
-- **Don't** introduce any hue as a brand accent — no blue CTAs, no green badges, no gradient fills on text.
-- **Don't** add box-shadows to cards, buttons, or content containers. The system is flat by design.
-- **Don't** use rounded corners on cards or buttons. The 0px radius is a core identity signal.
-- **Don't** fabricate project data, credentials, or testimonials. Every item must map to a real file in `public/` or a real GitHub repo.
+- **Don't** introduce any hue as a brand accent.
+- **Don't** mix brutalist 0px sharp corners with the new soft rounded design system.
+- **Don't** fabricate project data, credentials, or testimonials.
 - **Don't** use display-weight tracking (`tracking-tighter` at large size) on any heading outside the hero name.
-- **Don't** use Tailwind utility classes inside the `GlassSurface` component's core CSS — it uses its own shadow DOM rendering and must be self-contained.
-- **Don't** apply motion for motion's sake. Animations are `fadeUp` (20px lift, 0.6s) on scroll reveal, and the View Transitions wipe on theme toggle — nothing else autoplays or loops.
+- **Don't** use arbitrary padding or font sizes that fall outside the Tailwind spacing/typography ramps.
