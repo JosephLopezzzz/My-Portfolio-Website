@@ -38,10 +38,10 @@ const ContactSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="contact" className="w-full relative py-20" ref={ref as React.RefObject<HTMLDivElement>}>
+    <section id="contact" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
-        <div className="mb-16">
+        <div className="mb-6">
           <h2 className="section-title">Let's Connect</h2>
           <div className="w-12 h-1 bg-foreground mb-4" />
           <p className="section-subtitle">

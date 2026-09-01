@@ -21,35 +21,44 @@ const GallerySection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="gallery" className="w-full relative py-20" ref={ref as React.RefObject<HTMLDivElement>}>
+    <section id="gallery" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
-        <div className="mb-12">
-          <h2 className="section-title">Outside the IDE</h2>
-          <div className="w-12 h-1 bg-foreground mb-4" />
-          <p className="section-subtitle">
-            A glimpse into my journey at the National DICT eGov Hackathon 2026. Building, collaborating, and shipping.
-          </p>
-        </div>
-
-        {/* Depth Carousel */}
-        <SpotlightCard className="w-full max-w-4xl mx-auto p-2 sm:p-8 border-none bg-card/50">
-          <div style={{ height: '500px', position: 'relative', width: '100%' }}>
-            <DepthCarousel
-              items={HACKATHON_IMAGES}
-              depth={220}
-              spread={90}
-              tilt={22}
-              tiltDirection="right"
-              perspective={1400}
-              visibleCards={4}
-              falloff={0.2}
-              blur={6}
-              autoplay
-              loop
-            />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          {/* Left Column: Text & Tags */}
+          <div>
+            <h2 className="text-3xl font-display font-medium text-foreground mb-6">Gallery</h2>
+            <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-md">
+              A glimpse into my journey at the National DICT eGov Hackathon 2026. Building, collaborating, and shipping.
+            </p>
+            
+            <div className="flex flex-wrap gap-3">
+              <span className="px-3 py-1 rounded-full border border-border/50 text-[11px] font-medium text-foreground bg-transparent">Hackathon</span>
+              <span className="px-3 py-1 rounded-full border border-border/50 text-[11px] font-medium text-foreground bg-transparent">eGov</span>
+              <span className="px-3 py-1 rounded-full border border-border/50 text-[11px] font-medium text-foreground bg-transparent">2026</span>
+              <span className="px-3 py-1 rounded-full border border-border/50 text-[11px] font-medium text-foreground bg-transparent">Team</span>
+            </div>
           </div>
-        </SpotlightCard>
+
+          {/* Right Column: Carousel */}
+          <div className="w-full">
+            <div style={{ height: '400px', position: 'relative', width: '100%' }}>
+              <DepthCarousel
+                items={HACKATHON_IMAGES}
+                depth={220}
+                spread={90}
+                tilt={22}
+                tiltDirection="right"
+                perspective={1400}
+                visibleCards={4}
+                falloff={0.2}
+                blur={6}
+                autoplay
+                loop
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );

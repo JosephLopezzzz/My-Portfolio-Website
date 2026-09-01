@@ -2,6 +2,40 @@ import React from 'react';
 import { Github, ArrowRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import SpotlightCard from '@/components/ui/SpotlightCard';
+import {
+  SiTypescript,
+  SiReact,
+  SiExpo,
+  SiNodedotjs,
+  SiJavascript,
+  SiNextdotjs,
+} from 'react-icons/si';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+
+const getTechIcon = (tag: string) => {
+  switch (tag) {
+    case 'TypeScript':
+      return <SiTypescript className="w-5 h-5 text-[#3178C6]" />;
+    case 'React Native':
+    case 'React':
+      return <SiReact className="w-5 h-5 text-[#61DAFB]" />;
+    case 'Expo':
+      return <SiExpo className="w-5 h-5" />;
+    case 'Node.js':
+      return <SiNodedotjs className="w-5 h-5 text-[#339933]" />;
+    case 'JavaScript':
+      return <SiJavascript className="w-5 h-5 text-[#F7DF1E]" />;
+    case 'Next.js':
+      return <SiNextdotjs className="w-5 h-5" />;
+    default:
+      return null;
+  }
+};
 
 const projects = [
   {
@@ -41,7 +75,7 @@ const projects = [
     initials: 'FT',
     accentChar: '△',
     description: 'Capstone project — a full fleet and transportation management system built for a hotel and restaurant management context. Built in collaboration with ro-mee.',
-    tags: ['TypeScript', 'React', 'Node.js'],
+    tags: ['JavaScript', 'Next.js', 'Node.js'],
     github: 'https://github.com/ro-mee/fleet-transpo',
     isCapstone: true,
   },
@@ -51,10 +85,10 @@ const ProjectsSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="projects" className="w-full relative py-20" ref={ref as React.RefObject<HTMLDivElement>}>
+    <section id="projects" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-6">
           <div>
             <h2 className="section-title">Featured Projects</h2>
             <div className="w-12 h-1 bg-foreground mb-4" />
@@ -109,11 +143,23 @@ const ProjectsSection = () => {
                 </p>
                 
                 <div className="flex flex-wrap gap-2 mb-6">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="tech-pill">
-                      {tag}
-                    </span>
-                  ))}
+                  <TooltipProvider delayDuration={100}>
+                    {project.tags.map((tag) => {
+                      const icon = getTechIcon(tag);
+                      return (
+                        <Tooltip key={tag}>
+                          <TooltipTrigger asChild>
+                            <span className={`tech-pill ${icon ? 'p-2' : 'px-3 py-1'}`}>
+                              {icon || tag}
+                            </span>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{tag}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      );
+                    })}
+                  </TooltipProvider>
                 </div>
                 
                 <div className="flex items-center gap-4 mt-auto pt-4 border-t border-border">

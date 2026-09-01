@@ -5,7 +5,7 @@ const ResumeSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="resume" className="w-full relative py-20" ref={ref as React.RefObject<HTMLDivElement>}>
+    <section id="resume" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
         <div className="minimal-card flex flex-col md:flex-row items-center justify-between gap-8 bg-secondary/50">

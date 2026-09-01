@@ -3,6 +3,7 @@ import { Github, Linkedin, Mail, MessageCircle, ChevronRight } from 'lucide-reac
 import { useTheme } from 'next-themes';
 import ThemeToggle from '@/components/ThemeToggle';
 import { ChatBot } from '@/components/ui/ChatBot';
+import PixelTransition from '@/components/ui/PixelTransition';
 
 const InlineBadge = ({ children }: { children: React.ReactNode }) => (
   <span className="inline-flex items-center gap-1.5 px-2 py-0.5 mx-1 text-xs font-mono rounded-md border border-border bg-secondary/50 text-foreground translate-y-[-1px]">
@@ -67,31 +68,47 @@ const HeroSection = () => {
     <>
       <section 
         id="home" 
-        className="relative w-full min-h-screen flex items-center justify-center pt-24 pb-12"
+        className="relative w-full min-h-screen flex items-center justify-center pt-24 pb-4"
       >
         <div className="w-full max-w-3xl mx-auto px-6 flex flex-col items-start animate-fade-up z-10 relative">
           
           {/* Avatar and Name Block */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
             <div className="relative w-32 h-32 sm:w-40 sm:h-40 flex-shrink-0">
               <div className="absolute inset-0 rounded-full border border-border bg-card overflow-hidden">
                 {mounted && (
-                  <>
-                    <img
-                      src="/pfp/white1x1.png"
-                      alt="Joseph Lopez"
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-                      style={{ opacity: isDark ? 0 : 1 }}
-                      draggable={false}
-                    />
-                    <img
-                      src="/pfp/black1x1.png"
-                      alt="Joseph Lopez"
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-                      style={{ opacity: isDark ? 1 : 0 }}
-                      draggable={false}
-                    />
-                  </>
+                  <PixelTransition
+                    firstContent={
+                      <>
+                        <img
+                          src="/pfp/white1x1.png"
+                          alt="Joseph Lopez"
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                          style={{ opacity: isDark ? 0 : 1 }}
+                          draggable={false}
+                        />
+                        <img
+                          src="/pfp/black1x1.png"
+                          alt="Joseph Lopez"
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                          style={{ opacity: isDark ? 1 : 0 }}
+                          draggable={false}
+                        />
+                      </>
+                    }
+                    secondContent={
+                      <img
+                        src={isDark ? '/profile/prof-night.png' : '/profile/prof-day.jpg'}
+                        alt="Joseph Lopez Real"
+                        className="absolute inset-0 w-full h-full object-cover"
+                        draggable={false}
+                      />
+                    }
+                    gridSize={10}
+                    pixelColor={isDark ? '#000000' : '#ffffff'}
+                    animationStepDuration={0.4}
+                    className="w-full h-full"
+                  />
                 )}
               </div>
             </div>
@@ -129,7 +146,7 @@ const HeroSection = () => {
           </h2>
           
           {/* Bio */}
-          <p className="text-base sm:text-lg text-muted-foreground mb-10 leading-relaxed max-w-2xl">
+          <p className="text-base sm:text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl">
             I'm a full-stack web developer and AI engineer building modern applications with 
             <InlineBadge>
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="" className="w-3.5 h-3.5" />

@@ -10,10 +10,10 @@ const GithubSection = () => {
   const isDark = resolvedTheme === 'dark';
 
   return (
-    <section id="github" className="w-full relative py-20 bg-background" ref={ref as React.RefObject<HTMLDivElement>}>
+    <section id="github" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
       <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         
-        <div className="mb-12">
+        <div className="mb-6">
           <h2 className="text-3xl md:text-4xl font-light text-foreground mb-4">
             GitHub Activity
           </h2>

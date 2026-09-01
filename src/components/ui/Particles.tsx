@@ -251,7 +251,8 @@ const Particles: React.FC<ParticlesProps> = ({
     sizeRandomness,
     cameraDistance,
     disableRotation,
-    pixelRatio
+    pixelRatio,
+    particleColors?.join(',')
   ]);
 
   return <div ref={containerRef} className={`particles-container ${className}`} />;
