@@ -46,6 +46,8 @@ const projects = [
     description: 'This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love.',
     tags: ['TypeScript', 'React Native', 'Expo'],
     github: 'https://github.com/JosephLopezzzz/Nokma',
+    image: '/nokma logo.png',
+    bgImage: '/bgg.jpeg',
   },
   {
     title: 'HR Management System G1',
@@ -55,6 +57,8 @@ const projects = [
     description: 'Human Resources Management System for managing employee data, attendance, and payroll efficiently.',
     tags: ['TypeScript', 'React'],
     github: 'https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1',
+    image: '/hrms.png',
+    bgColor: '#E7E7E7',
   },
   {
     title: 'Fraud Detection in Microfinance',
@@ -64,6 +68,8 @@ const projects = [
     description: 'A system designed to detect fraudulent activities and transactions within microfinance institutions.',
     tags: ['TypeScript', 'Node.js'],
     github: 'https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance',
+    image: '/fraud detection.png',
+    bgColor: '#E7E7E7',
   },
 
   {
@@ -77,6 +83,7 @@ const projects = [
     link: 'https://fleet-transpo.vercel.app',
     image: '/image copy.png',
     isCapstone: true,
+    bgColor: '#E7E7E7',
   },
 ];
 
@@ -114,9 +121,21 @@ const ProjectsSection = () => {
                 rel="noreferrer"
                 className="block w-full shrink-0"
               >
-                <div className={`w-full h-48 rounded-xl relative overflow-hidden flex items-center justify-center select-none border border-border/30 ${project.image ? 'bg-white' : 'bg-muted/30'}`}>
+                <div 
+                  className={`w-full h-48 rounded-xl relative overflow-hidden flex items-center justify-center select-none border border-border/30 ${project.bgImage || project.bgColor ? '' : project.image ? 'bg-white' : 'bg-muted/30'}`}
+                  style={{
+                    ...(project.bgImage ? {
+                      backgroundImage: `url('${project.bgImage}')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    } : {}),
+                    ...(project.bgColor ? {
+                      backgroundColor: project.bgColor,
+                    } : {})
+                  }}
+                >
                   {project.image ? (
-                    <img src={project.image} alt={project.title} className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.05]" />
+                    <img src={project.image} alt={project.title} className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.05] relative z-10" />
                   ) : (
                     <>
                       {/* Grid lines */}
