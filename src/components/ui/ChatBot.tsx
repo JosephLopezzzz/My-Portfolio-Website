@@ -1,6 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, type ChatSession } from '@google/generative-ai';
+import type { Chat, GoogleGenAI } from '@google/genai';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 
 // NOTE: Vite inlines `import.meta.env` at build time. On Vercel the
@@ -9,8 +9,64 @@ import SpotlightCard from '@/components/ui/SpotlightCard';
 const API_KEY = (import.meta.env.VITE_GEMINI_API_KEY as string | undefined)?.trim() || '';
 const IS_CONFIGURED = API_KEY.length > 0;
 
-// gemini-1.5-flash is retired. Use a supported GA Flash model.
-const CHAT_MODEL = 'gemini-2.5-flash';
+// Model preference order. Only a model the key's own ListModels response
+// contains is ever selected, so this list can safely include newer IDs.
+const PREFERRED_MODELS = [
+  'models/gemini-2.5-flash',
+  'models/gemini-2.5-flash-lite',
+  'models/gemini-3.5-flash',
+  'models/gemini-3.5-flash-lite',
+  'models/gemini-3.8-flash',
+  'models/gemini-3.6-flash',
+  'models/gemini-3.1-flash-lite',
+  'models/gemini-flash-latest',
+];
+
+// Never auto-select these kinds of models for a text chat bot.
+const EXCLUDED_MODEL_PATTERN = /image|tts|transcribe|embed|live|video|veo|imagen|lyria/i;
+
+// Resolved once per page load; the key can't change without a rebuild.
+let resolvedModel: string | null = null;
+
+class NoCompatibleModelError extends Error {
+  available: string[];
+  constructor(available: string[]) {
+    super(`No compatible chat model. Key can access: ${available.join(', ') || '(none)'}`);
+    this.name = 'NoCompatibleModelError';
+    this.available = available;
+  }
+}
+
+/** Ask the API which models this key can actually use, then pick the best chat model. */
+async function resolveChatModel(client: GoogleGenAI): Promise<string> {
+  if (resolvedModel) return resolvedModel;
+
+  const available: string[] = [];
+  const chatCapable = new Set<string>();
+  const pager = await client.models.list({ config: { pageSize: 100 } });
+  for await (const m of pager) {
+    if (!m.name) continue;
+    available.push(m.name);
+    const supportsChat =
+      !m.supportedActions || m.supportedActions.includes('generateContent');
+    if (supportsChat && !EXCLUDED_MODEL_PATTERN.test(m.name)) {
+      chatCapable.add(m.name);
+    }
+  }
+  console.info('ChatBot: models accessible to this key:', available);
+
+  const preferred = PREFERRED_MODELS.find((id) => chatCapable.has(id));
+  if (preferred) {
+    resolvedModel = preferred.replace(/^models\//, '');
+    return resolvedModel;
+  }
+  const anyFlash = [...chatCapable].find((name) => /flash/i.test(name));
+  if (anyFlash) {
+    resolvedModel = anyFlash.replace(/^models\//, '');
+    return resolvedModel;
+  }
+  throw new NoCompatibleModelError(available);
+}
 
 const SYSTEM_INSTRUCTION = `You are Joseph T Lopez, an IT student at Bestlink College of the Philippines (Expected 2027) based in Quezon City. 
 You are acting as an interactive assistant on Joseph's portfolio website. 
@@ -35,21 +91,41 @@ const MISSING_KEY_MESSAGE =
 const GENERIC_ERROR_MESSAGE =
   "Sorry, I'm having trouble connecting right now. Please check your network or try again.";
 
-function getFriendlyErrorMessage(error: unknown): string {
+function getErrorStatus(error: unknown): number | undefined {
+  if (typeof error === 'object' && error !== null && 'status' in error) {
+    const status = (error as { status?: unknown }).status;
+    if (typeof status === 'number') return status;
+  }
+  return undefined;
+}
+
+function isModelNotFoundError(error: unknown): boolean {
+  if (getErrorStatus(error) === 404) return true;
+  const raw = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+  const msg = raw.toLowerCase();
+  return msg.includes('not_found') || msg.includes('not found') || msg.includes('is not found') || msg.includes('no longer available');
+}
+
+function getFriendlyErrorMessage(error: unknown, modelTried?: string): string {
   if (!IS_CONFIGURED) return MISSING_KEY_MESSAGE;
+  if (error instanceof NoCompatibleModelError) {
+    return `Your key connected, but it can't access any supported chat model (${error.available.length} models visible). If you own this site, create a new key in Google AI Studio and redeploy.`;
+  }
+  const status = getErrorStatus(error);
   const raw = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
   const msg = raw.toLowerCase();
 
-  if (msg.includes('api_key_invalid') || msg.includes('api key not valid') || msg.includes('api key is invalid')) {
-    return 'This chat key looks invalid. If you own this site, check that VITE_GEMINI_API_KEY is correct and redeploy.';
+  if (status === 400 || msg.includes('api_key_invalid') || msg.includes('api key not valid') || msg.includes('api key is invalid')) {
+    return 'This chat key looks invalid. If you own this site, generate a key in Google AI Studio, set it as VITE_GEMINI_API_KEY, and redeploy.';
   }
-  if (msg.includes('permission_denied') || msg.includes('403') || msg.includes('referer') || msg.includes('billing')) {
-    return "The request was blocked (key restrictions, referrer policy, or billing). If you own this site, check the key's HTTP-referrer restrictions and billing status.";
+  if (status === 403 || msg.includes('permission_denied') || msg.includes('referer') || msg.includes('billing')) {
+    return "The request was blocked (key restrictions, referrer policy, or billing). If you own this site, check the key's API restrictions and billing status.";
   }
-  if (msg.includes('404') || msg.includes('not_found') || msg.includes('not found') || msg.includes('is not found')) {
-    return `The configured model (${CHAT_MODEL}) isn't available. If you own this site, update the model ID to a supported Flash model.`;
+  if (status === 404 || isModelNotFoundError(error)) {
+    const model = modelTried ? ` (${modelTried})` : '';
+    return `The chat model${model} isn't available to this key/project right now. If you own this site, confirm the key was created in Google AI Studio and has model access, then redeploy.`;
   }
-  if (msg.includes('429') || msg.includes('quota') || msg.includes('rate') || msg.includes('resource_exhausted')) {
+  if (status === 429 || msg.includes('quota') || msg.includes('rate') || msg.includes('resource_exhausted')) {
     return 'The chat is rate-limited right now. Please wait a moment and retry.';
   }
   return GENERIC_ERROR_MESSAGE;
@@ -64,47 +140,52 @@ export const ChatBot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [initError, setInitError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatSessionRef = useRef<ChatSession | null>(null);
-  const genAIRef = useRef<GoogleGenerativeAI | null>(null);
+  const chatSessionRef = useRef<Chat | null>(null);
+  const genAIRef = useRef<GoogleGenAI | null>(null);
+  const activeModelRef = useRef<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const initChat = async (): Promise<string | null> => {
+  const initChat = useCallback(async (): Promise<string | null> => {
     if (chatSessionRef.current) return null;
     if (!IS_CONFIGURED) {
       setInitError(MISSING_KEY_MESSAGE);
       return MISSING_KEY_MESSAGE;
     }
     try {
+      // Lazy-load the SDK so it lands in its own chunk instead of the main bundle.
+      const { GoogleGenAI, HarmCategory, HarmBlockThreshold } = await import('@google/genai');
       if (!genAIRef.current) {
-        genAIRef.current = new GoogleGenerativeAI(API_KEY);
+        genAIRef.current = new GoogleGenAI({ apiKey: API_KEY });
       }
-      const model = genAIRef.current.getGenerativeModel({
-        model: CHAT_MODEL,
-        systemInstruction: SYSTEM_INSTRUCTION,
-        generationConfig: {
+      const model = await resolveChatModel(genAIRef.current);
+      activeModelRef.current = model;
+      chatSessionRef.current = genAIRef.current.chats.create({
+        model,
+        config: {
+          systemInstruction: SYSTEM_INSTRUCTION,
           temperature: 0.7,
           topP: 0.9,
           maxOutputTokens: 300,
+          safetySettings: [
+            { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+            { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+            { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+            { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+          ],
         },
-        safetySettings: [
-          { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-          { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-          { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-          { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
-        ],
-      });
-      chatSessionRef.current = model.startChat({
-        history: [],
       });
       setInitError(null);
       return null;
     } catch (e) {
       console.error("Failed to initialize chat:", e);
-      const friendly = getFriendlyErrorMessage(e);
+      // Force re-discovery next time (availability may change).
+      chatSessionRef.current = null;
+      resolvedModel = null;
+      const friendly = getFriendlyErrorMessage(e, activeModelRef.current || undefined);
       setInitError(friendly);
       return friendly;
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -112,7 +193,7 @@ export const ChatBot = () => {
       // Focus input when opened
       setTimeout(() => inputRef.current?.focus(), 100);
     }
-  }, [isOpen]);
+  }, [isOpen, initChat]);
 
   useEffect(() => {
     if (messagesEndRef.current) {
@@ -167,15 +248,26 @@ export const ChatBot = () => {
         }
       }
 
-      const result = await chatSessionRef.current.sendMessage(messageText);
-      const botResponse = result.response.text();
-
-      setMessages(prev => [...prev, { role: 'model', text: botResponse }]);
+      try {
+        const response = await chatSessionRef.current.sendMessage({ message: messageText });
+        const botResponse = response.text?.trim();
+        if (!botResponse) throw new Error('Empty response from the chat model.');
+        setMessages(prev => [...prev, { role: 'model', text: botResponse }]);
+      } catch (sendError) {
+        // Model availability may have changed mid-session: drop the session so
+        // the next attempt re-runs model discovery, then report this failure.
+        if (isModelNotFoundError(sendError)) {
+          console.warn('Chat model became unavailable, session reset:', sendError);
+          chatSessionRef.current = null;
+          resolvedModel = null;
+        }
+        throw sendError;
+      }
     } catch (error) {
       console.error("Chat error:", error);
       setMessages(prev => [...prev, {
         role: 'model',
-        text: getFriendlyErrorMessage(error),
+        text: getFriendlyErrorMessage(error, activeModelRef.current),
         isError: true
       }]);
     } finally {
