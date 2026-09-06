@@ -7,7 +7,7 @@
   overflow: hidden;
   --mouse-x: 50%;
   --mouse-y: 50%;
-  --spotlight-color: rgba(0, 0, 0, 0.15); /* Darker for light mode visibility */
+  --spotlight-color: rgba(0, 0, 0, 0.12); /* Darker for light mode visibility */
 }
 
 .dark .card-spotlight {
@@ -22,9 +22,11 @@
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
+  z-index: 1;
 }
 
 .card-spotlight:hover::before,
-.card-spotlight:focus-within::before {
-  opacity: 1; /* Fully visible on hover */
+.card-spotlight:focus-within::before,
+.card-spotlight.is-touch-active::before {
+  opacity: 1; /* Fully visible on hover, focus, and active touch */
 }

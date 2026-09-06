@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
 import type { Chat, GoogleGenAI } from '@google/genai';
+import { useTheme } from 'next-themes';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 
 // NOTE: Vite inlines `import.meta.env` at build time. On Vercel the
@@ -136,6 +137,8 @@ function getFriendlyErrorMessage(error: unknown, modelTried?: string): string {
 }
 
 export const ChatBot = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string, isError?: boolean}[]>([
     { role: 'model', text: INITIAL_MESSAGE }
@@ -148,6 +151,12 @@ export const ChatBot = () => {
   const genAIRef = useRef<GoogleGenAI | null>(null);
   const activeModelRef = useRef<string>('');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isDark = mounted ? resolvedTheme === 'dark' : false;
 
   const initChat = useCallback(async (): Promise<string | null> => {
     if (chatSessionRef.current) return null;
@@ -217,7 +226,7 @@ export const ChatBot = () => {
         if (
           document.activeElement?.tagName === 'INPUT' ||
           document.activeElement?.tagName === 'TEXTAREA' ||
-          document.activeElement?.isContentEditable
+          (document.activeElement as HTMLElement)?.isContentEditable
         ) {
           return; // Ignore if user is already typing somewhere
         }
@@ -333,17 +342,24 @@ export const ChatBot = () => {
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-border bg-foreground/5 z-10">
             <div className="flex items-center gap-3">
-              <div className="relative">
-                <img 
-                  src="/pfp/white1x1.png" 
-                  alt="Joseph Lopez" 
-                  className="w-10 h-10 rounded-full object-cover border border-white/20"
-                  onError={(e) => {
-                     // Fallback to a placeholder if the avatar fails to load
-                    (e.target as HTMLImageElement).src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>';
-                  }}
-                />
-                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-[#1a1a1a] rounded-full"></span>
+              <div className="relative group/avatar cursor-pointer">
+                <div className="relative w-10 h-10 rounded-full border border-border bg-card overflow-hidden transition-transform duration-300 group-hover/avatar:scale-105 shadow-sm">
+                  <img 
+                    src="/pfp/white1x1.png" 
+                    alt="Joseph Lopez" 
+                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                    style={{ opacity: isDark ? 0 : 1 }}
+                    draggable={false}
+                  />
+                  <img 
+                    src="/pfp/black1x1.png" 
+                    alt="Joseph Lopez" 
+                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                    style={{ opacity: isDark ? 1 : 0 }}
+                    draggable={false}
+                  />
+                </div>
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-background rounded-full z-10"></span>
               </div>
               <div className="flex flex-col">
                 <h3 className="text-foreground font-semibold text-sm">Chat with Joseph</h3>
@@ -380,12 +396,22 @@ export const ChatBot = () => {
                 className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 {msg.role === 'model' && (
-                  <img 
-                    src="/pfp/white1x1.png" 
-                    alt="Bot" 
-                    className="w-8 h-8 rounded-full object-cover mr-2 self-end mb-1"
-                    onError={(e) => (e.target as HTMLImageElement).style.display = 'none'}
-                  />
+                  <div className="relative w-8 h-8 rounded-full border border-border bg-card overflow-hidden mr-2 self-end mb-1 flex-shrink-0">
+                    <img 
+                      src="/pfp/white1x1.png" 
+                      alt="Joseph" 
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                      style={{ opacity: isDark ? 0 : 1 }}
+                      draggable={false}
+                    />
+                    <img 
+                      src="/pfp/black1x1.png" 
+                      alt="Joseph" 
+                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                      style={{ opacity: isDark ? 1 : 0 }}
+                      draggable={false}
+                    />
+                  </div>
                 )}
                 <div className="flex flex-col gap-1 max-w-[75%]">
                   <div 
@@ -413,7 +439,22 @@ export const ChatBot = () => {
             ))}
             {isLoading && (
               <div className="flex w-full justify-start items-end">
-                 <img src="/pfp/white1x1.png" className="w-8 h-8 rounded-full mr-2" alt="typing" onError={(e) => (e.target as HTMLImageElement).style.display = 'none'} />
+                <div className="relative w-8 h-8 rounded-full border border-border bg-card overflow-hidden mr-2 self-end mb-1 flex-shrink-0">
+                  <img 
+                    src="/pfp/white1x1.png" 
+                    alt="Joseph" 
+                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                    style={{ opacity: isDark ? 0 : 1 }}
+                    draggable={false}
+                  />
+                  <img 
+                    src="/pfp/black1x1.png" 
+                    alt="Joseph" 
+                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+                    style={{ opacity: isDark ? 1 : 0 }}
+                    draggable={false}
+                  />
+                </div>
                 <div className="max-w-[75%] p-3 rounded-2xl text-sm bg-secondary/50 border border-border text-foreground rounded-bl-sm flex gap-1.5 px-4 items-center h-10">
                   <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-typing-dot" style={{ animationDelay: '0ms' }}></span>
                   <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-typing-dot" style={{ animationDelay: '200ms' }}></span>

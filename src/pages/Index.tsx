@@ -22,9 +22,7 @@ const Index = () => {
     description: 'Portfolio of Joseph T. Lopez — BSIT student at Bestlink College, building modern web apps and AI-integrated systems.',
     ogTitle: 'Joseph T. Lopez — Full-Stack Developer & AI Engineer',
     ogDescription: 'BSIT student at Bestlink College of the Philippines. Building modern web applications and AI-integrated systems.',
-    ogImage: '/pfp/white1x1.png',
     twitterCard: 'summary_large_image',
-    twitterImage: '/pfp/white1x1.png',
   });
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === 'dark';
