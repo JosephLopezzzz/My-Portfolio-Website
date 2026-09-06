@@ -23,8 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# Opencode skills (kept local, not version-controlled)
-.opencode/skills/
+# Opencode directory
+.opencode/
 # impeccable-ignore-start
 # Ephemeral output, runtime state, and per-dev overrides.
 .impeccable/config.local.json

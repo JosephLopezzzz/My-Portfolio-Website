@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import './SpotlightCard.css';
+import React, { useRef, useState } from "react";
+import "./SpotlightCard.css";
 
 export interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
@@ -7,7 +7,12 @@ export interface SpotlightCardProps extends React.HTMLAttributes<HTMLDivElement>
   spotlightColor?: string;
 }
 
-const SpotlightCard = ({ children, className = '', spotlightColor, ...props }: SpotlightCardProps) => {
+const SpotlightCard = ({
+  children,
+  className = "",
+  spotlightColor,
+  ...props
+}: SpotlightCardProps) => {
   const divRef = useRef<HTMLDivElement>(null);
   const [isTouchActive, setIsTouchActive] = useState(false);
   const touchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -18,10 +23,10 @@ const SpotlightCard = ({ children, className = '', spotlightColor, ...props }: S
     const x = clientX - rect.left;
     const y = clientY - rect.top;
 
-    divRef.current.style.setProperty('--mouse-x', `${x}px`);
-    divRef.current.style.setProperty('--mouse-y', `${y}px`);
+    divRef.current.style.setProperty("--mouse-x", `${x}px`);
+    divRef.current.style.setProperty("--mouse-y", `${y}px`);
     if (spotlightColor) {
-      divRef.current.style.setProperty('--spotlight-color', spotlightColor);
+      divRef.current.style.setProperty("--spotlight-color", spotlightColor);
     }
   };
 
@@ -58,7 +63,7 @@ const SpotlightCard = ({ children, className = '', spotlightColor, ...props }: S
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
-      className={`card-spotlight ${isTouchActive ? 'is-touch-active' : ''} ${className}`}
+      className={`card-spotlight ${isTouchActive ? "is-touch-active" : ""} ${className}`}
       {...props}
     >
       {children}
