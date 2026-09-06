@@ -1,10 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
-import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from '@google/generative-ai';
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold, type ChatSession } from '@google/generative-ai';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || '';
-const genAI = new GoogleGenerativeAI(API_KEY);
+// NOTE: Vite inlines `import.meta.env` at build time. On Vercel the
+// VITE_GEMINI_API_KEY must be set in Project > Settings > Environment
+// Variables, followed by a redeploy — otherwise this is '' in production.
+const API_KEY = (import.meta.env.VITE_GEMINI_API_KEY as string | undefined)?.trim() || '';
+const IS_CONFIGURED = API_KEY.length > 0;
+
+// gemini-1.5-flash is retired. Use a supported GA Flash model.
+const CHAT_MODEL = 'gemini-2.5-flash';
 
 const SYSTEM_INSTRUCTION = `You are Joseph T Lopez, an IT student at Bestlink College of the Philippines (Expected 2027) based in Quezon City. 
 You are acting as an interactive assistant on Joseph's portfolio website. 
@@ -23,6 +29,32 @@ If asked something completely unrelated to Joseph, politely decline and steer th
 
 const INITIAL_MESSAGE = "Hey! I'm Joseph - feel free to ask about my projects, the stack I work with, or anything else on the site.";
 
+const MISSING_KEY_MESSAGE =
+  "Chat isn't configured yet (missing API key). If you're the site owner, set VITE_GEMINI_API_KEY in your hosting provider's environment variables and redeploy.";
+
+const GENERIC_ERROR_MESSAGE =
+  "Sorry, I'm having trouble connecting right now. Please check your network or try again.";
+
+function getFriendlyErrorMessage(error: unknown): string {
+  if (!IS_CONFIGURED) return MISSING_KEY_MESSAGE;
+  const raw = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+  const msg = raw.toLowerCase();
+
+  if (msg.includes('api_key_invalid') || msg.includes('api key not valid') || msg.includes('api key is invalid')) {
+    return 'This chat key looks invalid. If you own this site, check that VITE_GEMINI_API_KEY is correct and redeploy.';
+  }
+  if (msg.includes('permission_denied') || msg.includes('403') || msg.includes('referer') || msg.includes('billing')) {
+    return "The request was blocked (key restrictions, referrer policy, or billing). If you own this site, check the key's HTTP-referrer restrictions and billing status.";
+  }
+  if (msg.includes('404') || msg.includes('not_found') || msg.includes('not found') || msg.includes('is not found')) {
+    return `The configured model (${CHAT_MODEL}) isn't available. If you own this site, update the model ID to a supported Flash model.`;
+  }
+  if (msg.includes('429') || msg.includes('quota') || msg.includes('rate') || msg.includes('resource_exhausted')) {
+    return 'The chat is rate-limited right now. Please wait a moment and retry.';
+  }
+  return GENERIC_ERROR_MESSAGE;
+}
+
 export const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string, isError?: boolean}[]>([
@@ -30,28 +62,53 @@ export const ChatBot = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [initError, setInitError] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const chatSessionRef = useRef<any>(null);
+  const chatSessionRef = useRef<ChatSession | null>(null);
+  const genAIRef = useRef<GoogleGenerativeAI | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const initChat = async () => {
-    if (chatSessionRef.current) return;
+  const initChat = async (): Promise<string | null> => {
+    if (chatSessionRef.current) return null;
+    if (!IS_CONFIGURED) {
+      setInitError(MISSING_KEY_MESSAGE);
+      return MISSING_KEY_MESSAGE;
+    }
     try {
-      const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
+      if (!genAIRef.current) {
+        genAIRef.current = new GoogleGenerativeAI(API_KEY);
+      }
+      const model = genAIRef.current.getGenerativeModel({
+        model: CHAT_MODEL,
         systemInstruction: SYSTEM_INSTRUCTION,
+        generationConfig: {
+          temperature: 0.7,
+          topP: 0.9,
+          maxOutputTokens: 300,
+        },
+        safetySettings: [
+          { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+          { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+          { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+          { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+        ],
       });
       chatSessionRef.current = model.startChat({
         history: [],
       });
+      setInitError(null);
+      return null;
     } catch (e) {
       console.error("Failed to initialize chat:", e);
+      const friendly = getFriendlyErrorMessage(e);
+      setInitError(friendly);
+      return friendly;
     }
   };
 
   useEffect(() => {
     if (isOpen) {
-      initChat();
+      void initChat();
       // Focus input when opened
       setTimeout(() => inputRef.current?.focus(), 100);
     }
@@ -92,23 +149,34 @@ export const ChatBot = () => {
 
   const sendMessageToBot = async (messageText: string) => {
     if (!messageText.trim() || isLoading) return;
+    if (!IS_CONFIGURED) {
+      setMessages(prev => [...prev, {
+        role: 'model',
+        text: MISSING_KEY_MESSAGE,
+        isError: true
+      }]);
+      return;
+    }
     setIsLoading(true);
 
     try {
       if (!chatSessionRef.current) {
-        await initChat();
+        const initFailure = await initChat();
+        if (initFailure || !chatSessionRef.current) {
+          throw new Error(initFailure || 'Chat session could not be initialized.');
+        }
       }
-      
+
       const result = await chatSessionRef.current.sendMessage(messageText);
       const botResponse = result.response.text();
-      
+
       setMessages(prev => [...prev, { role: 'model', text: botResponse }]);
     } catch (error) {
       console.error("Chat error:", error);
-      setMessages(prev => [...prev, { 
-        role: 'model', 
-        text: "Sorry, I'm having trouble connecting right now. Please check your network or try again.", 
-        isError: true 
+      setMessages(prev => [...prev, {
+        role: 'model',
+        text: getFriendlyErrorMessage(error),
+        isError: true
       }]);
     } finally {
       setIsLoading(false);
@@ -116,7 +184,7 @@ export const ChatBot = () => {
   };
 
   const handleSend = () => {
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || isLoading || !IS_CONFIGURED) return;
     
     const userMessage = input.trim();
     setInput('');
@@ -177,7 +245,11 @@ export const ChatBot = () => {
               </div>
               <div className="flex flex-col">
                 <h3 className="text-foreground font-semibold text-sm">Chat with Joseph</h3>
-                <span className="text-green-500 text-xs tracking-wider font-bold">ONLINE</span>
+                {IS_CONFIGURED ? (
+                  <span className="text-green-500 text-xs tracking-wider font-bold">ONLINE</span>
+                ) : (
+                  <span className="text-amber-500 text-xs tracking-wider font-bold">NOT CONFIGURED</span>
+                )}
               </div>
             </div>
             <button 
@@ -190,6 +262,16 @@ export const ChatBot = () => {
 
           {/* Messages Area */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-transparent z-10">
+            {!IS_CONFIGURED && (
+              <div className="p-3 rounded-2xl text-xs leading-relaxed bg-amber-500/10 border border-amber-500/40 text-amber-200">
+                {MISSING_KEY_MESSAGE}
+              </div>
+            )}
+            {IS_CONFIGURED && initError && (
+              <div className="p-3 rounded-2xl text-xs leading-relaxed bg-destructive/10 border border-destructive/40 text-destructive-foreground">
+                {initError}
+              </div>
+            )}
             {messages.map((msg, idx) => (
               <div 
                 key={idx} 
@@ -249,13 +331,13 @@ export const ChatBot = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                placeholder="Type a message..."
+                placeholder={IS_CONFIGURED ? "Type a message..." : "Chat not configured..."}
                 className="flex-1 bg-transparent border-none text-foreground text-sm outline-none placeholder:text-muted-foreground"
-                disabled={isLoading}
+                disabled={isLoading || !IS_CONFIGURED}
               />
-              <button 
+              <button
                 onClick={handleSend}
-                disabled={!input.trim() || isLoading}
+                disabled={!input.trim() || isLoading || !IS_CONFIGURED}
                 className="p-2.5 bg-foreground text-background rounded-full hover:opacity-80 transition-colors disabled:opacity-50"
               >
                 <Send size={16} />

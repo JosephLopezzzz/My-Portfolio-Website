@@ -32,9 +32,26 @@ cd <YOUR_PROJECT_NAME>
 # Step 3: Install the necessary dependencies.
 npm i
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Step 4: Configure the chatbot (optional but required for chat replies).
+cp .env.example .env.local
+# Then set VITE_GEMINI_API_KEY inside .env.local
+
+# Step 5: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
+
+## Chatbot setup (`VITE_GEMINI_API_KEY`)
+
+The floating "Chat with Joseph" widget calls the Gemini API directly from the
+browser using `VITE_GEMINI_API_KEY`.
+
+- Local: put the key in `.env.local` (gitignored, see `.env.example`).
+- Vercel: add `VITE_GEMINI_API_KEY` under Project > Settings > Environment
+  Variables (Production + Preview), then **redeploy**. Vite embeds the value
+  at build time, so changing the variable without a redeploy has no effect.
+- If the key is missing, the widget shows `NOT CONFIGURED` and explains the
+  fix instead of failing silently.
+- Restrict the key to your site's domain and monitor quota/billing in Google AI Studio.
 
 **Edit a file directly in GitHub**
 
