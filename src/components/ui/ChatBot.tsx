@@ -169,7 +169,10 @@ export const ChatBot = () => {
           systemInstruction: SYSTEM_INSTRUCTION,
           temperature: 0.7,
           topP: 0.9,
-          maxOutputTokens: 300,
+          // NOTE: keep this generous. Flash models think before answering and
+          // maxOutputTokens budgets thoughts + visible text combined — too low
+          // chops replies mid-sentence. Brevity is enforced by the system prompt.
+          maxOutputTokens: 1024,
           safetySettings: [
             { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
             { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
