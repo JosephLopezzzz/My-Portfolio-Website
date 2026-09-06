@@ -11,13 +11,14 @@ const IS_CONFIGURED = API_KEY.length > 0;
 
 // Model preference order. Only a model the key's own ListModels response
 // contains is ever selected, so this list can safely include newer IDs.
+// gemini-3.6-flash is first: Google's API explicitly points new keys at it.
 const PREFERRED_MODELS = [
+  'models/gemini-3.6-flash',
   'models/gemini-2.5-flash',
   'models/gemini-2.5-flash-lite',
   'models/gemini-3.5-flash',
   'models/gemini-3.5-flash-lite',
   'models/gemini-3.8-flash',
-  'models/gemini-3.6-flash',
   'models/gemini-3.1-flash-lite',
   'models/gemini-flash-latest',
 ];
@@ -27,6 +28,9 @@ const EXCLUDED_MODEL_PATTERN = /image|tts|transcribe|embed|live|video|veo|imagen
 
 // Resolved once per page load; the key can't change without a rebuild.
 let resolvedModel: string | null = null;
+// Models that returned NOT_FOUND at send time despite being listed.
+// Skipped by re-discovery so we never retry a dead model in a loop.
+const failedModels = new Set<string>();
 
 class NoCompatibleModelError extends Error {
   available: string[];
@@ -55,12 +59,12 @@ async function resolveChatModel(client: GoogleGenAI): Promise<string> {
   }
   console.info('ChatBot: models accessible to this key:', available);
 
-  const preferred = PREFERRED_MODELS.find((id) => chatCapable.has(id));
+  const preferred = PREFERRED_MODELS.find((id) => chatCapable.has(id) && !failedModels.has(id));
   if (preferred) {
     resolvedModel = preferred.replace(/^models\//, '');
     return resolvedModel;
   }
-  const anyFlash = [...chatCapable].find((name) => /flash/i.test(name));
+  const anyFlash = [...chatCapable].find((name) => /flash/i.test(name) && !failedModels.has(name));
   if (anyFlash) {
     resolvedModel = anyFlash.replace(/^models\//, '');
     return resolvedModel;
@@ -254,10 +258,13 @@ export const ChatBot = () => {
         if (!botResponse) throw new Error('Empty response from the chat model.');
         setMessages(prev => [...prev, { role: 'model', text: botResponse }]);
       } catch (sendError) {
-        // Model availability may have changed mid-session: drop the session so
-        // the next attempt re-runs model discovery, then report this failure.
+        // Model availability may have changed mid-session: remember the dead
+        // model so re-discovery skips it, drop the session, then report.
         if (isModelNotFoundError(sendError)) {
-          console.warn('Chat model became unavailable, session reset:', sendError);
+          if (activeModelRef.current) {
+            console.warn(`Chat model ${activeModelRef.current} became unavailable, will skip it:`, sendError);
+            failedModels.add(`models/${activeModelRef.current}`);
+          }
           chatSessionRef.current = null;
           resolvedModel = null;
         }
