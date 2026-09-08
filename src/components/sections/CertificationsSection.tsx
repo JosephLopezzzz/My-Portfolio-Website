@@ -8,7 +8,7 @@ const certifications = [
     title: 'Computer Hardware Basics',
     issuer: 'Cisco Networking Academy',
     date: '2026',
-    link: '/certs/ComputerHardwareBasicsUpdate20260908-19-g3zk42.pdf',
+    link: '/certs/computer-hardware-basics.pdf',
     badgeUrl: 'https://www.credly.com/badges/37959b93-bd0b-4f72-a7ce-8eda8ff01f50/public_url',
     image: '/certs/computer-hardware-basics.png',
   },

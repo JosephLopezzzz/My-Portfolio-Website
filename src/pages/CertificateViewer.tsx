@@ -5,9 +5,16 @@ import { useDocumentMetadata } from '@/hooks/useDocumentMetadata';
 const CertificateViewer = () => {
   const { filename } = useParams<{ filename: string }>();
 
-  const pdfPath = filename ? `/${decodeURIComponent(filename)}` : '';
-  const decodedFilename = filename ? decodeURIComponent(filename).replace('.pdf', '').replace(/%20/g, ' ') : '';
-  const isResume = decodedFilename.toLowerCase().includes('resume');
+  const decodedRaw = filename ? decodeURIComponent(filename) : '';
+  const isResume = decodedRaw.toLowerCase().includes('resume');
+  const pdfPath = decodedRaw
+    ? decodedRaw.startsWith('/certs/') || decodedRaw.startsWith('certs/')
+      ? `/${decodedRaw.replace(/^\/+/, '')}`
+      : isResume
+        ? `/${decodedRaw.replace(/^\/+/, '')}`
+        : `/certs/${decodedRaw.replace(/^\/+/, '')}`
+    : '';
+  const decodedFilename = decodedRaw.replace(/^(\/)?certs\//, '').replace('.pdf', '').replace(/[-_]/g, ' ');
   const displayTitle = decodedFilename || (isResume ? 'Resume' : 'Certificate');
   const description = isResume 
     ? 'Joseph Lopez - Resume / CV' 
