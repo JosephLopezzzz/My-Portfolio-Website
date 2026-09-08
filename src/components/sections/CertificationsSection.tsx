@@ -36,42 +36,13 @@ const certifications: Certification[] = [
     image: '/certs/prompt-like-an-engineer.png',
   },
   {
-    title: 'HTML & CSS Mastery',
-    issuer: 'Coddy Team',
+    title: 'Python Programming',
+    issuer: 'freeCodeCamp',
     date: '2026',
-    link: '/cert/html-css-mastery.pdf',
+    link: '/cert/python-programming.pdf',
+    badgeUrl: 'https://www.freecodecamp.org/certification/joseph_25/python-v9',
     icons: [
-      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
-      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', alt: 'CSS3' },
-    ],
-  },
-  {
-    title: 'HTML Fundamentals',
-    issuer: 'Coddy Team',
-    date: '2026',
-    link: '/cert/html-fundamentals.pdf',
-    icons: [
-      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
-    ],
-  },
-  {
-    title: 'HTML Styling with CSS',
-    issuer: 'Coddy Team',
-    date: '2026',
-    link: '/cert/html-styling-with-css.pdf',
-    icons: [
-      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', alt: 'CSS3' },
-    ],
-  },
-  {
-    title: 'Practical Frontend',
-    issuer: 'Coddy Team',
-    date: '2026',
-    link: '/cert/practical-frontend.pdf',
-    icons: [
-      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
-      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', alt: 'CSS3' },
-      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', alt: 'JavaScript' },
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', alt: 'Python' },
     ],
   },
   {
@@ -79,17 +50,63 @@ const certifications: Certification[] = [
     issuer: 'Coddy Team',
     date: '2026',
     link: '/cert/c.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-c-0xW5Z9',
     icons: [
       { src: '/c-logo.svg', alt: 'C' },
     ],
   },
   {
-    title: 'Python Programming',
+    title: 'HTML JavaScript in Action',
     issuer: 'Coddy Team',
     date: '2026',
-    link: '/cert/pyy.pdf',
+    link: '/cert/html-javascript-in-action.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-bJ2T8b',
     icons: [
-      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', alt: 'Python' },
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', alt: 'JavaScript' },
+    ],
+  },
+  {
+    title: 'Practical Frontend',
+    issuer: 'Coddy Team',
+    date: '2026',
+    link: '/cert/practical-frontend.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-2sLKgb',
+    icons: [
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', alt: 'CSS3' },
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', alt: 'JavaScript' },
+    ],
+  },
+  {
+    title: 'HTML & CSS Mastery',
+    issuer: 'Coddy Team',
+    date: '2025',
+    link: '/cert/html-css-mastery.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-MCa2tZ',
+    icons: [
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', alt: 'CSS3' },
+    ],
+  },
+  {
+    title: 'HTML Styling with CSS',
+    issuer: 'Coddy Team',
+    date: '2025',
+    link: '/cert/html-styling-with-css.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-P457Ik',
+    icons: [
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', alt: 'CSS3' },
+    ],
+  },
+  {
+    title: 'HTML Fundamentals',
+    issuer: 'Coddy Team',
+    date: '2025',
+    link: '/cert/html-fundamentals.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-mQsrS3',
+    icons: [
+      { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
     ],
   },
 ];
@@ -148,6 +165,13 @@ const CertEmblem = ({ cert, index }: { cert: Certification; index: number }) => 
       </div>
     </div>
   );
+};
+
+const getVerifyButtonLabel = (url: string) => {
+  if (url.includes('credly.com')) return 'Verify on Credly';
+  if (url.includes('coddy.tech')) return 'Verify on Coddy';
+  if (url.includes('freecodecamp.org')) return 'Verify on freeCodeCamp';
+  return 'Verify Credential';
 };
 
 const CertificationsSection = () => {
@@ -244,7 +268,7 @@ const CertificationsSection = () => {
                             onClick={(e) => e.stopPropagation()}
                             className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1 text-xs font-mono bg-secondary/60 hover:bg-secondary px-2.5 py-1 rounded-md border border-border/80 cursor-pointer"
                           >
-                            Verify on Credly <ExternalLink size={11} />
+                            {getVerifyButtonLabel(cert.badgeUrl)} <ExternalLink size={11} />
                           </a>
                         )}
                       </div>

@@ -16,8 +16,18 @@ const CertificateViewer = () => {
         ? `/${decodedRaw.replace(/^\/+/, '')}`
         : `/certs/${decodedRaw.replace(/^\/+/, '')}`
     : '';
-  const decodedFilename = decodedRaw.replace(/^(\/)?certs\//, '').replace('.pdf', '').replace(/[-_]/g, ' ');
-  const displayTitle = decodedFilename || (isResume ? 'Resume' : 'Certificate');
+  const rawTitle = decodedRaw.replace(/^(\/)?certs\//, '').replace('.pdf', '').replace(/[-_]/g, ' ').trim();
+  const formattedTitle = rawTitle
+    ? rawTitle
+        .split(' ')
+        .map(word => {
+          const lower = word.toLowerCase();
+          if (['html', 'css', 'js', 'it', 'c', 'sms', 'hr'].includes(lower)) return lower.toUpperCase();
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ')
+    : '';
+  const displayTitle = formattedTitle || (isResume ? 'Resume' : 'Certificate');
   const description = isResume 
     ? 'Joseph Lopez - Resume / CV' 
     : 'Certificate of completion';
