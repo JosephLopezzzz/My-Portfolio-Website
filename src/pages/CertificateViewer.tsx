@@ -5,20 +5,6 @@ import { useDocumentMetadata } from '@/hooks/useDocumentMetadata';
 const CertificateViewer = () => {
   const { filename } = useParams<{ filename: string }>();
 
-  // Set favicon immediately on mount
-  useEffect(() => {
-    // Remove existing favicons
-    const existingFavicons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
-    existingFavicons.forEach(link => link.remove());
-    
-    // Add new favicon
-    const link = document.createElement('link');
-    link.rel = 'icon';
-    link.type = 'image/jpeg';
-    link.href = '/profile/prof-day.jpg';
-    document.head.appendChild(link);
-  }, []);
-
   const pdfPath = filename ? `/${decodeURIComponent(filename)}` : '';
   const decodedFilename = filename ? decodeURIComponent(filename).replace('.pdf', '').replace(/%20/g, ' ') : '';
   const isResume = decodedFilename.toLowerCase().includes('resume');
@@ -32,9 +18,7 @@ const CertificateViewer = () => {
     description: description,
     ogTitle: `${displayTitle} | Joseph Lopez`,
     ogDescription: description,
-    ogImage: '/profile/prof-day.jpg',
     twitterCard: 'summary_large_image',
-    twitterImage: '/profile/prof-day.jpg',
   });
 
   if (!filename) {

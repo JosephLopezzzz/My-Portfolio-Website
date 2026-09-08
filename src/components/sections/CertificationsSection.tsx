@@ -5,6 +5,14 @@ import SpotlightCard from '@/components/ui/SpotlightCard';
 
 const certifications = [
   {
+    title: 'Computer Hardware Basics',
+    issuer: 'Cisco Networking Academy',
+    date: '2026',
+    link: '/certs/ComputerHardwareBasicsUpdate20260908-19-g3zk42.pdf',
+    badgeUrl: 'https://www.credly.com/badges/37959b93-bd0b-4f72-a7ce-8eda8ff01f50/public_url',
+    image: '/certs/computer-hardware-basics.png',
+  },
+  {
     title: 'Prompt Like an Engineer',
     issuer: 'Cisco Networking Academy',
     date: '2026',
@@ -78,16 +86,34 @@ const CertificationsSection = () => {
                 <h3 className="text-lg font-bold text-foreground mb-1 leading-tight">{cert.title}</h3>
                 <p className="text-muted-foreground text-sm mb-3">{cert.issuer}</p>
                 <div className="flex flex-col items-start gap-3">
-                  <a 
-                    href={cert.link} 
-                    target="_blank" 
-                    rel="noreferrer"
-                    className="text-foreground hover:text-primary transition-colors inline-flex items-center gap-1 text-sm font-medium"
-                  >
-                    Credential <ExternalLink size={14} />
-                  </a>
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <a 
+                      href={cert.link} 
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="text-foreground hover:text-primary transition-colors inline-flex items-center gap-1 text-sm font-medium"
+                    >
+                      Certificate (PDF) <ExternalLink size={14} />
+                    </a>
+                    {cert.badgeUrl && (
+                      <a 
+                        href={cert.badgeUrl} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1 text-xs font-mono bg-secondary/60 hover:bg-secondary px-2.5 py-1 rounded-md border border-border/80"
+                      >
+                        Verify on Credly <ExternalLink size={12} />
+                      </a>
+                    )}
+                  </div>
                   {cert.image && (
-                    <a href={cert.link} target="_blank" rel="noreferrer" className="inline-block transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary rounded-md">
+                    <a 
+                      href={cert.badgeUrl || cert.link} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="inline-block transition-transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary rounded-md"
+                      title={cert.badgeUrl ? "Verify on Credly" : "View Certificate"}
+                    >
                       <img src={cert.image} alt={cert.title} className="w-24 h-auto rounded-md border border-border/50 shadow-sm object-cover" />
                     </a>
                   )}

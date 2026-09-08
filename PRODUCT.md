@@ -45,7 +45,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 - Projects section: 5 real GitHub repos (Nokma, HR Management System G1, Fraud Detection in Microfinance, Microfinance SMS, hmscore1last1)
 - Skills section with categorized tech pills
 - Gallery section: eGov Hackathon 2026 photos from `/public/hackaton/`
-- Certifications section: 7 real PDFs in `/public/certs/`
+- Certifications section: 8 real PDFs in `/public/certs/`
 - Contact section
 - Education section
 
@@ -67,7 +67,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 ## Evidence on Hand
 
 - GitHub profile: https://github.com/JosephLopezzzz (5 public repos)
-- Certifications (PDFs): `/public/certs/` — Prompt Like an Engineer, HTML & CSS Mastery, HTML Fundamentals, HTML Styling with CSS, Practical Frontend, C Programming, Python Programming
+- Certifications (PDFs): `/public/certs/` — Computer Hardware Basics, Prompt Like an Engineer, HTML & CSS Mastery, HTML Fundamentals, HTML Styling with CSS, Practical Frontend, C Programming, Python Programming
 - Hackathon gallery photos: `/public/hackaton/` — DICT eGov Hackathon 2026
 - Profile photos (light + dark): `/public/pfp/`
 - Resume: `/public/resume.pdf`
