@@ -23,8 +23,10 @@ dist-ssr
 *.sln
 *.sw?
 
-# Opencode directory
+# Opencode and Agent Skills directories
 .opencode/
+.agents/
+skills-lock.json
 # impeccable-ignore-start
 # Ephemeral output, runtime state, and per-dev overrides.
 .impeccable/config.local.json
