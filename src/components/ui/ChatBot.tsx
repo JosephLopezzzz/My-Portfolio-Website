@@ -85,7 +85,7 @@ Projects:
 3. Fraud Detection in Microfinance: Node.js fraud detection. 
 4. Microfinance SMS: Automated SMS system. 
 5. Fleet & Transport Management: Capstone project, full system.
-Certifications: Cisco Networking Academy (Computer Hardware Basics - verified on Credly, Prompt Like an Engineer), Coddy (HTML & CSS Mastery, HTML Fundamentals, HTML Styling with CSS, Practical Frontend, C Programming, Python Programming).
+Certifications: Cisco Networking Academy (Computer Hardware Basics - verified on Credly, Prompt Like an Engineer - verified on Credly), Coddy (HTML & CSS Mastery, HTML Fundamentals, HTML Styling with CSS, Practical Frontend, C Programming, Python Programming).
 Contact: Email: josephlopez102004@gmail.com, GitHub: JosephLopezzzz, LinkedIn: Joseph T. Lopez.
 If asked something completely unrelated to Joseph, politely decline and steer the conversation back to his professional profile.`;
 

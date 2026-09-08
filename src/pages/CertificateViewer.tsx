@@ -1,9 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDocumentMetadata } from '@/hooks/useDocumentMetadata';
+import { useTheme } from 'next-themes';
 
 const CertificateViewer = () => {
   const { filename } = useParams<{ filename: string }>();
+  const { resolvedTheme } = useTheme();
 
   const decodedRaw = filename ? decodeURIComponent(filename) : '';
   const isResume = decodedRaw.toLowerCase().includes('resume');
@@ -20,12 +22,30 @@ const CertificateViewer = () => {
     ? 'Joseph Lopez - Resume / CV' 
     : 'Certificate of completion';
 
+  const isDark = resolvedTheme === 'dark';
+  const mainFavicon = isDark ? '/pfp/black1x1.png' : '/pfp/white1x1.png';
+
+  // Ensure favicon always matches main website favicon
+  useEffect(() => {
+    const faviconLight = document.getElementById('favicon-light') as HTMLLinkElement | null;
+    const faviconDark = document.getElementById('favicon-dark') as HTMLLinkElement | null;
+    if (faviconLight) faviconLight.href = '/pfp/white1x1.png';
+    if (faviconDark) faviconDark.href = '/pfp/black1x1.png';
+
+    const existingIcons = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+    existingIcons.forEach(el => {
+      (el as HTMLLinkElement).href = mainFavicon;
+    });
+  }, [mainFavicon]);
+
   useDocumentMetadata({
     title: `${displayTitle} | Joseph Lopez`,
     description: description,
     ogTitle: `${displayTitle} | Joseph Lopez`,
     ogDescription: description,
+    ogImage: mainFavicon,
     twitterCard: 'summary_large_image',
+    twitterImage: mainFavicon,
   });
 
   if (!filename) {
