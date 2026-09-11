@@ -33,6 +33,64 @@ let resolvedModel: string | null = null;
 // Skipped by re-discovery so we never retry a dead model in a loop.
 const failedModels = new Set<string>();
 
+const MODEL_CACHE_KEY = 'chatbot:model';
+
+// sessionStorage can throw (private mode, blocked site data), and a miss just
+// costs one ListModels round trip — never let it break chat.
+function readCachedModel(): string | null {
+  try {
+    return sessionStorage.getItem(MODEL_CACHE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeCachedModel(model: string) {
+  try {
+    sessionStorage.setItem(MODEL_CACHE_KEY, model);
+  } catch {
+    /* non-fatal */
+  }
+}
+
+// How to keep the model from spending seconds thinking before it answers.
+// This is versioned and unforgiving: 3.5+ rejects `thinkingBudget` outright,
+// 2.5 needs `thinkingBudget: 0` to switch off, and models without thinking
+// support at all error if the field is present. So the plan is a best guess
+// from the model name, and `isThinkingConfigError` lets us fall back to 'off'
+// and retry if the guess is wrong.
+type ThinkingPlan =
+  | { kind: 'level' }   // Gemini 3.5+ / 4+: thinkingLevel MINIMAL
+  | { kind: 'budget' }  // Gemini 2.5: thinkingBudget 0
+  | { kind: 'off' };    // no thinkingConfig at all
+
+function planThinking(model: string): ThinkingPlan {
+  const match = /^gemini-(\d+)(?:\.(\d+))?/.exec(model.replace(/^models\//, ''));
+  // Aliases like `gemini-flash-latest` carry no version. Assume the 2.5-era
+  // field; the retry path corrects us if that's wrong.
+  if (!match) return { kind: 'budget' };
+  const major = Number(match[1]);
+  const minor = Number(match[2] ?? 0);
+  if (major > 3 || (major === 3 && minor >= 5)) return { kind: 'level' };
+  if (major >= 2) return { kind: 'budget' };
+  return { kind: 'off' };
+}
+
+// A model that rejected our thinking plan is the only reason to look for the
+// word "thinking" in an error, so this stays narrow on purpose.
+function isThinkingConfigError(error: unknown): boolean {
+  const raw = error instanceof Error ? `${error.name}: ${error.message}` : String(error);
+  const msg = raw.toLowerCase();
+  if (!msg.includes('thinking')) return false;
+  return (
+    getErrorStatus(error) === 400 ||
+    msg.includes('invalid_argument') ||
+    msg.includes('invalid argument') ||
+    msg.includes('not supported') ||
+    msg.includes('unsupported')
+  );
+}
+
 class NoCompatibleModelError extends Error {
   available: string[];
   constructor(available: string[]) {
@@ -46,6 +104,15 @@ class NoCompatibleModelError extends Error {
 async function resolveChatModel(client: GoogleGenAI): Promise<string> {
   if (resolvedModel) return resolvedModel;
 
+  // The set of models a key can reach doesn't change between page loads, so a
+  // cold ListModels call is pure first-message latency. Reuse the answer for
+  // the rest of the tab's lifetime.
+  const cached = readCachedModel();
+  if (cached && !failedModels.has(`models/${cached}`)) {
+    resolvedModel = cached;
+    return cached;
+  }
+
   const available: string[] = [];
   const chatCapable = new Set<string>();
   const pager = await client.models.list({ config: { pageSize: 100 } });
@@ -58,16 +125,17 @@ async function resolveChatModel(client: GoogleGenAI): Promise<string> {
       chatCapable.add(m.name);
     }
   }
-  console.info('ChatBot: models accessible to this key:', available);
 
   const preferred = PREFERRED_MODELS.find((id) => chatCapable.has(id) && !failedModels.has(id));
   if (preferred) {
     resolvedModel = preferred.replace(/^models\//, '');
+    writeCachedModel(resolvedModel);
     return resolvedModel;
   }
   const anyFlash = [...chatCapable].find((name) => /flash/i.test(name) && !failedModels.has(name));
   if (anyFlash) {
     resolvedModel = anyFlash.replace(/^models\//, '');
+    writeCachedModel(resolvedModel);
     return resolvedModel;
   }
   throw new NoCompatibleModelError(available);
@@ -90,6 +158,40 @@ Contact: Email: josephlopez102004@gmail.com, GitHub: JosephLopezzzz, LinkedIn: J
 If asked something completely unrelated to Joseph, politely decline and steer the conversation back to his professional profile.`;
 
 const INITIAL_MESSAGE = "Hey! I'm Joseph - feel free to ask about my projects, the stack I work with, or anything else on the site.";
+
+// Questions with a fixed, known answer don't need a round trip at all, and
+// these cover most of what a portfolio visitor actually asks. Deliberately
+// narrow: only short messages, and only when *exactly one* intent matches, so
+// a compound question ("which projects used Node?") still reaches the model.
+// Tradeoff: a short but nuanced phrasing of one of these gets the canned
+// answer. Add patterns only for facts that never change.
+const INSTANT_ANSWERS: { pattern: RegExp; reply: string }[] = [
+  {
+    pattern: /\b(contact|email|e-mail|reach\b|get in touch|hire|linkedin|github)\b/i,
+    reply: "You can reach Joseph at josephlopez102004@gmail.com. He's also on GitHub as JosephLopezzzz and on LinkedIn as Joseph T. Lopez.",
+  },
+  {
+    pattern: /\b(skills?|tech stack|technolog(y|ies)|languages?|stack)\b/i,
+    reply: 'Joseph works with React, Next.js, React Native, Node.js, PHP, Python, Java, C++, C, MySQL, PostgreSQL, MongoDB, TypeScript, Tailwind CSS, Bootstrap, Git, GitHub, Linux, and computer hardware & diagnostics.',
+  },
+  {
+    pattern: /\b(certificat\w*|credly|cisco|freecodecamp|coddy)\b/i,
+    reply: 'Joseph holds Cisco Networking Academy certificates (Computer Hardware Basics and Prompt Like an Engineer, both verified on Credly), a freeCodeCamp Python certification, and several Coddy courses covering HTML, CSS, and C.',
+  },
+  {
+    pattern: /\b(education|school|college|degree|studying|university)\b/i,
+    reply: 'Joseph is an IT student at Bestlink College of the Philippines, expecting to graduate in 2027. He is based in Quezon City.',
+  },
+];
+
+const INSTANT_ANSWER_MAX_LENGTH = 48;
+
+function matchInstantAnswer(text: string): string | null {
+  const trimmed = text.trim();
+  if (trimmed.length > INSTANT_ANSWER_MAX_LENGTH) return null;
+  const matches = INSTANT_ANSWERS.filter(({ pattern }) => pattern.test(trimmed));
+  return matches.length === 1 ? matches[0].reply : null;
+}
 
 const MISSING_KEY_MESSAGE =
   "Chat isn't configured yet (missing API key). If you're the site owner, set VITE_GEMINI_API_KEY in your hosting provider's environment variables and redeploy.";
@@ -137,21 +239,167 @@ function getFriendlyErrorMessage(error: unknown, modelTried?: string): string {
   return GENERIC_ERROR_MESSAGE;
 }
 
+type ChatMessage = { role: 'user' | 'model'; text: string; isError?: boolean };
+
+/** The small in-transcript avatar. Memoized so streamed tokens don't rebuild it. */
+const MessageAvatar = React.memo(function MessageAvatar({ isDark }: { isDark: boolean }) {
+  return (
+    <div className="relative w-8 h-8 rounded-full border border-border bg-card overflow-hidden mr-2 self-end mb-1 flex-shrink-0">
+      <img
+        src="/pfp/white1x1.png"
+        alt="Joseph"
+        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+        style={{ opacity: isDark ? 0 : 1 }}
+        draggable={false}
+      />
+      <img
+        src="/pfp/black1x1.png"
+        alt="Joseph"
+        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+        style={{ opacity: isDark ? 1 : 0 }}
+        draggable={false}
+      />
+    </div>
+  );
+});
+
+/**
+ * The transcript. Memoized because the input lives in its own component: without
+ * this, every keystroke would re-render every bubble in the conversation.
+ */
+const MessageList = React.memo(function MessageList({
+  messages,
+  isDark,
+  isLoading,
+  showTyping,
+  onRetry,
+}: {
+  messages: ChatMessage[];
+  isDark: boolean;
+  isLoading: boolean;
+  showTyping: boolean;
+  onRetry: () => void;
+}) {
+  return (
+    <>
+      {messages.map((msg, idx) => (
+        <div
+          key={idx}
+          className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+        >
+          {msg.role === 'model' && <MessageAvatar isDark={isDark} />}
+          <div className="flex flex-col gap-1 max-w-[75%]">
+            <div
+              className={`p-3 rounded-2xl text-sm leading-relaxed ${
+                msg.role === 'user'
+                  ? 'bg-primary text-primary-foreground rounded-br-sm'
+                  : msg.isError
+                    ? 'bg-destructive/20 border border-destructive/50 text-destructive-foreground rounded-bl-sm'
+                    : 'bg-secondary/50 border border-border text-foreground rounded-bl-sm'
+              }`}
+            >
+              {msg.text}
+            </div>
+            {msg.isError && (
+              <button
+                onClick={onRetry}
+                disabled={isLoading}
+                className="self-start text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2 mt-1"
+              >
+                Retry sending message
+              </button>
+            )}
+          </div>
+        </div>
+      ))}
+      {showTyping && (
+        <div className="flex w-full justify-start items-end">
+          <MessageAvatar isDark={isDark} />
+          <div className="max-w-[75%] p-3 rounded-2xl text-sm bg-secondary/50 border border-border text-foreground rounded-bl-sm flex gap-1.5 px-4 items-center h-10">
+            <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-typing-dot" style={{ animationDelay: '0ms' }}></span>
+            <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-typing-dot" style={{ animationDelay: '200ms' }}></span>
+            <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-typing-dot" style={{ animationDelay: '400ms' }}></span>
+          </div>
+        </div>
+      )}
+    </>
+  );
+});
+
+/**
+ * Owns the draft text so typing re-renders only this input, not the transcript.
+ * Stays enabled while a reply streams — only sending is blocked — so latency
+ * doesn't stop people composing their next message.
+ */
+const ChatInput = React.memo(function ChatInput({
+  disabled,
+  canSend,
+  onSend,
+}: {
+  disabled: boolean;
+  canSend: boolean;
+  onSend: (text: string) => void;
+}) {
+  const [value, setValue] = useState('');
+
+  const submit = () => {
+    const text = value.trim();
+    if (!text || !canSend) return;
+    setValue('');
+    onSend(text);
+  };
+
+  return (
+    <div className="flex items-center gap-2 bg-background/50 border border-border rounded-full p-1 pl-4 focus-within:border-foreground/30 transition-colors">
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            submit();
+          }
+        }}
+        autoFocus
+        placeholder={disabled ? 'Chat not configured...' : 'Type a message...'}
+        className="flex-1 bg-transparent border-none text-foreground text-sm outline-none placeholder:text-muted-foreground"
+        disabled={disabled}
+      />
+      <button
+        onClick={submit}
+        disabled={!value.trim() || !canSend}
+        className="p-2.5 bg-foreground text-background rounded-full hover:opacity-80 transition-colors disabled:opacity-50"
+      >
+        <Send size={16} />
+      </button>
+    </div>
+  );
+});
+
 export const ChatBot = () => {
   const { resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<{role: 'user' | 'model', text: string, isError?: boolean}[]>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'model', text: INITIAL_MESSAGE }
   ]);
-  const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  // True only between sending and the first streamed token — decides whether to
+  // show the typing dots or the reply being written.
+  const [awaitingFirstToken, setAwaitingFirstToken] = useState(false);
   const [initError, setInitError] = useState<string | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const chatSessionRef = useRef<Chat | null>(null);
   const genAIRef = useRef<GoogleGenAI | null>(null);
   const activeModelRef = useRef<string>('');
-  const inputRef = useRef<HTMLInputElement>(null);
+  const thinkingPlanRef = useRef<ThinkingPlan>({ kind: 'off' });
+  // Read by callbacks that must stay referentially stable, so the memoized
+  // transcript isn't invalidated on every state change.
+  const messagesRef = useRef(messages);
+  messagesRef.current = messages;
+  const isLoadingRef = useRef(isLoading);
+  isLoadingRef.current = isLoading;
 
   useEffect(() => {
     setMounted(true);
@@ -159,7 +407,7 @@ export const ChatBot = () => {
 
   const isDark = mounted ? resolvedTheme === 'dark' : false;
 
-  const initChat = useCallback(async (): Promise<string | null> => {
+  const initChat = useCallback(async (forcePlan?: ThinkingPlan): Promise<string | null> => {
     if (chatSessionRef.current) return null;
     if (!IS_CONFIGURED) {
       setInitError(MISSING_KEY_MESSAGE);
@@ -167,22 +415,29 @@ export const ChatBot = () => {
     }
     try {
       // Lazy-load the SDK so it lands in its own chunk instead of the main bundle.
-      const { GoogleGenAI, HarmCategory, HarmBlockThreshold } = await import('@google/genai');
+      const { GoogleGenAI, HarmCategory, HarmBlockThreshold, ThinkingLevel } = await import('@google/genai');
       if (!genAIRef.current) {
         genAIRef.current = new GoogleGenAI({ apiKey: API_KEY });
       }
       const model = await resolveChatModel(genAIRef.current);
       activeModelRef.current = model;
+
+      const plan = forcePlan ?? planThinking(model);
+      thinkingPlanRef.current = plan;
+
       chatSessionRef.current = genAIRef.current.chats.create({
         model,
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
           temperature: 0.7,
           topP: 0.9,
-          // NOTE: keep this generous. Flash models think before answering and
-          // maxOutputTokens budgets thoughts + visible text combined — too low
-          // chops replies mid-sentence. Brevity is enforced by the system prompt.
-          maxOutputTokens: 1024,
+          // With thinking off the whole budget is visible text, and the system
+          // prompt caps replies at 1-3 sentences, so a tight cap also bounds
+          // worst-case latency. With thinking on, thoughts share this budget,
+          // so it has to stay generous or replies get chopped mid-sentence.
+          maxOutputTokens: plan.kind === 'off' ? 1024 : 300,
+          ...(plan.kind === 'level' ? { thinkingConfig: { thinkingLevel: ThinkingLevel.MINIMAL } } : {}),
+          ...(plan.kind === 'budget' ? { thinkingConfig: { thinkingBudget: 0 } } : {}),
           safetySettings: [
             { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
             { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
@@ -206,17 +461,34 @@ export const ChatBot = () => {
 
   useEffect(() => {
     if (isOpen) {
+      // Usually already warmed by the idle effect below; this is the fallback
+      // for a panel opened before that fires, or via keyboard shortcut.
       void initChat();
-      // Focus input when opened
-      setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen, initChat]);
 
+  // Warm the SDK import, model discovery, and chat session before the user
+  // opens the panel, so the first message doesn't pay for any of it. Idle time
+  // is free — nobody is waiting on this.
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    const warm = () => { void initChat(); };
+    if (typeof window.requestIdleCallback === 'function') {
+      const id = window.requestIdleCallback(warm, { timeout: 2500 });
+      return () => window.cancelIdleCallback(id);
     }
-  }, [messages]);
+    const id = window.setTimeout(warm, 1500);
+    return () => window.clearTimeout(id);
+  }, [initChat]);
+
+  // Follow the newest message, but only when the reader is already at the
+  // bottom. Smooth-scrolling on every streamed token fights itself and yanks
+  // the view down while someone is reading earlier messages.
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const distanceFromBottom = el.scrollHeight - el.scrollTop - el.clientHeight;
+    if (distanceFromBottom < 120) el.scrollTop = el.scrollHeight;
+  }, [messages, isLoading]);
 
   // Global Keyboard Shortcuts
   useEffect(() => {
@@ -245,8 +517,17 @@ export const ChatBot = () => {
     return () => window.removeEventListener('keydown', handleGlobalKeyDown);
   }, [isOpen]);
 
-  const sendMessageToBot = async (messageText: string) => {
-    if (!messageText.trim() || isLoading) return;
+  const sendMessageToBot = useCallback(async (messageText: string) => {
+    if (!messageText.trim() || isLoadingRef.current) return;
+
+    // Fixed-fact questions skip the network entirely — and still answer when no
+    // API key is configured.
+    const instant = matchInstantAnswer(messageText);
+    if (instant) {
+      setMessages(prev => [...prev, { role: 'model', text: instant }]);
+      return;
+    }
+
     if (!IS_CONFIGURED) {
       setMessages(prev => [...prev, {
         role: 'model',
@@ -255,7 +536,39 @@ export const ChatBot = () => {
       }]);
       return;
     }
+
     setIsLoading(true);
+    isLoadingRef.current = true;
+    setAwaitingFirstToken(true);
+
+    // One streaming attempt. Mutates `progress` so the caller knows whether a
+    // bubble was already created and needs removing before a retry.
+    const streamReply = async (text: string, progress: { appended: boolean }) => {
+      const session = chatSessionRef.current;
+      if (!session) throw new Error('Chat session could not be initialized.');
+
+      const stream = await session.sendMessageStream({ message: text });
+      let full = '';
+      for await (const chunk of stream) {
+        const piece = chunk.text;
+        if (!piece) continue;
+        full += piece;
+        if (progress.appended) {
+          setMessages(prev => {
+            const next = prev.slice();
+            next[next.length - 1] = { ...next[next.length - 1], text: full };
+            return next;
+          });
+        } else {
+          progress.appended = true;
+          setAwaitingFirstToken(false);
+          setMessages(prev => [...prev, { role: 'model', text: full }]);
+        }
+      }
+      if (!full.trim()) throw new Error('Empty response from the chat model.');
+    };
+
+    const progress = { appended: false };
 
     try {
       if (!chatSessionRef.current) {
@@ -266,11 +579,26 @@ export const ChatBot = () => {
       }
 
       try {
-        const response = await chatSessionRef.current.sendMessage({ message: messageText });
-        const botResponse = response.text?.trim();
-        if (!botResponse) throw new Error('Empty response from the chat model.');
-        setMessages(prev => [...prev, { role: 'model', text: botResponse }]);
+        await streamReply(messageText, progress);
       } catch (sendError) {
+        // Our thinking-config guess may be wrong for this model. Drop it,
+        // rebuild the session with no thinking field at all, and retry once.
+        if (isThinkingConfigError(sendError) && thinkingPlanRef.current.kind !== 'off') {
+          console.warn('Model rejected the thinking config; disabling thinking and retrying.', sendError);
+          if (progress.appended) {
+            progress.appended = false;
+            setMessages(prev => (prev.length ? prev.slice(0, -1) : prev));
+          }
+          thinkingPlanRef.current = { kind: 'off' };
+          chatSessionRef.current = null;
+          const initFailure = await initChat({ kind: 'off' });
+          if (initFailure || !chatSessionRef.current) throw sendError;
+          // If we removed a partial bubble, show the dots again while the
+          // replacement reply starts.
+          setAwaitingFirstToken(!progress.appended);
+          await streamReply(messageText, progress);
+          return;
+        }
         // Model availability may have changed mid-session: remember the dead
         // model so re-discovery skips it, drop the session, then report.
         if (isModelNotFoundError(sendError)) {
@@ -292,39 +620,40 @@ export const ChatBot = () => {
       }]);
     } finally {
       setIsLoading(false);
+      isLoadingRef.current = false;
+      setAwaitingFirstToken(false);
     }
-  };
+  }, [initChat]);
 
-  const handleSend = () => {
-    if (!input.trim() || isLoading || !IS_CONFIGURED) return;
-    
-    const userMessage = input.trim();
-    setInput('');
+  const handleSend = useCallback((text: string) => {
+    const userMessage = text.trim();
+    if (!userMessage || isLoadingRef.current) return;
     setMessages(prev => [...prev, { role: 'user', text: userMessage }]);
-    sendMessageToBot(userMessage);
-  };
+    void sendMessageToBot(userMessage);
+  }, [sendMessageToBot]);
 
-  const handleRetry = () => {
-    const lastUserMessage = [...messages].reverse().find(m => m.role === 'user');
-    if (lastUserMessage) {
-      setMessages(prev => prev.filter(m => !m.isError));
-      sendMessageToBot(lastUserMessage.text);
-    }
-  };
+  const handleRetry = useCallback(() => {
+    const current = messagesRef.current;
+    const lastUserMessage = [...current].reverse().find(m => m.role === 'user');
+    if (!lastUserMessage) return;
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
+    let kept = current.filter(m => !m.isError);
+    // A stream that died partway leaves a half-written bubble; drop that too.
+    const last = kept[kept.length - 1];
+    if (last && last.role === 'model') kept = kept.slice(0, -1);
+
+    setMessages(kept);
+    void sendMessageToBot(lastUserMessage.text);
+  }, [sendMessageToBot]);
 
   return (
     <>
       {/* Floating Action Button */}
       {!isOpen && (
-        <button 
+        <button
           onClick={() => setIsOpen(true)}
+          onMouseEnter={() => void initChat()}
+          onFocus={() => void initChat()}
           className="fixed bottom-6 right-6 z-[60] flex items-center gap-2 px-6 py-3 bg-secondary/80 backdrop-blur-md border border-border rounded-xl text-foreground font-medium hover:bg-secondary transition-all shadow-sm group"
           aria-label="Chat with me"
         >
@@ -380,7 +709,7 @@ export const ChatBot = () => {
           </div>
 
           {/* Messages Area */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-transparent z-10">
+          <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-transparent z-10">
             {!IS_CONFIGURED && (
               <div className="p-3 rounded-2xl text-xs leading-relaxed bg-amber-500/10 border border-amber-500/40 text-amber-200">
                 {MISSING_KEY_MESSAGE}
@@ -391,102 +720,22 @@ export const ChatBot = () => {
                 {initError}
               </div>
             )}
-            {messages.map((msg, idx) => (
-              <div 
-                key={idx} 
-                className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                {msg.role === 'model' && (
-                  <div className="relative w-8 h-8 rounded-full border border-border bg-card overflow-hidden mr-2 self-end mb-1 flex-shrink-0">
-                    <img 
-                      src="/pfp/white1x1.png" 
-                      alt="Joseph" 
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                      style={{ opacity: isDark ? 0 : 1 }}
-                      draggable={false}
-                    />
-                    <img 
-                      src="/pfp/black1x1.png" 
-                      alt="Joseph" 
-                      className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                      style={{ opacity: isDark ? 1 : 0 }}
-                      draggable={false}
-                    />
-                  </div>
-                )}
-                <div className="flex flex-col gap-1 max-w-[75%]">
-                  <div 
-                    className={`p-3 rounded-2xl text-sm leading-relaxed ${
-                      msg.role === 'user' 
-                        ? 'bg-primary text-primary-foreground rounded-br-sm' 
-                        : msg.isError 
-                          ? 'bg-destructive/20 border border-destructive/50 text-destructive-foreground rounded-bl-sm'
-                          : 'bg-secondary/50 border border-border text-foreground rounded-bl-sm'
-                    }`}
-                  >
-                    {msg.text}
-                  </div>
-                  {msg.isError && (
-                    <button 
-                      onClick={handleRetry}
-                      disabled={isLoading}
-                      className="self-start text-xs text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2 mt-1"
-                    >
-                      Retry sending message
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex w-full justify-start items-end">
-                <div className="relative w-8 h-8 rounded-full border border-border bg-card overflow-hidden mr-2 self-end mb-1 flex-shrink-0">
-                  <img 
-                    src="/pfp/white1x1.png" 
-                    alt="Joseph" 
-                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                    style={{ opacity: isDark ? 0 : 1 }}
-                    draggable={false}
-                  />
-                  <img 
-                    src="/pfp/black1x1.png" 
-                    alt="Joseph" 
-                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                    style={{ opacity: isDark ? 1 : 0 }}
-                    draggable={false}
-                  />
-                </div>
-                <div className="max-w-[75%] p-3 rounded-2xl text-sm bg-secondary/50 border border-border text-foreground rounded-bl-sm flex gap-1.5 px-4 items-center h-10">
-                  <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-typing-dot" style={{ animationDelay: '0ms' }}></span>
-                  <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-typing-dot" style={{ animationDelay: '200ms' }}></span>
-                  <span className="w-1.5 h-1.5 bg-gray-300 rounded-full animate-typing-dot" style={{ animationDelay: '400ms' }}></span>
-                </div>
-              </div>
-            )}
-            <div ref={messagesEndRef} />
+            <MessageList
+              messages={messages}
+              isDark={isDark}
+              isLoading={isLoading}
+              showTyping={awaitingFirstToken}
+              onRetry={handleRetry}
+            />
           </div>
 
           {/* Input Area */}
           <div className="p-4 bg-foreground/5 border-t border-border z-10">
-            <div className="flex items-center gap-2 bg-background/50 border border-border rounded-full p-1 pl-4 focus-within:border-foreground/30 transition-colors">
-              <input
-                ref={inputRef}
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder={IS_CONFIGURED ? "Type a message..." : "Chat not configured..."}
-                className="flex-1 bg-transparent border-none text-foreground text-sm outline-none placeholder:text-muted-foreground"
-                disabled={isLoading || !IS_CONFIGURED}
-              />
-              <button
-                onClick={handleSend}
-                disabled={!input.trim() || isLoading || !IS_CONFIGURED}
-                className="p-2.5 bg-foreground text-background rounded-full hover:opacity-80 transition-colors disabled:opacity-50"
-              >
-                <Send size={16} />
-              </button>
-            </div>
+            <ChatInput
+              disabled={!IS_CONFIGURED}
+              canSend={!isLoading}
+              onSend={handleSend}
+            />
           </div>
 
         </SpotlightCard>
