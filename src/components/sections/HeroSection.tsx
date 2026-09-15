@@ -147,7 +147,7 @@ const HeroSection = () => {
           
           {/* Bio */}
           <p className="text-base sm:text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl">
-            I'm a full-stack web developer and AI engineer building modern applications with 
+            I'm a full-stack web developer and app developer building modern applications with 
             <InlineBadge>
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="" className="w-3.5 h-3.5" />
               React
@@ -161,7 +161,7 @@ const HeroSection = () => {
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="" className="w-3.5 h-3.5" />
               Python
             </InlineBadge>. 
-            I'm currently in my 4th year pursuing a BSIT at Bestlink College of the Philippines. 
+            I'm currently in my 4th year pursuing a BSIT. 
             I specialize in developing scalable systems, exploring generative AI integrations, and participating in hackathons to solve complex problems.
           </p>
           
