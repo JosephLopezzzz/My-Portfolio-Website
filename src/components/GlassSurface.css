@@ -30,8 +30,10 @@
 }
 
 .glass-surface--svg {
-  background: hsl(var(--background) / var(--glass-frost, 0));
-  backdrop-filter: var(--filter-id, url(#glass-filter)) saturate(var(--glass-saturation, 1));
+  background: hsl(var(--background) / var(--glass-frost, 0.6));
+  backdrop-filter: var(--filter-id, url(#glass-filter)) blur(12px) saturate(var(--glass-saturation, 1.2));
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
   box-shadow:
     0 0 2px 1px hsl(var(--foreground) / 0.15) inset,
     0 0 10px 4px hsl(var(--foreground) / 0.1) inset,

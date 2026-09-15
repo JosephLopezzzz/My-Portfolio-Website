@@ -6,6 +6,12 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+}
+
+.pixelated-image-card:focus-visible {
+  outline: 2px solid hsl(var(--foreground));
+  outline-offset: 4px;
 }
 
 .pixelated-image-card__default,

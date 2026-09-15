@@ -14,7 +14,17 @@ const navLinks = [
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const activeSection = useActiveSection();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <>
@@ -32,9 +42,13 @@ const Navbar = () => {
           height={64}
           borderRadius={32}
           borderWidth={0.02}
-          backgroundOpacity={0.1}
+          backgroundOpacity={isScrolled ? 0.85 : 0.6}
           opacity={0.8}
-          blur={10}
+          blur={isScrolled ? 16 : 12}
+          distortionScale={-25}
+          className={`transition-all duration-300 ${
+            isScrolled ? 'shadow-lg shadow-background/50 border border-border/40' : ''
+          }`}
         >
           <div className="w-full flex items-center gap-6 px-8">
             {/* Desktop Navigation */}
@@ -75,7 +89,7 @@ const Navbar = () => {
           }`}
         >
           {isOpen && (
-            <GlassSurface width="100%" height="auto" borderRadius={16}>
+            <GlassSurface width="100%" height="auto" borderRadius={16} backgroundOpacity={0.9} distortionScale={-15}>
               <div className="w-full flex flex-col gap-1 p-4">
                 {navLinks.map((link, index) => (
                   <a

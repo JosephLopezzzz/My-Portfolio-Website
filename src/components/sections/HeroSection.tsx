@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Github, Linkedin, Mail, MessageCircle, ChevronRight } from 'lucide-react';
+import { Github, Linkedin, Mail, MessageCircle, ChevronRight, ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import ThemeToggle from '@/components/ThemeToggle';
 import { ChatBot } from '@/components/ui/ChatBot';
 import PixelTransition from '@/components/ui/PixelTransition';
 
-const InlineBadge = ({ children }: { children: React.ReactNode }) => (
-  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 mx-1 text-xs font-mono rounded-md border border-border bg-secondary/50 text-foreground translate-y-[-1px]">
+const InlineBadge = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
+  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono rounded-md border border-border bg-secondary/50 text-foreground translate-y-[-1px] ${className}`}>
     {children}
   </span>
 );
-
-const fontFamilies = [
-  "inherit",
-  "'Pixel Operator', monospace",
-  "'Playfair Display', serif",
-  "'Space Mono', monospace",
-  "'Caveat', cursive",
-  "Georgia, serif"
-];
 
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
@@ -26,41 +17,25 @@ const HeroSection = () => {
 
   // Typewriter state
   const [text, setText] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [typingSpeed, setTypingSpeed] = useState(150);
-  const [fontIndex, setFontIndex] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
   const name = "Joseph T. Lopez";
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Typewriter logic
+  // Smooth typewriter entrance
   useEffect(() => {
     if (!mounted) return;
-    
-    const timeout = setTimeout(() => {
-      if (!isDeleting) {
-        if (text.length < name.length) {
-          setText(name.substring(0, text.length + 1));
-          setTypingSpeed(150 + Math.random() * 50);
-        } else {
-          setTimeout(() => setIsDeleting(true), 3000);
-        }
-      } else {
-        if (text.length > 0) {
-          setText(name.substring(0, text.length - 1));
-          setTypingSpeed(75);
-        } else {
-          setIsDeleting(false);
-          setTypingSpeed(500);
-          setFontIndex((prev) => (prev + 1) % fontFamilies.length);
-        }
-      }
-    }, typingSpeed);
-
-    return () => clearTimeout(timeout);
-  }, [text, isDeleting, mounted, typingSpeed]);
+    if (text.length < name.length) {
+      const timeout = setTimeout(() => {
+        setText(name.substring(0, text.length + 1));
+      }, 70 + Math.random() * 30);
+      return () => clearTimeout(timeout);
+    } else {
+      setIsFinished(true);
+    }
+  }, [text, mounted]);
 
   const isDark = resolvedTheme === 'dark';
 
@@ -68,7 +43,7 @@ const HeroSection = () => {
     <>
       <section 
         id="home" 
-        className="relative w-full min-h-screen flex items-center justify-center pt-24 pb-4"
+        className="relative w-full min-h-screen flex items-center justify-center pt-36 md:pt-40 pb-12"
       >
         <div className="w-full max-w-3xl mx-auto px-6 flex flex-col items-start animate-fade-up z-10 relative">
           
@@ -116,10 +91,17 @@ const HeroSection = () => {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <h1 
-                  className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground min-w-[15ch]"
-                  style={{ fontFamily: fontFamilies[fontIndex] }}
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground"
+                  aria-label={name}
+                  aria-live="polite"
                 >
-                  {text}<span className="animate-pulse">|</span>
+                  <span aria-hidden="true">{text}</span>
+                  <span 
+                    className={`inline-block w-[3px] h-[0.9em] bg-foreground ml-1.5 align-middle transition-opacity duration-300 ${
+                      isFinished ? 'opacity-40 animate-pulse' : 'opacity-100'
+                    }`} 
+                    aria-hidden="true" 
+                  />
                 </h1>
               </div>
               
@@ -146,35 +128,45 @@ const HeroSection = () => {
           </h2>
           
           {/* Bio */}
-          <p className="text-base sm:text-lg text-muted-foreground mb-6 leading-relaxed max-w-2xl">
-            I'm a full-stack web developer and app developer building modern applications with 
-            <InlineBadge>
+          <p className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl">
+            I'm a full-stack developer building modern applications with
+            <InlineBadge className="mx-1">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="" className="w-3.5 h-3.5" />
               React
             </InlineBadge> 
-            <InlineBadge>
+            <InlineBadge className="mx-1">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="" className="w-3.5 h-3.5" />
               Node.js
             </InlineBadge>
-            and 
-            <InlineBadge>
+            and
+            <InlineBadge className="ml-1 mr-0">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="" className="w-3.5 h-3.5" />
               Python
-            </InlineBadge>. 
+            </InlineBadge>.
             I'm currently in my 4th year pursuing a BSIT. 
             I specialize in developing scalable systems, exploring generative AI integrations, and participating in hackathons to solve complex problems.
           </p>
           
-          {/* CTA Button */}
-          <a 
-            href="/resume.pdf" 
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-background bg-foreground rounded-lg hover:opacity-90 transition-opacity"
-          >
-            View Resume
-            <ChevronRight size={18} />
-          </a>
+          {/* CTA Group */}
+          <div className="flex flex-wrap items-center gap-3">
+            <a 
+              href="#projects" 
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-background bg-foreground rounded-lg hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 transition-all shadow-sm"
+            >
+              Explore Projects
+              <ArrowDown size={16} />
+            </a>
+
+            <a 
+              href="/resume.pdf" 
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 font-medium text-foreground bg-transparent border border-border rounded-lg hover:bg-secondary/60 hover:border-foreground/30 hover:-translate-y-0.5 active:translate-y-0 transition-all"
+            >
+              View Resume
+              <ArrowUpRight size={15} className="text-muted-foreground" />
+            </a>
+          </div>
 
           </div>
       </section>

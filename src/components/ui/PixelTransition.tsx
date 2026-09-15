@@ -121,9 +121,15 @@ export default function PixelTransition({
       style={style}
       onMouseEnter={!isTouchDevice ? handleEnter : undefined}
       onMouseLeave={!isTouchDevice ? handleLeave : undefined}
-      onClick={isTouchDevice ? handleClick : undefined}
-      onFocus={!isTouchDevice ? handleEnter : undefined}
-      onBlur={!isTouchDevice ? handleLeave : undefined}
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
+      role="button"
+      aria-label="Toggle profile portrait"
       tabIndex={0}
     >
       <div style={{ paddingTop: aspectRatio }} />
