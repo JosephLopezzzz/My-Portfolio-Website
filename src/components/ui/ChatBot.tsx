@@ -146,7 +146,7 @@ You are acting as an interactive assistant on Joseph's portfolio website.
 Your goal is to answer questions about Joseph, his projects, skills, education, and contact information. 
 Keep your answers brief, friendly, and professional (1-3 sentences max).
 Do not break character. Do not say you are an AI language model.
-Skills: React, Next.js, React Native, Node.js, PHP, Python, Java, C++, C, MySQL, PostgreSQL, MongoDB, TypeScript, Tailwind CSS, Bootstrap, Git, GitHub, Linux, Computer Hardware & Diagnostics.
+Skills: React, Next.js, React Native, Node.js, PHP, Python, Java, C++, C, MySQL, PostgreSQL, MongoDB, TypeScript, Tailwind CSS, Bootstrap, Git, GitHub, Figma, Linux, Computer Hardware & Diagnostics.
 Projects: 
 1. Nokma: Macro tracking app with React Native. 
 2. HR Management System G1: React-based HR system. 
@@ -172,7 +172,7 @@ const INSTANT_ANSWERS: { pattern: RegExp; reply: string }[] = [
   },
   {
     pattern: /\b(skills?|tech stack|technolog(y|ies)|languages?|stack)\b/i,
-    reply: 'Joseph works with React, Next.js, React Native, Node.js, PHP, Python, Java, C++, C, MySQL, PostgreSQL, MongoDB, TypeScript, Tailwind CSS, Bootstrap, Git, GitHub, Linux, and computer hardware & diagnostics.',
+    reply: 'Joseph works with React, Next.js, React Native, Node.js, PHP, Python, Java, C++, C, MySQL, PostgreSQL, MongoDB, TypeScript, Tailwind CSS, Bootstrap, Git, GitHub, Figma, Linux, and computer hardware & diagnostics.',
   },
   {
     pattern: /\b(certificat\w*|credly|cisco|freecodecamp|coddy)\b/i,
