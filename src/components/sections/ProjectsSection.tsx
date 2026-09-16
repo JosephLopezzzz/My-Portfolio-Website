@@ -1,5 +1,5 @@
 import React from 'react';
-import { Github, ArrowRight, ArrowUpRight } from 'lucide-react';
+import { Github, ArrowRight, ArrowUpRight, Download } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 import {
@@ -37,7 +37,23 @@ const getTechIcon = (tag: string) => {
   }
 };
 
-const projects = [
+interface Project {
+  title: string;
+  initials: string;
+  accentChar: string;
+  role?: string;
+  description: string;
+  tags: string[];
+  github?: string;
+  link?: string;
+  download?: string;
+  image?: string;
+  bgImage?: string;
+  bgColor?: string;
+  isCapstone?: boolean;
+}
+
+const projects: Project[] = [
   {
     title: 'Nokma',
     initials: 'NK',
@@ -46,6 +62,7 @@ const projects = [
     description: 'This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love.',
     tags: ['TypeScript', 'React Native', 'Expo'],
     github: 'https://github.com/JosephLopezzzz/Nokma',
+    download: 'https://expo.dev/accounts/josephlopezzzz/projects/coach-hoo/builds/c3b15c7e-98fd-4494-92d5-f19a428eef43',
     image: '/nokma logo.png',
     bgImage: '/bgg.jpeg',
   },
@@ -116,7 +133,7 @@ const ProjectsSection = () => {
             >
               {/* Stylized project identity thumbnail */}
               <a 
-                href={project.link || project.github} 
+                href={project.download || project.link || project.github} 
                 target="_blank" 
                 rel="noreferrer"
                 className="block w-full shrink-0"
@@ -194,16 +211,46 @@ const ProjectsSection = () => {
                   </TooltipProvider>
                 </div>
                 
-                <div className="flex items-center justify-end pt-4 border-t border-dashed border-border/60 mt-auto">
-                  <a 
-                    href={project.link || project.github}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest relative z-20 group/link"
-                  >
-                    {project.link ? 'Visit Site' : 'View Github'} 
-                    <ArrowUpRight size={14} className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </a>
+                <div className={`flex items-center pt-4 border-t border-dashed border-border/60 mt-auto ${project.download || project.link ? 'justify-between gap-3' : 'justify-end'}`}>
+                  {project.github && (
+                    <a 
+                      href={project.github}
+                      target="_blank" 
+                      rel="noreferrer"
+                      className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest relative z-20 group/link"
+                    >
+                      <Github size={14} />
+                      <span>{project.download || project.link ? 'Code' : 'View Github'}</span>
+                      <ArrowUpRight size={14} className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform" />
+                    </a>
+                  )}
+
+                  <div className="flex items-center gap-3">
+                    {project.download && (
+                      <a 
+                        href={project.download}
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest relative z-20 group/link font-medium"
+                      >
+                        <Download size={14} />
+                        <span>Download</span>
+                        <ArrowUpRight size={14} className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform" />
+                      </a>
+                    )}
+
+                    {project.link && (
+                      <a 
+                        href={project.link}
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest relative z-20 group/link"
+                      >
+                        <span>Visit Site</span>
+                        <ArrowUpRight size={14} className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform" />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </div>
             </SpotlightCard>
