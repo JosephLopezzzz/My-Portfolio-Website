@@ -22,7 +22,7 @@ const EducationSection = () => {
             <h3 className="text-xl font-bold text-foreground mb-1">Bachelor of Science in Information Technology</h3>
             <p className="text-base text-muted-foreground font-medium mb-4">Bestlink College of the Philippines</p>
             <p className="text-sm text-muted-foreground max-w-2xl leading-relaxed">
-              Currently pursuing my degree with a focus on web technologies, software engineering, and artificial intelligence. Actively participating in hackathons and leading technical projects.
+              Currently pursuing my degree with a focus on web technologies, software engineering, and artificial intelligence. Building projects and connecting with developer communities.
             </p>
           </div>
         </div>

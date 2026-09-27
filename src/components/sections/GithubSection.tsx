@@ -3,6 +3,11 @@ import { GitHubCalendar } from 'react-github-calendar';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { useTheme } from 'next-themes';
 
+const activityTheme = {
+  light: ['#ededed', '#c8c8c8', '#969696', '#5c5c5c', '#222222'],
+  dark: ['#222222', '#4a4a4a', '#7a7a7a', '#b0b0b0', '#f2f2f2'],
+};
+
 const GithubSection = () => {
   const { ref, isVisible } = useScrollAnimation();
   const { resolvedTheme } = useTheme();
@@ -23,6 +28,7 @@ const GithubSection = () => {
           <GitHubCalendar 
             username="JosephLopezzzz" 
             colorScheme={isDark ? 'dark' : 'light'}
+            theme={activityTheme}
             blockSize={12}
             blockMargin={4}
             fontSize={12}

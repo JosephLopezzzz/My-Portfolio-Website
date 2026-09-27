@@ -83,14 +83,12 @@
     border-radius: inherit;
     z-index: -1;
   }
-}
 
-.dark @supports not (backdrop-filter: blur(10px)) {
-  .glass-surface--fallback {
+  .dark .glass-surface--fallback {
     background: hsl(var(--card) / 0.9);
   }
 
-  .glass-surface--fallback::before {
+  .dark .glass-surface--fallback::before {
     background: hsl(var(--foreground) / 0.05);
   }
 }

@@ -23,7 +23,7 @@ const certifications: Certification[] = [
     title: 'Computer Hardware Basics',
     issuer: 'Cisco Networking Academy',
     date: '2026',
-    link: '/cert/computer-hardware-basics.pdf',
+    link: '/certs/computer-hardware-basics.pdf',
     badgeUrl: 'https://www.credly.com/badges/37959b93-bd0b-4f72-a7ce-8eda8ff01f50/public_url',
     image: '/certs/computer-hardware-basics.png',
   },
@@ -31,7 +31,7 @@ const certifications: Certification[] = [
     title: 'Prompt Like an Engineer',
     issuer: 'Cisco Networking Academy',
     date: '2026',
-    link: '/cert/PromptLikeanEngineer20260828-21-b83sda.pdf',
+    link: '/certs/PromptLikeanEngineer20260828-21-b83sda.pdf',
     badgeUrl: 'https://www.credly.com/badges/1b13d7c7-1e85-4adc-982d-b812aa4ca9d1',
     image: '/certs/prompt-like-an-engineer.png',
   },
@@ -39,7 +39,7 @@ const certifications: Certification[] = [
     title: 'Python Programming',
     issuer: 'freeCodeCamp',
     date: '2026',
-    link: '/cert/python-programming.pdf',
+    link: '/certs/python-programming.pdf',
     badgeUrl: 'https://www.freecodecamp.org/certification/joseph_25/python-v9',
     icons: [
       { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', alt: 'Python' },
@@ -49,7 +49,7 @@ const certifications: Certification[] = [
     title: 'C Programming',
     issuer: 'Coddy Team',
     date: '2026',
-    link: '/cert/c.pdf',
+    link: '/certs/c.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-c-0xW5Z9',
     icons: [
       { src: '/c-logo.svg', alt: 'C' },
@@ -59,7 +59,7 @@ const certifications: Certification[] = [
     title: 'HTML JavaScript in Action',
     issuer: 'Coddy Team',
     date: '2026',
-    link: '/cert/html-javascript-in-action.pdf',
+    link: '/certs/html-javascript-in-action.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-bJ2T8b',
     icons: [
       { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
@@ -70,7 +70,7 @@ const certifications: Certification[] = [
     title: 'Practical Frontend',
     issuer: 'Coddy Team',
     date: '2026',
-    link: '/cert/practical-frontend.pdf',
+    link: '/certs/practical-frontend.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-2sLKgb',
     icons: [
       { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
@@ -82,7 +82,7 @@ const certifications: Certification[] = [
     title: 'HTML & CSS Mastery',
     issuer: 'Coddy Team',
     date: '2025',
-    link: '/cert/html-css-mastery.pdf',
+    link: '/certs/html-css-mastery.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-MCa2tZ',
     icons: [
       { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },
@@ -93,7 +93,7 @@ const certifications: Certification[] = [
     title: 'HTML Styling with CSS',
     issuer: 'Coddy Team',
     date: '2025',
-    link: '/cert/html-styling-with-css.pdf',
+    link: '/certs/html-styling-with-css.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-P457Ik',
     icons: [
       { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', alt: 'CSS3' },
@@ -103,7 +103,7 @@ const certifications: Certification[] = [
     title: 'HTML Fundamentals',
     issuer: 'Coddy Team',
     date: '2025',
-    link: '/cert/html-fundamentals.pdf',
+    link: '/certs/html-fundamentals.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-html-mQsrS3',
     icons: [
       { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg', alt: 'HTML5' },

@@ -14,7 +14,7 @@ Vite + React 18, TypeScript, TailwindCSS v3, Shadcn UI, next-themes (dark/light 
 
 **Primary:** Recruiters, hiring managers, and potential clients scanning to evaluate Joseph for full-stack or frontend developer roles (full-time or freelance).
 
-**Secondary:** Fellow developers and peers encountered through GitHub, hackathons, or communities who may collaborate or refer opportunities.
+**Secondary:** Fellow developers and peers encountered through GitHub or developer communities who may collaborate or refer opportunities.
 
 Visitors scan quickly — typically under 60 seconds — before deciding whether to reach out. Mobile visits are common; desktop is the primary review context for technical assessment.
 
@@ -22,11 +22,11 @@ Visitors scan quickly — typically under 60 seconds — before deciding whether
 
 A personal portfolio for **Joseph T. Lopez**, a Filipino full-stack developer, that converts visitor attention into a job offer, freelance inquiry, or direct contact. Success means a recruiter or hiring manager reads the site and reaches out.
 
-The site presents Joseph's real projects from GitHub, his one hackathon experience (DICT eGov Hackathon 2026), certifications on file in `/public/certs/`, and his skills — without fabricated or inflated claims.
+The site presents Joseph's real projects from GitHub, certifications on file in `/public/certs/`, and his skills — without fabricated or inflated claims.
 
 ## Positioning
 
-Joseph's work is technical and earnest: real systems (HR management, fraud detection, macro tracking app, microfinance tools) built in TypeScript and PHP. The site's honest, minimalist aesthetic reflects this — no inflated testimonials, no fake project screenshots, no borrowed credentials.
+Joseph's work is technical and earnest: real systems (HR management, fraud detection, nutrition tracking app and fleet transport) built in TypeScript and PHP. The site's honest, minimalist aesthetic reflects this — no inflated testimonials, no fake project screenshots, no borrowed credentials.
 
 ## Operating Context
 
@@ -41,20 +41,20 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 
 **What exists:**
 - Hero section with profile photo (light/dark variants in `/public/pfp/`)
-- About section with stats: 5+ projects, 1 hackathon, and years of experience
-- Projects section: 5 real GitHub repos (Nokma, HR Management System G1, Fraud Detection in Microfinance, Microfinance SMS, hmscore1last1)
+- About section with education, focus, and community facts
+- Projects section: 4 featured projects (Nokma, HR Management System G1, Fraud Detection in Microfinance, Fleet & Transport Management)
 - Skills section with categorized tech pills
-- Gallery section: eGov Hackathon 2026 photos from `/public/hackaton/`
-- Certifications section: 8 real PDFs in `/public/certs/`
+- Certifications section: 9 real PDFs in `/public/certs/`
 - Contact section
 - Education section
 
 **Constraints:**
-- All project data must come from real GitHub repos under `JosephLopezzzz`
+- Featured projects must have verifiable code; collaborator-owned repositories are credited to their owner
+- Nokma's public site is a brand/overview page, not an interactive web app demo: https://nokma-branding.vercel.app/
 - Certifications must link to the actual PDFs in `/public/certs/`
-- 1 hackathon attended — not "5+" as some earlier data stated
 - No fabricated testimonials, fake live demo links, or invented credentials
 - Resume PDF at `/public/resume.pdf`
+- Chatbot Gemini requests must go through the server-side `/api/chat` route using `GEMINI_API_KEY`; never expose that key in client code
 
 ## Brand Commitments
 
@@ -66,17 +66,15 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 
 ## Evidence on Hand
 
-- GitHub profile: https://github.com/JosephLopezzzz (5 public repos)
-- Certifications (PDFs): `/public/certs/` — Computer Hardware Basics, Prompt Like an Engineer, HTML & CSS Mastery, HTML Fundamentals, HTML Styling with CSS, Practical Frontend, C Programming, Python Programming
-- Hackathon gallery photos: `/public/hackaton/` — DICT eGov Hackathon 2026
+- GitHub profile: https://github.com/JosephLopezzzz
+- Certifications (PDFs): `/public/certs/` — Computer Hardware Basics, Prompt Like an Engineer, HTML & CSS Mastery, HTML Fundamentals, HTML Styling with CSS, HTML JavaScript in Action, Practical Frontend, C Programming, Python Programming
 - Profile photos (light + dark): `/public/pfp/`
 - Resume: `/public/resume.pdf`
 - AI/tool logos in `/public/`: Claude, Gemini, Codex, DeepSeek, Obsidian, Expo
 
 **Absences that must not be fabricated:**
-- No live deploy URLs for any project
+- No live app demos or deploy URLs for the other projects
 - No testimonials or employer references on record
-- No award placements from the hackathon confirmed
 
 ## Product Principles
 

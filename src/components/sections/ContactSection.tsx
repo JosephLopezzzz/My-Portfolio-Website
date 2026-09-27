@@ -9,7 +9,7 @@ import {
   Check,
   Clock,
 } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from "framer-motion";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import Magnetic from "@/components/ui/Magnetic";
@@ -43,6 +43,7 @@ const socialLinks = [
 
 const ContactSection = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const prefersReducedMotion = useReducedMotion();
   const cardRef = useRef<HTMLDivElement>(null);
   const [copied, setCopied] = useState(false);
   const [phTime, setPhTime] = useState("");
@@ -136,24 +137,24 @@ const ContactSection = () => {
           <div className="w-12 h-1 bg-foreground mb-4" />
           <p className="section-subtitle">
             I'm currently looking for new opportunities, freelance projects, and
-            hackathon teams. My inbox is always open.
+            community collaborations. My inbox is always open.
           </p>
         </div>
 
         <div className="w-full max-w-3xl" style={{ perspective: 1200 }}>
           <motion.div
             ref={cardRef}
-            style={{
+            style={prefersReducedMotion ? undefined : {
               rotateX,
               rotateY,
               transformStyle: "preserve-3d",
             }}
-            whileTap={{ scale: 0.985 }}
+            whileTap={prefersReducedMotion ? undefined : { scale: 0.985 }}
             transition={{ type: "spring", stiffness: 350, damping: 25 }}
-            onMouseMove={handleMouseMove}
+            onMouseMove={prefersReducedMotion ? undefined : handleMouseMove}
             onMouseLeave={handlePointerLeave}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
+            onTouchStart={prefersReducedMotion ? undefined : handleTouchStart}
+            onTouchMove={prefersReducedMotion ? undefined : handleTouchMove}
             onTouchEnd={handlePointerLeave}
             onTouchCancel={handlePointerLeave}
             className="w-full cursor-grab active:cursor-grabbing rounded-3xl"

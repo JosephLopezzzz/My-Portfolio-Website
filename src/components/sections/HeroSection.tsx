@@ -4,6 +4,7 @@ import { useTheme } from 'next-themes';
 import ThemeToggle from '@/components/ThemeToggle';
 import { ChatBot } from '@/components/ui/ChatBot';
 import PixelTransition from '@/components/ui/PixelTransition';
+import { useReducedMotion } from 'framer-motion';
 
 const InlineBadge = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
   <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono rounded-md border border-border bg-secondary/50 text-foreground translate-y-[-1px] ${className}`}>
@@ -14,6 +15,7 @@ const InlineBadge = ({ children, className = '' }: { children: React.ReactNode; 
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
+  const prefersReducedMotion = useReducedMotion();
 
   // Typewriter state
   const [text, setText] = useState("");
@@ -27,6 +29,11 @@ const HeroSection = () => {
   // Smooth typewriter entrance
   useEffect(() => {
     if (!mounted) return;
+    if (prefersReducedMotion) {
+      if (text !== name) setText(name);
+      setIsFinished(true);
+      return;
+    }
     if (text.length < name.length) {
       const timeout = setTimeout(() => {
         setText(name.substring(0, text.length + 1));
@@ -35,7 +42,7 @@ const HeroSection = () => {
     } else {
       setIsFinished(true);
     }
-  }, [text, mounted]);
+  }, [text, mounted, prefersReducedMotion]);
 
   const isDark = resolvedTheme === 'dark';
 
@@ -51,7 +58,14 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
             <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex-shrink-0">
               <div className="absolute inset-0 rounded-full border border-border bg-card overflow-hidden">
-                {mounted && (
+                {mounted && (prefersReducedMotion ? (
+                  <img
+                    src={isDark ? '/profile/prof-night.png' : '/profile/prof-day.jpg'}
+                    alt="Joseph Lopez"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    draggable={false}
+                  />
+                ) : (
                   <PixelTransition
                     firstContent={
                       <>
@@ -84,7 +98,7 @@ const HeroSection = () => {
                     animationStepDuration={0.4}
                     className="w-full h-full"
                   />
-                )}
+                ))}
               </div>
             </div>
             
@@ -129,7 +143,7 @@ const HeroSection = () => {
           
           {/* Bio */}
           <p className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl">
-            I'm a full-stack developer building modern applications with
+            I build practical web and mobile applications with
             <InlineBadge className="mx-1">
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="" className="w-3.5 h-3.5" />
               React
@@ -143,8 +157,7 @@ const HeroSection = () => {
               <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="" className="w-3.5 h-3.5" />
               Python
             </InlineBadge>.
-            I'm currently in my 4th year pursuing a BSIT. 
-            I specialize in developing scalable systems, exploring generative AI integrations, and participating in hackathons to solve complex problems.
+            I focus on clear interfaces, useful systems, and AI integrations.
           </p>
           
           {/* CTA Group */}

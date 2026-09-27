@@ -34,24 +34,29 @@ npm i
 
 # Step 4: Configure the chatbot (optional but required for chat replies).
 cp .env.example .env.local
-# Then set VITE_GEMINI_API_KEY inside .env.local
+# Then set GEMINI_API_KEY inside .env.local
 
 # Step 5: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
 
-## Chatbot setup (`VITE_GEMINI_API_KEY`)
+## Chatbot setup (`GEMINI_API_KEY`)
 
-The floating "Chat with Joseph" widget calls the Gemini API directly from the
-browser using `VITE_GEMINI_API_KEY`.
+The floating "Chat with Joseph" widget sends messages to the server-side
+`/api/chat` route. The Gemini API key stays on the server and is never included
+in the browser bundle.
 
-- Local: put the key in `.env.local` (gitignored, see `.env.example`).
-- Vercel: add `VITE_GEMINI_API_KEY` under Project > Settings > Environment
-  Variables (Production + Preview), then **redeploy**. Vite embeds the value
-  at build time, so changing the variable without a redeploy has no effect.
+- Local Vite development: put `GEMINI_API_KEY` in `.env.local` (gitignored, see
+  `.env.example`). The local API also accepts the old `VITE_GEMINI_API_KEY`
+  variable server-side for migration.
+- Vercel: add `GEMINI_API_KEY` under Project > Settings > Environment Variables
+  (Production + Preview), then redeploy. Vercel serves the `/api/chat` function.
 - If the key is missing, the widget shows `NOT CONFIGURED` and explains the
   fix instead of failing silently.
-- Restrict the key to your site's domain and monitor quota/billing in Google AI Studio.
+- Static-only hosts need an equivalent serverless `/api/chat` function to enable
+  replies; Vite's local middleware is available only during development.
+- Since an earlier build exposed the `VITE_GEMINI_API_KEY` in the browser, rotate
+  that key and deploy the replacement as `GEMINI_API_KEY`.
 
 **Edit a file directly in GitHub**
 
@@ -79,7 +84,7 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Deploy the Vite site on [Vercel](https://vercel.com/) to host both the portfolio and its `/api/chat` serverless function. Set `GEMINI_API_KEY` in the project environment before deploying. Other hosts need an equivalent server-side `/api/chat` route for chatbot replies.
 
 ## Can I connect a custom domain to my Lovable project?
 

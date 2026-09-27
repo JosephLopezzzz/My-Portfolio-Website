@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useReducedMotion } from 'framer-motion';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { LayoutGrid } from 'lucide-react';
 
@@ -68,6 +69,7 @@ const SkillBadge = ({ skill }: { skill: any }) => (
 
 const SkillsSection = () => {
   const { ref, isVisible } = useScrollAnimation();
+  const prefersReducedMotion = useReducedMotion();
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Split into 3 rows for marquee
@@ -100,7 +102,11 @@ const SkillsSection = () => {
         </div>
 
         {/* Content */}
-        {!isExpanded ? (
+        {!isExpanded && prefersReducedMotion ? (
+          <div className="flex flex-wrap gap-2">
+            {allSkills.map((skill) => <SkillBadge key={skill.name} skill={skill} />)}
+          </div>
+        ) : !isExpanded ? (
           <div className="flex flex-col gap-4 overflow-hidden relative w-full [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)] pb-4">
             
             <div className="flex w-max animate-marquee">

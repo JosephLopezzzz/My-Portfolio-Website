@@ -46,7 +46,9 @@ interface Project {
   tags: string[];
   github?: string;
   link?: string;
+  linkLabel?: string;
   download?: string;
+  livePreview?: string;
   image?: string;
   bgImage?: string;
   bgColor?: string;
@@ -62,6 +64,9 @@ const projects: Project[] = [
     description: 'This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love.',
     tags: ['TypeScript', 'React Native', 'Expo'],
     github: 'https://github.com/JosephLopezzzz/Nokma',
+    link: 'https://nokma-branding.vercel.app/',
+    linkLabel: 'Brand Site',
+    livePreview: 'https://nokma-branding.vercel.app/',
     download: 'https://expo.dev/accounts/josephlopezzzz/projects/coach-hoo/builds/c3b15c7e-98fd-4494-92d5-f19a428eef43',
     image: '/nokma logo.png',
     bgImage: '/bgg.jpeg',
@@ -75,7 +80,6 @@ const projects: Project[] = [
     tags: ['TypeScript', 'React'],
     github: 'https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1',
     image: '/hrms.png',
-    bgColor: '#E7E7E7',
   },
   {
     title: 'Fraud Detection in Microfinance',
@@ -86,7 +90,6 @@ const projects: Project[] = [
     tags: ['TypeScript', 'Node.js'],
     github: 'https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance',
     image: '/fraud detection.png',
-    bgColor: '#E7E7E7',
   },
 
   {
@@ -100,7 +103,6 @@ const projects: Project[] = [
     link: 'https://fleet-transpo.vercel.app',
     image: '/image copy.png',
     isCapstone: true,
-    bgColor: '#E7E7E7',
   },
 ];
 
@@ -131,15 +133,16 @@ const ProjectsSection = () => {
               key={index} 
               className="flex flex-col group p-4 sm:p-5 border border-dashed border-border/60 bg-card/40 rounded-2xl"
             >
-              {/* Stylized project identity thumbnail */}
+              {/* Project thumbnail or live site preview */}
               <a 
-                href={project.download || project.link || project.github} 
+                href={project.link || project.download || project.github}
                 target="_blank" 
-                rel="noreferrer"
+                rel="noopener noreferrer"
+                aria-label={`Open ${project.title}${project.livePreview ? ' live site' : ''}`}
                 className="block w-full shrink-0"
               >
                 <div 
-                  className={`w-full h-48 rounded-xl relative overflow-hidden flex items-center justify-center select-none border border-border/30 ${project.bgImage || project.bgColor ? '' : project.image ? 'bg-white' : 'bg-muted/30'}`}
+                  className={`w-full h-48 rounded-xl relative overflow-hidden flex items-center justify-center select-none border border-border/30 ${project.bgImage || project.bgColor ? '' : 'bg-muted/30'}`}
                   style={{
                     ...(project.bgImage ? {
                       backgroundImage: `url('${project.bgImage}')`,
@@ -151,8 +154,27 @@ const ProjectsSection = () => {
                     } : {})
                   }}
                 >
-                  {project.image ? (
-                    <img src={project.image} alt={project.title} className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-[1.05] relative z-10" />
+                  {project.livePreview ? (
+                    <>
+                      <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.05]">
+                        <iframe
+                          src={project.livePreview}
+                          title={`${project.title} live preview`}
+                          aria-hidden="true"
+                          tabIndex={-1}
+                          loading="lazy"
+                          referrerPolicy="no-referrer"
+                          sandbox="allow-scripts"
+                          className="pointer-events-none absolute left-0 top-0 h-[300%] w-[300%] origin-top-left border-0"
+                          style={{ transform: 'scale(0.3333)' }}
+                        />
+                      </div>
+                      <span className="absolute right-3 top-3 z-20 rounded-full border border-white/30 bg-black/60 px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-white backdrop-blur-sm">
+                        Live Preview
+                      </span>
+                    </>
+                  ) : project.image ? (
+                    <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05] relative z-10" />
                   ) : (
                     <>
                       {/* Grid lines */}
@@ -246,7 +268,7 @@ const ProjectsSection = () => {
                         rel="noreferrer"
                         className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest relative z-20 group/link"
                       >
-                        <span>Visit Site</span>
+                        <span>{project.linkLabel || 'Visit Site'}</span>
                         <ArrowUpRight size={14} className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform" />
                       </a>
                     )}

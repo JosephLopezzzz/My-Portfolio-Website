@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
 import GlassSurface from './GlassSurface';
 import { useActiveSection } from '@/hooks/useActiveSection';
 
 const navLinks = [
   { name: 'Home', href: '#home', id: 'home' },
+  { name: 'About', href: '#about', id: 'about' },
   { name: 'Projects', href: '#projects', id: 'projects' },
   { name: 'Skills', href: '#skills', id: 'skills' },
   { name: 'Certifications', href: '#certifications', id: 'certifications' },
@@ -15,11 +15,18 @@ const navLinks = [
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isNavVisible, setIsNavVisible] = useState(true);
   const activeSection = useActiveSection();
 
   useEffect(() => {
+    let previousScrollY = window.scrollY;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+      if (currentScrollY < 80) setIsNavVisible(true);
+      else if (currentScrollY > previousScrollY + 4) setIsNavVisible(false);
+      else if (currentScrollY < previousScrollY - 4) setIsNavVisible(true);
+      previousScrollY = currentScrollY;
     };
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -36,13 +43,13 @@ const Navbar = () => {
         />
       )}
       
-      <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95%] transition-all duration-300">
+      <div className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-max max-w-[95%] transition-all duration-300 ${isNavVisible || isOpen ? 'translate-y-0 opacity-100' : '-translate-y-16 opacity-0 pointer-events-none'}`}>
         <GlassSurface
           width="100%"
-          height={64}
+          height={isScrolled ? 52 : 64}
           borderRadius={32}
           borderWidth={0.02}
-          backgroundOpacity={isScrolled ? 0.85 : 0.6}
+          backgroundOpacity={isScrolled ? 0.97 : 0.6}
           opacity={0.8}
           blur={isScrolled ? 16 : 12}
           distortionScale={-25}
