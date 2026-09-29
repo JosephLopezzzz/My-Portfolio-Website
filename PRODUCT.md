@@ -44,7 +44,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 - About section with education, focus, and community facts
 - Projects section: 4 featured projects (Nokma, HR Management System G1, Fraud Detection in Microfinance, Fleet & Transport Management)
 - Skills section with categorized tech pills
-- Certifications section: 9 real PDFs in `/public/certs/`
+- Certifications section: 10 credentials linked to real PDFs in `/public/certs/`
 - Contact section
 - Education section
 
@@ -67,7 +67,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 ## Evidence on Hand
 
 - GitHub profile: https://github.com/JosephLopezzzz
-- Certifications (PDFs): `/public/certs/` — Computer Hardware Basics, Prompt Like an Engineer, HTML & CSS Mastery, HTML Fundamentals, HTML Styling with CSS, HTML JavaScript in Action, Practical Frontend, C Programming, Python Programming
+- Certifications (PDFs): `/public/certs/` — Networking Basics, Computer Hardware Basics, Prompt Like an Engineer, HTML & CSS Mastery, HTML Fundamentals, HTML Styling with CSS, HTML JavaScript in Action, Practical Frontend, C Programming, Python Programming
 - Profile photos (light + dark): `/public/pfp/`
 - Resume: `/public/resume.pdf`
 - AI/tool logos in `/public/`: Claude, Gemini, Codex, DeepSeek, Obsidian, Expo

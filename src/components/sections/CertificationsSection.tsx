@@ -20,6 +20,14 @@ interface Certification {
 
 const certifications: Certification[] = [
   {
+    title: 'Networking Basics',
+    issuer: 'Cisco Networking Academy',
+    date: '2026',
+    link: '/certs/networking-basics.pdf',
+    badgeUrl: 'https://www.credly.com/badges/8765bdb9-dd4e-4970-8144-10a204d2f075',
+    image: '/certs/networking-basics.png',
+  },
+  {
     title: 'Computer Hardware Basics',
     issuer: 'Cisco Networking Academy',
     date: '2026',
