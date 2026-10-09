@@ -1,7 +1,7 @@
-import React from 'react';
-import { Github, ArrowRight, ArrowUpRight, Download } from 'lucide-react';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import SpotlightCard from '@/components/ui/SpotlightCard';
+import React from "react";
+import { Github, ArrowRight, ArrowUpRight, Download, Database } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import SpotlightCard from "@/components/ui/SpotlightCard";
 import {
   SiTypescript,
   SiReact,
@@ -9,29 +9,40 @@ import {
   SiNodedotjs,
   SiJavascript,
   SiNextdotjs,
-} from 'react-icons/si';
+  SiSqlite,
+  SiPostgresql,
+  SiSupabase,
+} from "react-icons/si";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
+} from "@/components/ui/tooltip";
 
 const getTechIcon = (tag: string) => {
   switch (tag) {
-    case 'TypeScript':
+    case "TypeScript":
       return <SiTypescript className="w-5 h-5 text-[#3178C6]" />;
-    case 'React Native':
-    case 'React':
+    case "React Native":
+    case "React":
       return <SiReact className="w-5 h-5 text-[#61DAFB]" />;
-    case 'Expo':
+    case "Expo":
       return <SiExpo className="w-5 h-5" />;
-    case 'Node.js':
+    case "Node.js":
       return <SiNodedotjs className="w-5 h-5 text-[#339933]" />;
-    case 'JavaScript':
+    case "JavaScript":
       return <SiJavascript className="w-5 h-5 text-[#F7DF1E]" />;
-    case 'Next.js':
+    case "Next.js":
       return <SiNextdotjs className="w-5 h-5" />;
+    case "SQLite":
+      return <SiSqlite className="w-5 h-5 text-[#44A6DA]" />;
+    case "PostgreSQL":
+      return <SiPostgresql className="w-5 h-5 text-[#4169E1]" />;
+    case "Supabase":
+      return <SiSupabase className="w-5 h-5 text-[#3FCF8E]" />;
+    case "IndexedDB":
+      return <Database className="w-5 h-5" />;
     default:
       return null;
   }
@@ -50,6 +61,7 @@ interface Project {
   download?: string;
   livePreview?: string;
   image?: string;
+  imageFit?: "cover" | "contain";
   bgImage?: string;
   bgColor?: string;
   isCapstone?: boolean;
@@ -57,52 +69,59 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: 'Nokma',
-    initials: 'NK',
-    accentChar: 'ノ',
-    role: 'Solo/Full Stack Developer',
-    description: 'This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love.',
-    tags: ['TypeScript', 'React Native', 'Expo'],
-    github: 'https://github.com/JosephLopezzzz/Nokma',
-    link: 'https://nokma-branding.vercel.app/',
-    linkLabel: 'Brand Site',
-    livePreview: 'https://nokma-branding.vercel.app/',
-    download: 'https://expo.dev/accounts/josephlopezzzz/projects/coach-hoo/builds/c3b15c7e-98fd-4494-92d5-f19a428eef43',
-    image: '/nokma logo.png',
-    bgImage: '/bgg.jpeg',
+    title: "Nokma",
+    initials: "NK",
+    accentChar: "ノ",
+    role: "Solo/Full Stack Developer",
+    description:
+      "This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love.",
+    tags: ["TypeScript", "React Native", "Expo", "SQLite"],
+    github: "https://github.com/JosephLopezzzz/Nokma",
+    link: "https://nokma-branding.vercel.app/",
+    linkLabel: "Brand Site",
+    livePreview: "https://nokma-branding.vercel.app/",
+    download:
+      "https://expo.dev/accounts/josephlopezzzz/projects/coach-hoo/builds/c3b15c7e-98fd-4494-92d5-f19a428eef43",
+    image: "/nokma logo.png",
+    bgImage: "/bgg.jpeg",
   },
   {
-    title: 'HR Management System G1',
-    initials: 'HR',
-    accentChar: '///',
-    role: 'Full Stack Developer',
-    description: 'Human Resources Management System for managing employee data, attendance, and payroll efficiently.',
-    tags: ['TypeScript', 'React'],
-    github: 'https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1',
-    image: '/hrms.png',
+    title: "HR Management System",
+    initials: "HR",
+    accentChar: "///",
+    role: "Full Stack Developer",
+    description:
+      "Human Resources Management System for managing employee data, attendance, and payroll efficiently.",
+    tags: ["TypeScript", "React", "PostgreSQL", "Supabase"],
+    github:
+      "https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1",
+    image: "/hrms.png",
   },
   {
-    title: 'Fraud Detection in Microfinance',
-    initials: 'FD',
-    accentChar: '∑',
-    role: 'Solo/Full Stack Developer',
-    description: 'A system designed to detect fraudulent activities and transactions within microfinance institutions.',
-    tags: ['TypeScript', 'Node.js'],
-    github: 'https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance',
-    image: '/fraud detection.png',
+    title: "Fraud Detection in Microfinance",
+    initials: "FD",
+    accentChar: "∑",
+    role: "Solo/Full Stack Developer",
+    description:
+      "A system designed to detect fraudulent activities and transactions within microfinance institutions.",
+    tags: ["TypeScript", "Node.js", "PostgreSQL", "Supabase"],
+    github:
+      "https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance",
+    image: "/fraud detection.png",
   },
 
   {
-    title: 'Fleet & Transport Management',
-    initials: 'FT',
-    accentChar: '△',
-    role: 'Backend Developer',
-    description: 'Capstone project — a full fleet and transportation management system built for a hotel and restaurant management context. Built in collaboration with ro-mee.',
-    tags: ['JavaScript', 'Next.js', 'Node.js'],
-    github: 'https://github.com/ro-mee/fleet-transpo',
-    link: 'https://fleet-transpo.vercel.app',
-    image: '/image copy.png',
-    isCapstone: true,
+    title: "Bangwit",
+    initials: "BW",
+    accentChar: "",
+    role: "Creator & Developer",
+    description:
+      "A Philippine fishing companion prototype with a Cavite waterbody explorer, a private catch journal with photos, and a personal species collection.",
+    tags: ["TypeScript", "Next.js", "React", "IndexedDB"],
+    github: "https://github.com/JosephLopezzzz/Bangwit",
+    image: "/bangwit-preview.jpg",
+    imageFit: "contain",
+    bgColor: "#f3f7f6",
   },
 ];
 
@@ -110,18 +129,29 @@ const ProjectsSection = () => {
   const { ref, isVisible } = useScrollAnimation();
 
   return (
-    <section id="projects" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
-      <div className={`section-container transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        
+    <section
+      id="projects"
+      className="w-full relative py-2"
+      ref={ref as React.RefObject<HTMLDivElement>}
+    >
+      <div
+        className={`section-container transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+      >
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 gap-6">
           <div>
             <h2 className="section-title">Featured Projects</h2>
             <div className="w-12 h-1 bg-foreground mb-4" />
             <p className="section-subtitle mb-0 max-w-xl">
-              A selection of my real work — systems built and shipped from concept to code.
+              A selection of my real work — systems built and shipped from
+              concept to code.
             </p>
           </div>
-          <a href="https://github.com/JosephLopezzzz" target="_blank" rel="noreferrer" className="minimal-btn-secondary whitespace-nowrap">
+          <a
+            href="https://github.com/JosephLopezzzz"
+            target="_blank"
+            rel="noreferrer"
+            className="minimal-btn-secondary whitespace-nowrap"
+          >
             View All Projects
             <ArrowRight size={16} />
           </a>
@@ -129,29 +159,33 @@ const ProjectsSection = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {projects.map((project, index) => (
-            <SpotlightCard 
-              key={index} 
+            <SpotlightCard
+              key={index}
               className="flex flex-col group p-4 sm:p-5 border border-dashed border-border/60 bg-card/40 rounded-2xl"
             >
               {/* Project thumbnail or live site preview */}
-              <a 
+              <a
                 href={project.link || project.download || project.github}
-                target="_blank" 
+                target="_blank"
                 rel="noopener noreferrer"
-                aria-label={`Open ${project.title}${project.livePreview ? ' live site' : ''}`}
+                aria-label={`Open ${project.title}${project.livePreview ? " live site" : ""}`}
                 className="block w-full shrink-0"
               >
-                <div 
-                  className={`w-full h-48 rounded-xl relative overflow-hidden flex items-center justify-center select-none border border-border/30 ${project.bgImage || project.bgColor ? '' : 'bg-muted/30'}`}
+                <div
+                  className={`w-full h-48 rounded-xl relative overflow-hidden flex items-center justify-center select-none border border-border/30 ${project.bgImage || project.bgColor ? "" : "bg-muted/30"}`}
                   style={{
-                    ...(project.bgImage ? {
-                      backgroundImage: `url('${project.bgImage}')`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    } : {}),
-                    ...(project.bgColor ? {
-                      backgroundColor: project.bgColor,
-                    } : {})
+                    ...(project.bgImage
+                      ? {
+                          backgroundImage: `url('${project.bgImage}')`,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }
+                      : {}),
+                    ...(project.bgColor
+                      ? {
+                          backgroundColor: project.bgColor,
+                        }
+                      : {}),
                   }}
                 >
                   {project.livePreview ? (
@@ -166,7 +200,7 @@ const ProjectsSection = () => {
                           referrerPolicy="no-referrer"
                           sandbox="allow-scripts"
                           className="pointer-events-none absolute left-0 top-0 h-[300%] w-[300%] origin-top-left border-0"
-                          style={{ transform: 'scale(0.3333)' }}
+                          style={{ transform: "scale(0.3333)" }}
                         />
                       </div>
                       <span className="absolute right-3 top-3 z-20 rounded-full border border-white/30 bg-black/60 px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-white backdrop-blur-sm">
@@ -174,16 +208,30 @@ const ProjectsSection = () => {
                       </span>
                     </>
                   ) : project.image ? (
-                    <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.05] relative z-10" />
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className={`w-full h-full ${project.imageFit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-[1.05] relative z-10`}
+                    />
                   ) : (
                     <>
                       {/* Grid lines */}
-                      <div className="absolute inset-0 opacity-20" style={{
-                        backgroundImage: 'linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)',
-                        backgroundSize: '24px 24px'
-                      }} />
+                      <div
+                        className="absolute inset-0 opacity-20"
+                        style={{
+                          backgroundImage:
+                            "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
+                          backgroundSize: "24px 24px",
+                        }}
+                      />
                       {/* Accent character — large, behind */}
-                      <span className="absolute font-mono text-8xl font-bold select-none pointer-events-none" style={{ color: 'hsl(var(--foreground)/0.1)', letterSpacing: '-0.05em' }}>
+                      <span
+                        className="absolute font-mono text-8xl font-bold select-none pointer-events-none"
+                        style={{
+                          color: "hsl(var(--foreground)/0.1)",
+                          letterSpacing: "-0.05em",
+                        }}
+                      >
                         {project.accentChar}
                       </span>
                       {/* Initials — front */}
@@ -194,25 +242,29 @@ const ProjectsSection = () => {
                   )}
                 </div>
               </a>
-              
+
               <div className="flex flex-col flex-grow mt-5">
                 <div className="flex items-start justify-between gap-2 mb-1">
-                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">{project.title}</h3>
+                  <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
                   {project.isCapstone && (
                     <span className="flex-shrink-0 text-[10px] font-mono uppercase tracking-widest border border-foreground/30 px-2 py-0.5 text-muted-foreground whitespace-nowrap rounded-sm">
                       Capstone
                     </span>
                   )}
                 </div>
-                
+
                 {project.role && (
-                  <p className="text-sm font-medium text-amber-500/90 mb-3">{project.role}</p>
+                  <p className="text-sm font-medium text-amber-500/90 mb-3">
+                    {project.role}
+                  </p>
                 )}
-                
+
                 <p className="text-muted-foreground text-sm flex-grow leading-relaxed mb-6">
                   {project.description}
                 </p>
-                
+
                 <div className="flex flex-wrap gap-2 mb-6">
                   <TooltipProvider delayDuration={100}>
                     {project.tags.map((tag) => {
@@ -220,8 +272,14 @@ const ProjectsSection = () => {
                       return (
                         <Tooltip key={tag}>
                           <TooltipTrigger asChild>
-                            <span className="inline-flex items-center justify-center w-8 h-8 rounded bg-background border border-border/50 text-muted-foreground hover:bg-secondary transition-colors">
-                              {icon ? icon : <span className="text-[10px] font-mono">{tag.slice(0, 2)}</span>}
+                            <span role="img" aria-label={tag} tabIndex={0} className="inline-flex items-center justify-center w-8 h-8 rounded bg-background border border-border/50 text-muted-foreground hover:bg-secondary transition-colors">
+                              {icon ? (
+                                icon
+                              ) : (
+                                <span className="text-[10px] font-mono">
+                                  {tag.slice(0, 2)}
+                                </span>
+                              )}
                             </span>
                           </TooltipTrigger>
                           <TooltipContent>
@@ -232,44 +290,59 @@ const ProjectsSection = () => {
                     })}
                   </TooltipProvider>
                 </div>
-                
-                <div className={`flex items-center pt-4 border-t border-dashed border-border/60 mt-auto ${project.download || project.link ? 'justify-between gap-3' : 'justify-end'}`}>
+
+                <div
+                  className={`flex items-center pt-4 border-t border-dashed border-border/60 mt-auto ${project.download || project.link ? "justify-between gap-3" : "justify-end"}`}
+                >
                   {project.github && (
-                    <a 
+                    <a
                       href={project.github}
-                      target="_blank" 
+                      target="_blank"
                       rel="noreferrer"
                       className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest relative z-20 group/link"
                     >
                       <Github size={14} />
-                      <span>{project.download || project.link ? 'Code' : 'View Github'}</span>
-                      <ArrowUpRight size={14} className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform" />
+                      <span>
+                        {project.download || project.link
+                          ? "Code"
+                          : "View Github"}
+                      </span>
+                      <ArrowUpRight
+                        size={14}
+                        className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform"
+                      />
                     </a>
                   )}
 
                   <div className="flex items-center gap-3">
                     {project.download && (
-                      <a 
+                      <a
                         href={project.download}
-                        target="_blank" 
+                        target="_blank"
                         rel="noreferrer"
                         className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest relative z-20 group/link font-medium"
                       >
                         <Download size={14} />
                         <span>Download</span>
-                        <ArrowUpRight size={14} className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform" />
+                        <ArrowUpRight
+                          size={14}
+                          className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform"
+                        />
                       </a>
                     )}
 
                     {project.link && (
-                      <a 
+                      <a
                         href={project.link}
-                        target="_blank" 
+                        target="_blank"
                         rel="noreferrer"
                         className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 text-xs font-mono uppercase tracking-widest relative z-20 group/link"
                       >
-                        <span>{project.linkLabel || 'Visit Site'}</span>
-                        <ArrowUpRight size={14} className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform" />
+                        <span>{project.linkLabel || "Visit Site"}</span>
+                        <ArrowUpRight
+                          size={14}
+                          className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform"
+                        />
                       </a>
                     )}
                   </div>
@@ -278,7 +351,6 @@ const ProjectsSection = () => {
             </SpotlightCard>
           ))}
         </div>
-
       </div>
     </section>
   );

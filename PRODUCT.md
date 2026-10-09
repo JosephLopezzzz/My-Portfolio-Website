@@ -26,7 +26,7 @@ The site presents Joseph's real projects from GitHub, certifications on file in 
 
 ## Positioning
 
-Joseph's work is technical and earnest: real systems (HR management, fraud detection, nutrition tracking app and fleet transport) built in TypeScript and PHP. The site's honest, minimalist aesthetic reflects this — no inflated testimonials, no fake project screenshots, no borrowed credentials.
+Joseph's work is technical and earnest: real systems (HR management, fraud detection, nutrition tracking, and the Bangwit fishing companion prototype). The site's honest, minimalist aesthetic reflects this — no inflated testimonials, no fake project screenshots, no borrowed credentials.
 
 ## Operating Context
 
@@ -42,7 +42,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 **What exists:**
 - Hero section with profile photo (light/dark variants in `/public/pfp/`)
 - About section with education, focus, and community facts
-- Projects section: 4 featured projects (Nokma, HR Management System G1, Fraud Detection in Microfinance, Fleet & Transport Management)
+- Projects section: 4 featured projects (Nokma, HR Management System, Fraud Detection in Microfinance, Bangwit)
 - Skills section with categorized tech pills
 - Certifications section: 10 credentials linked to real PDFs in `/public/certs/`
 - Contact section
@@ -51,6 +51,8 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 **Constraints:**
 - Featured projects must have verifiable code; collaborator-owned repositories are credited to their owner
 - Nokma's public site is a brand/overview page, not an interactive web app demo: https://nokma-branding.vercel.app/
+- Bangwit links to https://github.com/JosephLopezzzz/Bangwit and uses a screenshot of its Cavite explorer at `/public/bangwit-preview.jpg`; no public app URL has been provided. It is a prototype with a local catch journal and personal species collection, not verified species, fishing-rule, or safety guidance.
+- Database technologies appear as SVG icons alongside each project's framework/language icons, with accessible names and tooltips. Verified from repository code: Nokma uses SQLite (SQL); HR Management System and Fraud Detection in Microfinance use PostgreSQL (SQL) through Supabase; Bangwit uses device-local IndexedDB, represented by a database SVG, not SQL or cloud storage.
 - Certifications must link to the actual PDFs in `/public/certs/`
 - No fabricated testimonials, fake live demo links, or invented credentials
 - Resume PDF at `/public/resume.pdf`
