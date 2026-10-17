@@ -90,7 +90,7 @@ const HeroSection = () => {
 
           {/* Avatar and Name Block */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
-            <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex-shrink-0">
+            <div className="relative w-36 h-36 sm:w-40 sm:h-40 flex-shrink-0">
               <div className="absolute inset-0 rounded-full border border-border bg-card overflow-hidden">
                 {mounted && (prefersReducedMotion ? (
                   <img
@@ -138,7 +138,7 @@ const HeroSection = () => {
 
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <h1 className="inline-flex items-center gap-2 font-sans text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
+                <h1 className="inline-flex items-center gap-2 font-sans text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
                   {HERO_NAME}
                   <svg
                     viewBox="0 0 24 24"
@@ -181,7 +181,7 @@ const HeroSection = () => {
 
           {/* Heading */}
           <h2
-            className={`min-h-[2.4em] sm:min-h-[1.3em] text-2xl sm:text-3xl font-medium text-foreground mb-6 leading-tight ${HERO_ROLES[roleIndex].fontClassName}`}
+            className={`min-h-[2.4em] sm:min-h-[1.3em] text-2xl sm:text-3xl font-normal text-foreground mb-6 leading-tight ${HERO_ROLES[roleIndex].fontClassName}`}
             aria-label="Full-Stack Web Developer and Web & Mobile Developer"
           >
             <span aria-hidden="true">{roleText}</span>
