@@ -9,6 +9,15 @@ import { useReducedMotion } from 'framer-motion';
 const HERO_NAME = 'Joseph T. Lopez';
 const TYPEWRITER_START_DELAY_MS = 300;
 const TYPEWRITER_CHARACTER_DELAY_MS = 115;
+const HERO_ROLES = [
+  { text: 'Full-Stack Web Developer', fontClassName: 'font-display' },
+  { text: 'Web & Mobile Developer', fontClassName: 'font-sans' },
+] as const;
+const ROLE_TYPE_DELAY_MS = 85;
+const ROLE_ERASE_DELAY_MS = 40;
+const ROLE_PAUSE_DELAY_MS = 1400;
+const ROLE_SWITCH_DELAY_MS = 250;
+const ROLE_START_DELAY_MS = 2300;
 
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
@@ -18,6 +27,8 @@ const HeroSection = () => {
   // Typewriter state
   const [text, setText] = useState("");
   const [isFinished, setIsFinished] = useState(false);
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [roleText, setRoleText] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -49,6 +60,55 @@ const HeroSection = () => {
     };
 
     timeout = window.setTimeout(typeNextCharacter, TYPEWRITER_START_DELAY_MS);
+    return () => window.clearTimeout(timeout);
+  }, [mounted, prefersReducedMotion]);
+
+  // Cycle the role line through a type, pause, erase, and font-switch sequence.
+  // Keep a complete static label available to assistive technology.
+  useEffect(() => {
+    if (!mounted) return;
+    if (prefersReducedMotion) {
+      setRoleIndex(0);
+      setRoleText(HERO_ROLES[0].text);
+      return;
+    }
+
+    let activeRoleIndex = 0;
+    let characterIndex = 0;
+    let timeout: number;
+
+    setRoleIndex(activeRoleIndex);
+    setRoleText('');
+
+    const typeNextCharacter = () => {
+      const role = HERO_ROLES[activeRoleIndex].text;
+      characterIndex += 1;
+      setRoleText(role.slice(0, characterIndex));
+
+      if (characterIndex < role.length) {
+        timeout = window.setTimeout(typeNextCharacter, ROLE_TYPE_DELAY_MS);
+        return;
+      }
+
+      timeout = window.setTimeout(eraseNextCharacter, ROLE_PAUSE_DELAY_MS);
+    };
+
+    const eraseNextCharacter = () => {
+      const role = HERO_ROLES[activeRoleIndex].text;
+      characterIndex -= 1;
+      setRoleText(role.slice(0, characterIndex));
+
+      if (characterIndex > 0) {
+        timeout = window.setTimeout(eraseNextCharacter, ROLE_ERASE_DELAY_MS);
+        return;
+      }
+
+      activeRoleIndex = (activeRoleIndex + 1) % HERO_ROLES.length;
+      setRoleIndex(activeRoleIndex);
+      timeout = window.setTimeout(typeNextCharacter, ROLE_SWITCH_DELAY_MS);
+    };
+
+    timeout = window.setTimeout(typeNextCharacter, ROLE_START_DELAY_MS);
     return () => window.clearTimeout(timeout);
   }, [mounted, prefersReducedMotion]);
 
@@ -145,8 +205,17 @@ const HeroSection = () => {
           </div>
 
           {/* Heading */}
-          <h2 className="text-2xl sm:text-3xl font-medium text-foreground mb-6 leading-tight">
-            Full-Stack Web Developer
+          <h2
+            className={`min-h-[2.4em] sm:min-h-[1.3em] text-2xl sm:text-3xl font-medium text-foreground mb-6 leading-tight ${HERO_ROLES[roleIndex].fontClassName}`}
+            aria-label="Full-Stack Web Developer and Web & Mobile Developer"
+          >
+            <span aria-hidden="true">{roleText}</span>
+            {!prefersReducedMotion && (
+              <span
+                className="inline-block w-[2px] h-[0.9em] ml-1 align-middle bg-foreground/70 animate-pulse"
+                aria-hidden="true"
+              />
+            )}
           </h2>
 
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-4">
