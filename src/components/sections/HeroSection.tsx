@@ -138,11 +138,11 @@ const HeroSection = () => {
 
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <h1 className="inline-flex items-center gap-2 font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+                <h1 className="inline-flex items-center gap-2 font-sans text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
                   {HERO_NAME}
                   <svg
                     viewBox="0 0 24 24"
-                    className="size-5 shrink-0 text-sky-500 sm:size-6"
+                    className="size-4 shrink-0 text-sky-500 sm:size-5"
                     aria-hidden="true"
                     focusable="false"
                   >
