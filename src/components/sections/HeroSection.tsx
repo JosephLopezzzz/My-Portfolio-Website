@@ -7,8 +7,6 @@ import PixelTransition from '@/components/ui/PixelTransition';
 import { useReducedMotion } from 'framer-motion';
 
 const HERO_NAME = 'Joseph T. Lopez';
-const TYPEWRITER_START_DELAY_MS = 300;
-const TYPEWRITER_CHARACTER_DELAY_MS = 115;
 const HERO_ROLES = [
   { text: 'Full-Stack Web Developer', fontClassName: 'font-display' },
   { text: 'Web & Mobile Developer', fontClassName: 'font-sans' },
@@ -24,44 +22,12 @@ const HeroSection = () => {
   const { resolvedTheme } = useTheme();
   const prefersReducedMotion = useReducedMotion();
 
-  // Typewriter state
-  const [text, setText] = useState("");
-  const [isFinished, setIsFinished] = useState(false);
   const [roleIndex, setRoleIndex] = useState(0);
   const [roleText, setRoleText] = useState('');
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Run one clear typewriter sequence after mount. Reduced-motion users see
-  // the complete name immediately instead of the animated reveal.
-  useEffect(() => {
-    if (!mounted) return;
-    if (prefersReducedMotion) {
-      setText(HERO_NAME);
-      setIsFinished(true);
-      return;
-    }
-
-    let characterIndex = 0;
-    let timeout: number;
-    setText('');
-    setIsFinished(false);
-
-    const typeNextCharacter = () => {
-      characterIndex += 1;
-      setText(HERO_NAME.slice(0, characterIndex));
-      if (characterIndex === HERO_NAME.length) {
-        setIsFinished(true);
-        return;
-      }
-      timeout = window.setTimeout(typeNextCharacter, TYPEWRITER_CHARACTER_DELAY_MS);
-    };
-
-    timeout = window.setTimeout(typeNextCharacter, TYPEWRITER_START_DELAY_MS);
-    return () => window.clearTimeout(timeout);
-  }, [mounted, prefersReducedMotion]);
 
   // Cycle the role line through a type, pause, erase, and font-switch sequence.
   // Keep a complete static label available to assistive technology.
@@ -172,18 +138,27 @@ const HeroSection = () => {
 
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <h1
-                  className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground"
-                  aria-label={HERO_NAME}
-                  aria-live="polite"
-                >
-                  <span aria-hidden="true">{text}</span>
-                  <span
-                    className={`inline-block w-[3px] h-[0.9em] bg-foreground ml-1.5 align-middle transition-opacity duration-300 ${
-                      isFinished ? 'opacity-40 animate-pulse' : 'opacity-100'
-                    }`}
+                <h1 className="inline-flex items-center gap-2 font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+                  {HERO_NAME}
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="size-5 shrink-0 text-sky-500 sm:size-6"
                     aria-hidden="true"
-                  />
+                    focusable="false"
+                  >
+                    <path
+                      d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"
+                      fill="currentColor"
+                    />
+                    <path
+                      d="m8.7 12.2 2.1 2.1 4.6-4.6"
+                      fill="none"
+                      stroke="white"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2.2"
+                    />
+                  </svg>
                 </h1>
               </div>
 
