@@ -16,6 +16,14 @@ const ROLE_ERASE_DELAY_MS = 40;
 const ROLE_PAUSE_DELAY_MS = 1400;
 const ROLE_SWITCH_DELAY_MS = 250;
 const ROLE_START_DELAY_MS = 2300;
+const HERO_SOCIAL_LINK_CLASS_NAME = [
+  'inline-flex size-9 items-center justify-center rounded-full',
+  'transition-all duration-200 ease-out hover:-translate-y-1 hover:scale-110',
+  'hover:bg-secondary/70 hover:text-sky-500 active:scale-95',
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500',
+  'focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+  'motion-reduce:transform-none motion-reduce:transition-none',
+].join(' ');
 
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
@@ -90,7 +98,7 @@ const HeroSection = () => {
 
           {/* Avatar and Name Block */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
-            <div className="relative w-36 h-36 sm:w-40 sm:h-40 flex-shrink-0">
+            <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex-shrink-0">
               <div className="absolute inset-0 rounded-full border border-border bg-card overflow-hidden">
                 {mounted && (prefersReducedMotion ? (
                   <img
@@ -138,7 +146,7 @@ const HeroSection = () => {
 
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
-                <h1 className="inline-flex items-center gap-2 font-sans text-xl sm:text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
+                <h1 className="inline-flex items-center gap-2 font-sans text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-foreground">
                   {HERO_NAME}
                   <svg
                     viewBox="0 0 24 24"
@@ -162,16 +170,16 @@ const HeroSection = () => {
                 </h1>
               </div>
 
-              <div className="flex items-center gap-4 text-muted-foreground">
-                <a href="https://github.com/JosephLopezzzz" target="_blank" rel="noreferrer" className="hover:text-foreground transition-colors">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <a href="https://github.com/JosephLopezzzz" target="_blank" rel="noreferrer" className={HERO_SOCIAL_LINK_CLASS_NAME}>
                   <Github size={20} />
                   <span className="sr-only">GitHub</span>
                 </a>
-                <a href="https://www.linkedin.com/in/joseph-lopez-5a2090412" target="_blank" rel="noreferrer" className="hover:text-foreground transition-colors">
+                <a href="https://www.linkedin.com/in/joseph-lopez-5a2090412" target="_blank" rel="noreferrer" className={HERO_SOCIAL_LINK_CLASS_NAME}>
                   <Linkedin size={20} />
                   <span className="sr-only">LinkedIn</span>
                 </a>
-                <a href="mailto:josephlopez102004@gmail.com" className="hover:text-foreground transition-colors">
+                <a href="mailto:josephlopez102004@gmail.com" className={HERO_SOCIAL_LINK_CLASS_NAME}>
                   <Mail size={20} />
                   <span className="sr-only">Email</span>
                 </a>
