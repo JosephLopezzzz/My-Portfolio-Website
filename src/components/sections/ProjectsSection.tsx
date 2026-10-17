@@ -268,7 +268,7 @@ const ProjectsSection = () => {
                 </div>
 
                 {project.role && (
-                  <p className="mb-1 text-sm font-medium text-foreground">
+                  <p className="text-sm font-medium text-amber-500/90 mb-3">
                     {project.role}
                   </p>
                 )}

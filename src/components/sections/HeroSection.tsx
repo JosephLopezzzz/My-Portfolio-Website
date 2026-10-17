@@ -1,101 +1,202 @@
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
-import { useTheme } from "next-themes";
-import { ChatBot } from "@/components/ui/ChatBot";
+import React, { useEffect, useState } from 'react';
+import { Github, Linkedin, Mail, MessageCircle, ChevronRight, ArrowDown, ArrowUpRight } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import ThemeToggle from '@/components/ThemeToggle';
+import { ChatBot } from '@/components/ui/ChatBot';
+import PixelTransition from '@/components/ui/PixelTransition';
+import { useReducedMotion } from 'framer-motion';
+
+const InlineBadge = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
+  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono rounded-md border border-border bg-secondary/50 text-foreground translate-y-[-1px] ${className}`}>
+    {children}
+  </span>
+);
 
 const HeroSection = () => {
+  const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
-  const portrait =
-    resolvedTheme === "dark" ? "/profile/prof-night.png" : "/profile/prof-day.jpg";
+  const prefersReducedMotion = useReducedMotion();
+
+  // Typewriter state
+  const [text, setText] = useState("");
+  const [isFinished, setIsFinished] = useState(false);
+  const name = "Joseph T. Lopez";
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Smooth typewriter entrance
+  useEffect(() => {
+    if (!mounted) return;
+    if (prefersReducedMotion) {
+      if (text !== name) setText(name);
+      setIsFinished(true);
+      return;
+    }
+    if (text.length < name.length) {
+      const timeout = setTimeout(() => {
+        setText(name.substring(0, text.length + 1));
+      }, 70 + Math.random() * 30);
+      return () => clearTimeout(timeout);
+    } else {
+      setIsFinished(true);
+    }
+  }, [text, mounted, prefersReducedMotion]);
+
+  const isDark = resolvedTheme === 'dark';
 
   return (
     <>
       <section
         id="home"
-        aria-labelledby="hero-title"
-        className="relative flex min-h-[min(88vh,860px)] w-full items-center pt-32 pb-16 md:pt-36"
+        className="relative w-full min-h-screen flex items-center justify-center pt-36 md:pt-40 pb-12"
       >
-        <div className="section-container grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_220px] md:gap-16">
-          <div className="max-w-3xl">
-            <p className="mb-4 text-sm text-muted-foreground">
-              Quezon City, Philippines · Open to scoped freelance work
-            </p>
-            <h1
-              id="hero-title"
-              className="mb-5 font-display text-5xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl"
-            >
-              Joseph T. Lopez
-            </h1>
-            <h2 className="mb-5 text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-3xl">
-              Web apps built around real workflows.
-            </h2>
-            <p className="mb-8 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              I’m a full-stack web developer and IT student. I build web and
-              mobile apps from the interface through the API and data layer,
-              using tools such as React, TypeScript, Node.js, and SQL databases.
-            </p>
+        <div className="w-full max-w-3xl mx-auto px-6 flex flex-col items-start animate-fade-up z-10 relative">
 
-            <div className="flex flex-wrap items-center gap-3">
-              <a
-                href="mailto:josephlopez102004@gmail.com?subject=Project%20inquiry"
-                className="minimal-btn"
-              >
-                <Mail size={16} />
-                Discuss a project
-              </a>
-              <a href="#projects" className="minimal-btn-secondary">
-                View selected work
-                <ArrowDown size={16} />
-              </a>
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-2 py-3 text-sm text-muted-foreground transition-colors hover:text-foreground"
-              >
-                Resume <ArrowUpRight size={14} />
-              </a>
+          {/* Avatar and Name Block */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
+            <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex-shrink-0">
+              <div className="absolute inset-0 rounded-full border border-border bg-card overflow-hidden">
+                {mounted && (prefersReducedMotion ? (
+                  <img
+                    src={isDark ? '/profile/prof-night.png' : '/profile/prof-day.jpg'}
+                    alt="Joseph Lopez"
+                    className="absolute inset-0 w-full h-full object-cover"
+                    draggable={false}
+                  />
+                ) : (
+                  <PixelTransition
+                    firstContent={
+                      <>
+                        <img
+                          src="/pfp/white1x1.png"
+                          alt="Joseph Lopez"
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                          style={{ opacity: isDark ? 0 : 1 }}
+                          draggable={false}
+                        />
+                        <img
+                          src="/pfp/black1x1.png"
+                          alt="Joseph Lopez"
+                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                          style={{ opacity: isDark ? 1 : 0 }}
+                          draggable={false}
+                        />
+                      </>
+                    }
+                    secondContent={
+                      <img
+                        src={isDark ? '/profile/prof-night.png' : '/profile/prof-day.jpg'}
+                        alt="Joseph Lopez Real"
+                        className="absolute inset-0 w-full h-full object-cover"
+                        draggable={false}
+                      />
+                    }
+                    gridSize={10}
+                    pixelColor={isDark ? '#000000' : '#ffffff'}
+                    animationStepDuration={0.4}
+                    className="w-full h-full"
+                  />
+                ))}
+              </div>
             </div>
 
-            <div className="mt-8 flex items-center gap-4 text-muted-foreground">
-              <a
-                href="https://github.com/JosephLopezzzz"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-foreground"
-                aria-label="GitHub profile"
-              >
-                <Github size={19} />
-              </a>
-              <a
-                href="https://www.linkedin.com/in/joseph-lopez-5a2090412"
-                target="_blank"
-                rel="noreferrer"
-                className="transition-colors hover:text-foreground"
-                aria-label="LinkedIn profile"
-              >
-                <Linkedin size={19} />
-              </a>
-              <a
-                href="mailto:josephlopez102004@gmail.com"
-                className="transition-colors hover:text-foreground"
-                aria-label="Email Joseph"
-              >
-                <Mail size={19} />
-              </a>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-2">
+                <h1
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground"
+                  aria-label={name}
+                  aria-live="polite"
+                >
+                  <span aria-hidden="true">{text}</span>
+                  <span
+                    className={`inline-block w-[3px] h-[0.9em] bg-foreground ml-1.5 align-middle transition-opacity duration-300 ${
+                      isFinished ? 'opacity-40 animate-pulse' : 'opacity-100'
+                    }`}
+                    aria-hidden="true"
+                  />
+                </h1>
+              </div>
+
+              <div className="flex items-center gap-4 text-muted-foreground">
+                <a href="https://github.com/JosephLopezzzz" target="_blank" rel="noreferrer" className="hover:text-foreground transition-colors">
+                  <Github size={20} />
+                  <span className="sr-only">GitHub</span>
+                </a>
+                <a href="https://www.linkedin.com/in/joseph-lopez-5a2090412" target="_blank" rel="noreferrer" className="hover:text-foreground transition-colors">
+                  <Linkedin size={20} />
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+                <a href="mailto:josephlopez102004@gmail.com" className="hover:text-foreground transition-colors">
+                  <Mail size={20} />
+                  <span className="sr-only">Email</span>
+                </a>
+              </div>
             </div>
           </div>
 
-          <figure className="order-first mx-auto w-40 sm:w-48 md:order-last md:w-full">
-            <img
-              src={portrait}
-              alt="Portrait of Joseph Lopez"
-              className="aspect-square w-full rounded-full border border-border object-cover"
-              draggable={false}
-            />
-          </figure>
-        </div>
+          {/* Heading */}
+          <h2 className="text-2xl sm:text-3xl font-medium text-foreground mb-6 leading-tight">
+            Full-Stack Web Developer <span className="text-muted-foreground">— React & AI</span>
+          </h2>
+
+          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-4">
+            Open to scoped freelance work
+          </p>
+
+          {/* Bio */}
+          <p className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl">
+            I build practical web and mobile applications around real workflows with
+            <InlineBadge className="mx-1">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="" className="w-3.5 h-3.5" />
+              React
+            </InlineBadge>
+            <InlineBadge className="mx-1">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="" className="w-3.5 h-3.5" />
+              Node.js
+            </InlineBadge>
+            and
+            <InlineBadge className="ml-1 mr-0">
+              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="" className="w-3.5 h-3.5" />
+              Python
+            </InlineBadge>.
+            I focus on clear interfaces, useful systems, and AI integrations.
+          </p>
+
+          {/* CTA Group */}
+          <div className="flex flex-wrap items-center gap-3">
+            <a
+              href="mailto:josephlopez102004@gmail.com?subject=Project%20inquiry"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-background bg-foreground rounded-lg hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 transition-all shadow-sm"
+            >
+              <Mail size={16} />
+              Discuss a project
+            </a>
+
+            <a
+              href="#projects"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-foreground bg-transparent border border-border rounded-lg hover:bg-secondary/60 hover:border-foreground/30 hover:-translate-y-0.5 active:translate-y-0 transition-all"
+            >
+              Explore Projects
+              <ArrowDown size={16} />
+            </a>
+
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 font-medium text-foreground bg-transparent border border-border rounded-lg hover:bg-secondary/60 hover:border-foreground/30 hover:-translate-y-0.5 active:translate-y-0 transition-all"
+            >
+              View Resume
+              <ArrowUpRight size={15} className="text-muted-foreground" />
+            </a>
+          </div>
+
+          </div>
       </section>
 
+      {/* Floating Chat Button */}
       <ChatBot />
     </>
   );

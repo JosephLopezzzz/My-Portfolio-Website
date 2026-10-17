@@ -9,9 +9,10 @@ Personal portfolio for selected web and mobile projects, technical skills, educa
 
 - A responsive, single-page portfolio with a light and dark theme.
 - Project summaries that identify role, scope, stack, and available source or preview links.
-- A direct project inquiry path, plus skills, education, and certificates.
+- A direct project inquiry path, Services and Process sections, plus skills, education, and certificates.
 - An optional streaming Gemini assistant backed by the server-side `/api/chat` route.
-- Reduced decorative motion and no client-side Gemini key.
+- Ambient particles, cursor sparks, and an animated portrait, with reduced-motion preferences respected.
+- Gemini credentials stay server-side; the browser does not receive the API key.
 
 ## Selected projects
 

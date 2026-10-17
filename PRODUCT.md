@@ -31,7 +31,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 ## Operating Context
 
 - Visited from desktop browsers (primary) and mobile (secondary).
-- Clients scan: hero → projects → services → process → background → contact. Keep the primary inquiry path visible near the top.
+- Clients scan: hero → about → projects → services → process → GitHub → skills → education → certifications → contact. Keep the primary inquiry path visible near the top.
 - The site is a single-page scroll app with smooth anchor navigation.
 - Dark/light mode toggle is present; the site must look excellent in both.
 - The GlassSurface navbar floats fixed at the top in a pill shape.
@@ -45,7 +45,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 - Process section describing a proposed scope/build/review/handoff flow
 - About section with education, focus, and community facts
 - Projects section: 4 featured projects (Nokma, HR Management System, Fraud Detection in Microfinance, Bangwit) with role, scope, stack, and available source/preview status
-- Skills section with technologies used in selected projects and this site
+- Skills section with animated technology icon rows and an expandable categorized list
 - Certifications section: 10 credentials linked to real PDFs in `/public/certs/`
 - Contact section
 - Education section

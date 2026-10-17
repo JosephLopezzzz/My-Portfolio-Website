@@ -119,7 +119,7 @@ const certifications: Certification[] = [
   },
 ];
 
-const CertEmblem = ({ cert }: { cert: Certification }) => {
+const CertEmblem = ({ cert, index }: { cert: Certification; index: number }) => {
   // Squared badge for Cisco certs
   if (cert.image) {
     return (
@@ -133,9 +133,27 @@ const CertEmblem = ({ cert }: { cert: Certification }) => {
     );
   }
 
-  // Circular emblem for certs without a supplied badge
+  // Circular emblem for certs without badges (Coddy certs)
+  const textPathId = `cert-seal-${index}`;
+  const sealText = `${cert.title} • ${cert.issuer} • ${cert.issuer} • `.toUpperCase();
+
   return (
     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full border border-border/70 bg-secondary/30 flex items-center justify-center shrink-0 shadow-sm relative overflow-hidden transition-transform duration-300 group-hover/card:scale-105 select-none">
+      {/* Curved circular perimeter text */}
+      <svg aria-hidden="true" viewBox="0 0 100 100" className="w-full h-full absolute inset-0 pointer-events-none">
+        <defs>
+          <path
+            id={textPathId}
+            d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+          />
+        </defs>
+        <text aria-hidden="true" className="text-[5.5px] font-mono tracking-[0.16em] fill-muted-foreground/80 font-medium">
+          <textPath href={`#${textPathId}`} startOffset="0%">
+            {sealText}
+          </textPath>
+        </text>
+      </svg>
+
       {/* Central icons */}
       <div className="relative z-10 flex items-center justify-center gap-1.5 p-2">
         {cert.icons?.map((icon, i) => (
@@ -223,7 +241,7 @@ const CertificationsSection = () => {
                     className="p-4 sm:p-5 rounded-2xl border border-border/60 bg-card/40 hover:bg-card/70 transition-all duration-300 flex items-center gap-4 sm:gap-6 group/card cursor-pointer"
                     spotlightColor="rgba(255, 255, 255, 0.08)"
                   >
-                    <CertEmblem cert={cert} />
+                    <CertEmblem cert={cert} index={index} />
 
                     <div className="flex-1 min-w-0">
                       {/* Year pill badge */}

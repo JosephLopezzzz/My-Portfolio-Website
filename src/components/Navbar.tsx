@@ -5,10 +5,12 @@ import { useActiveSection } from '@/hooks/useActiveSection';
 
 const navLinks = [
   { name: 'Home', href: '#home', id: 'home' },
-  { name: 'Work', href: '#projects', id: 'projects' },
+  { name: 'About', href: '#about', id: 'about' },
+  { name: 'Projects', href: '#projects', id: 'projects' },
   { name: 'Services', href: '#services', id: 'services' },
   { name: 'Process', href: '#process', id: 'process' },
-  { name: 'About', href: '#about', id: 'about' },
+  { name: 'Skills', href: '#skills', id: 'skills' },
+  { name: 'Certifications', href: '#certifications', id: 'certifications' },
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
@@ -57,9 +59,9 @@ const Navbar = () => {
             isScrolled ? 'shadow-lg shadow-background/50 border border-border/40' : ''
           }`}
         >
-          <div className="w-full flex items-center gap-6 px-8">
+          <div className="w-full flex items-center gap-6 px-5 sm:px-8">
             {/* Desktop Navigation */}
-            <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-6">
+            <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-3 lg:gap-5">
               {navLinks.map((link) => (
                 <a 
                   key={link.name} 
