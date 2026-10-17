@@ -61,6 +61,8 @@ interface Project {
   download?: string;
   livePreview?: string;
   image?: string;
+  imageAlt?: string;
+  status: string;
   imageFit?: "cover" | "contain";
   bgImage?: string;
   bgColor?: string;
@@ -72,9 +74,10 @@ const projects: Project[] = [
     title: "Nokma",
     initials: "NK",
     accentChar: "ノ",
-    role: "Solo/Full Stack Developer",
+    role: "Solo developer",
+    status: "Expo build and brand site available",
     description:
-      "This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love.",
+      "A mobile nutrition and macro-tracking app built with React Native and SQLite. The linked website is a brand overview; the app build is linked separately.",
     tags: ["TypeScript", "React Native", "Expo", "SQLite"],
     github: "https://github.com/JosephLopezzzz/Nokma",
     link: "https://nokma-branding.vercel.app/",
@@ -83,6 +86,7 @@ const projects: Project[] = [
     download:
       "https://expo.dev/accounts/josephlopezzzz/projects/coach-hoo/builds/c3b15c7e-98fd-4494-92d5-f19a428eef43",
     image: "/nokma logo.png",
+    imageAlt: "Nokma brand mark",
     bgImage: "/bgg.jpeg",
   },
   {
@@ -90,24 +94,29 @@ const projects: Project[] = [
     initials: "HR",
     accentChar: "///",
     role: "Full Stack Developer",
+    status: "Source repository available",
     description:
-      "Human Resources Management System for managing employee data, attendance, and payroll efficiently.",
+      "A role-based HR system covering employee records, departments, attendance, leave, performance, payroll, and audit logs. No public interactive demo is linked.",
     tags: ["TypeScript", "React", "PostgreSQL", "Supabase"],
     github:
       "https://github.com/JosephLopezzzz/Human-Resources-Management-System-G1",
     image: "/hrms.png",
+    imageAlt: "HR management product page with a sign-in screen",
   },
   {
     title: "Fraud Detection in Microfinance",
     initials: "FD",
     accentChar: "∑",
-    role: "Solo/Full Stack Developer",
+    role: "Full-stack development",
+    status: "Capstone project · source repository available",
     description:
-      "A system designed to detect fraudulent activities and transactions within microfinance institutions.",
-    tags: ["TypeScript", "Node.js", "PostgreSQL", "Supabase"],
+      "A microfinance management dashboard with rule-based alerts for transaction patterns such as duplicates, rapid activity, large amounts, and after-hours activity.",
+    tags: ["TypeScript", "React", "Node.js", "PostgreSQL", "Supabase"],
     github:
       "https://github.com/JosephLopezzzz/Fraud-Detection-System-in-Microfinance",
     image: "/fraud detection.png",
+    imageAlt: "Microfinance loan management product page with a sign-in screen",
+    isCapstone: true,
   },
 
   {
@@ -115,11 +124,13 @@ const projects: Project[] = [
     initials: "BW",
     accentChar: "",
     role: "Creator & Developer",
+    status: "Prototype · source repository available",
     description:
-      "A Philippine fishing companion prototype with a Cavite waterbody explorer, a private catch journal with photos, and a personal species collection.",
+      "A Cavite waterbody explorer prototype with a private, browser-local catch journal and personal species list. Verified regional species records, fishing rules, and safety guidance are not available yet.",
     tags: ["TypeScript", "Next.js", "React", "IndexedDB"],
     github: "https://github.com/JosephLopezzzz/Bangwit",
     image: "/bangwit-preview.jpg",
+    imageAlt: "Bangwit prototype showing the Cavite waterbody explorer",
     imageFit: "contain",
     bgColor: "#f3f7f6",
   },
@@ -142,8 +153,9 @@ const ProjectsSection = () => {
             <h2 className="section-title">Featured Projects</h2>
             <div className="w-12 h-1 bg-foreground mb-4" />
             <p className="section-subtitle mb-0 max-w-xl">
-              A selection of my real work — systems built and shipped from
-              concept to code.
+              Selected work across web, mobile, and data-backed applications.
+              Each card shows the project scope, my role, and where its source
+              or public preview is available.
             </p>
           </div>
           <a
@@ -203,14 +215,14 @@ const ProjectsSection = () => {
                           style={{ transform: "scale(0.3333)" }}
                         />
                       </div>
-                      <span className="absolute right-3 top-3 z-20 rounded-full border border-white/30 bg-black/60 px-2.5 py-1 text-[10px] font-mono uppercase tracking-widest text-white backdrop-blur-sm">
-                        Live Preview
+                      <span className="absolute right-3 top-3 z-20 rounded-full border border-white/30 bg-black/60 px-2.5 py-1 text-xs font-mono uppercase tracking-widest text-white backdrop-blur-sm">
+                        Brand site preview
                       </span>
                     </>
                   ) : project.image ? (
                     <img
                       src={project.image}
-                      alt={project.title}
+                      alt={project.imageAlt ?? project.title}
                       className={`w-full h-full ${project.imageFit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-[1.05] relative z-10`}
                     />
                   ) : (
@@ -249,17 +261,21 @@ const ProjectsSection = () => {
                     {project.title}
                   </h3>
                   {project.isCapstone && (
-                    <span className="flex-shrink-0 text-[10px] font-mono uppercase tracking-widest border border-foreground/30 px-2 py-0.5 text-muted-foreground whitespace-nowrap rounded-sm">
+                    <span className="flex-shrink-0 text-xs font-mono uppercase tracking-widest border border-foreground/30 px-2 py-0.5 text-muted-foreground whitespace-nowrap rounded-sm">
                       Capstone
                     </span>
                   )}
                 </div>
 
                 {project.role && (
-                  <p className="text-sm font-medium text-amber-500/90 mb-3">
+                  <p className="mb-1 text-sm font-medium text-foreground">
                     {project.role}
                   </p>
                 )}
+
+                <p className="mb-3 text-xs text-muted-foreground">
+                  {project.status}
+                </p>
 
                 <p className="text-muted-foreground text-sm flex-grow leading-relaxed mb-6">
                   {project.description}
@@ -276,7 +292,7 @@ const ProjectsSection = () => {
                               {icon ? (
                                 icon
                               ) : (
-                                <span className="text-[10px] font-mono">
+                                <span className="text-xs font-mono">
                                   {tag.slice(0, 2)}
                                 </span>
                               )}

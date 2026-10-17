@@ -17,17 +17,38 @@ dist-ssr
 .env.*
 !.env.example
 !.env.*.example
+*.env
+*.secret
+*.secrets
+*.credentials
 *.pem
 *.key
+*.p8
 *.p12
 *.pfx
 *.jks
 *.keystore
+*.mobileprovision
+*.provisionprofile
 credentials.json
 token.json
 client_secret*.json
 service-account*.json
 secrets/
+credentials/
+.secrets/
+
+# Unused local copies; the active app is in /src/ and public assets are in /public/
+/src1/
+/certs/
+/profile/
+/resume/
+
+# Local deployment settings and generated checks
+.vercel/
+coverage/
+*.tsbuildinfo
+vite.config.ts.timestamp-*.mjs
 
 # Editor directories and files
 .vscode/*

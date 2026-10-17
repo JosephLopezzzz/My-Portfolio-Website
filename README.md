@@ -1,103 +1,93 @@
 # Joseph T. Lopez — Developer Portfolio
 
-A personal portfolio for Joseph T. Lopez, an IT student and web developer. It presents selected web and mobile projects, technical skills, education, certifications, and ways to get in touch.
+Personal portfolio for selected web and mobile projects, technical skills, education, certificates, and contact details.
 
 **Live portfolio:** [josephlopez.vercel.app](https://josephlopez.vercel.app)  
-**Source code:** [github.com/JosephLopezzzz/My-Portfolio-Website](https://github.com/JosephLopezzzz/My-Portfolio-Website)
+**Source:** [github.com/JosephLopezzzz/My-Portfolio-Website](https://github.com/JosephLopezzzz/My-Portfolio-Website)
 
-## Features
+## What’s here
 
-- Responsive, single-page portfolio with About, Projects, GitHub Activity, Skills, Education, Certifications, and Contact sections.
-- Light and dark themes, with reduced-motion preferences respected.
-- Featured project cards linking to source repositories and available project pages.
-- Resume and certificate PDFs served from the site.
-- Optional “Chat with Joseph” assistant that streams Gemini responses through a server-side API route.
+- A responsive, single-page portfolio with a light and dark theme.
+- Project summaries that identify role, scope, stack, and available source or preview links.
+- A direct project inquiry path, plus skills, education, and certificates.
+- An optional streaming Gemini assistant backed by the server-side `/api/chat` route.
+- Reduced decorative motion and no client-side Gemini key.
 
-## Featured projects
+## Selected projects
 
-- **Nokma** — nutrition and macro tracking mobile app. This app helps you track what you eat, understand your macros, and make better food choices—without giving up the meals you love. From home-cooked dishes to your favorite takeout, you’ll always know what you’re consuming. 
-- **HR Management System** — Human Resources Management System for managing employee data, attendance, and payroll efficiently.
-- **Fraud Detection in Microfinance** — A system designed to detect fraudulent activities and transactions within microfinance institutions.
-- **Bangwit** — Bangwit is a Philippines-focused fishing companion for anglers and local fishers. Explore aquatic species by location, keep a private catch journal, and build a personal species collection. Verified regional species records, fishing rules and seasons, and safety advisories are planned.
-- **Fleet and Transportation Management System (Capstone project)** — A fleet and transportation management system for a hotel's guest transport operation. It runs the whole life of a transportation request: it arrives from an external Booking subsystem, gets reviewed and approved, is scheduled onto a vehicle and driver, executes as a trip with GPS tracking, and closes with odometer, fuel and maintenance consequences.
-Project links and technology labels in the portfolio provide more detail. A linked project page or repository does not necessarily mean that project has a public live demo.
+### Nokma
 
-## Technology
+A solo nutrition and macro-tracking mobile app built with React Native, Expo, TypeScript, and SQLite. The public website is a brand overview; separate links on the portfolio open the source and Expo build.
 
-- **Frontend:** React 18, TypeScript, Vite 5, Tailwind CSS 3, Radix UI components.
-- **Interface utilities:** React Router, next-themes, Lucide React, and React Icons.
-- **Chat API:** Vercel-compatible serverless function at `/api/chat`, using the Google GenAI SDK and a server-side `GEMINI_API_KEY`.
+### HR Management System
+
+A role-based HR application covering employee records, departments, attendance, leave, performance, payroll, audit logs, and settings. The public repository contains its setup instructions; there is no interactive demo link on the portfolio.
+
+### Fraud Detection in Microfinance
+
+A thesis capstone built with React, TypeScript, Express, and Supabase/PostgreSQL. It includes rule-based alerts for transaction patterns such as duplicates, rapid activity, large amounts, and after-hours activity; it is not presented as machine-learning fraud detection.
+
+### Bangwit
+
+A fishing companion prototype with a Cavite waterbody explorer, local catch journal, and personal species list. Catch data is stored in browser IndexedDB. Verified regional species records, fishing rules, and safety guidance are not available yet.
+
+![Bangwit prototype showing its Cavite waterbody explorer](public/bangwit-preview.jpg)
+
+## Stack
+
+- **Frontend:** React 18, TypeScript, Vite 5, Tailwind CSS 3, Radix UI.
+- **UI utilities:** React Router, next-themes, Lucide React, React Icons, and Framer Motion.
+- **Chat API:** Vercel serverless function at `/api/chat`, using the Google GenAI SDK and a server-only `GEMINI_API_KEY`.
 
 ## Run locally
 
-You’ll need Node.js and npm installed.
+Requirements: Node.js 18 or newer and npm.
 
-1. Clone the repository and open its folder:
+```sh
+git clone https://github.com/JosephLopezzzz/My-Portfolio-Website.git
+cd My-Portfolio-Website
+npm ci
+```
 
-   ```sh
-   git clone https://github.com/JosephLopezzzz/My-Portfolio-Website.git
-   cd My-Portfolio-Website
-   ```
+To enable Gemini chat in local development, copy the example environment file and add a key from your own Google AI project:
 
-2. Install dependencies:
+**Windows PowerShell**
 
-   ```sh
-   npm ci
-   ```
+```powershell
+Copy-Item .env.example .env.local
+```
 
-3. To enable the chatbot locally, copy `.env.example` to `.env.local` and add your own Gemini API key:
+**macOS or Linux**
 
-   **Windows PowerShell**
+```sh
+cp .env.example .env.local
+```
 
-   ```powershell
-   Copy-Item .env.example .env.local
-   ```
+Set `GEMINI_API_KEY` in `.env.local`. The key is read by the server-side chat handler; do not rename it to a `VITE_` variable or put it in frontend code. Chat is optional, so the rest of the portfolio runs without it.
 
-   **macOS or Linux**
+### Gemini key security
 
-   ```sh
-   cp .env.example .env.local
-   ```
+An earlier version used `VITE_GEMINI_API_KEY` in a browser build. Treat any key previously used with that name as compromised and revoke or rotate it if you have not already. The current route reads `GEMINI_API_KEY` on the server only. Vite exposes `VITE_` variables to client-side code, so do not put secrets in that namespace.
 
-   Set the value in `.env.local`:
+Start the site:
 
-   ```dotenv
-   GEMINI_API_KEY=your_gemini_api_key
-   ```
+```sh
+npm run dev
+```
 
-   The chatbot is optional. The portfolio can run without this key, but it will not return Gemini replies.
+Vite serves the site at [http://localhost:8080](http://localhost:8080) and provides a local `/api/chat` middleware for development.
 
-4. Start the development server:
+## Build and deploy
 
-   ```sh
-   npm run dev
-   ```
-
-   Vite serves the site at [http://localhost:8080](http://localhost:8080). The development server also provides the local `/api/chat` middleware.
-
-## API key security
-
-Keep Gemini credentials on the server. Use `GEMINI_API_KEY` for the server route; do not put the key in frontend code or use the `VITE_GEMINI_API_KEY` name. Vite exposes `VITE_` variables to client code when they are referenced through `import.meta.env`.
-
-A previous build exposed a `VITE_GEMINI_API_KEY`. Treat that old key as compromised: revoke or rotate it with Google, then use the replacement only as `GEMINI_API_KEY`. Never commit `.env.local` or paste a real key into documentation. This repository's `.gitignore` excludes `.env.local`.
-
-## Deploy
-
-This project is configured for Vercel:
-
-1. Import the GitHub repository into Vercel.
-2. Use `npm run build` as the build command and `dist` as the output directory.
-3. In the Vercel project settings, add `GEMINI_API_KEY` as an environment variable for the environments where chat should work, then deploy or redeploy.
-
-Vercel serves `api/chat.ts` at `/api/chat`. A static-only host can serve the portfolio files, but Gemini chat requires a server-side `/api/chat` implementation and must not receive the API key in the browser.
-
-To build locally:
+Create a production frontend build with:
 
 ```sh
 npm run build
 ```
 
-The generated static site is written to `dist/`.
+The frontend output is written to `dist/`. The repository includes `api/chat.ts` for Vercel’s serverless `/api/chat` route. On Vercel, configure `GEMINI_API_KEY` in the project’s environment settings if chat should be enabled, then deploy. A static-only host can serve the site but needs its own server-side `/api/chat` implementation for Gemini responses.
+
+Environment files, local overrides, and private key files are excluded by `.gitignore`. If a credential is ever committed or exposed, rotate it with its provider; adding it to `.gitignore` does not remove it from Git history.
 
 ## Project structure
 
@@ -105,28 +95,28 @@ The generated static site is written to `dist/`.
 api/
   chat.ts                    Server-side Gemini chat handler
 public/
-  certs/                     Certificate PDFs and badge images
-  profile/                   Profile photos
-  resume.pdf                 Downloadable resume
+  certs/                     Certificate PDFs and badge images used by the site
+  profile/                   Light and dark profile portraits
+  resume.pdf                 Public downloadable resume
 src/
   components/
-    sections/                Portfolio page sections
-    ui/                      Shared interface components and chatbot
+    sections/                Portfolio sections, including services and process
+    ui/                      Shared controls and chat interface
   hooks/                     Reusable React hooks
   lib/                       Shared utilities
-  pages/                     Portfolio, certificate viewer, and not-found pages
-  App.tsx                    App routes and providers
+  pages/                     Portfolio and supporting routes
+  App.tsx                    Routes and providers
   main.tsx                   Browser entry point
 vite.config.ts               Vite configuration and local chat middleware
-package.json                 Scripts and dependencies
+.github/workflows/ci.yml     Lint, tests, and production build checks
 ```
 
-## Available scripts
+## Scripts
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Start the local development server. |
-| `npm run build` | Build the production frontend into `dist/`. |
-| `npm run preview` | Preview the built frontend locally. |
+| `npm run dev` | Start the local Vite server. |
 | `npm run lint` | Run ESLint. |
-| `npm test` | Run the Vitest test suite. |
+| `npm test` | Run the Vitest suite. |
+| `npm run build` | Build the production frontend into `dist/`. |
+| `npm run preview` | Preview a production build locally. |

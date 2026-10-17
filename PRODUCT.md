@@ -31,7 +31,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 ## Operating Context
 
 - Visited from desktop browsers (primary) and mobile (secondary).
-- Recruiters scan: hero → projects → skills → contact. The section order must support this flow.
+- Clients scan: hero → projects → services → process → background → contact. Keep the primary inquiry path visible near the top.
 - The site is a single-page scroll app with smooth anchor navigation.
 - Dark/light mode toggle is present; the site must look excellent in both.
 - The GlassSurface navbar floats fixed at the top in a pill shape.
@@ -40,13 +40,16 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 ## Capabilities and Constraints
 
 **What exists:**
-- Hero section with profile photo (light/dark variants in `/public/pfp/`)
+- Hero section with profile photo (light/dark variants in `/public/profile/`) and direct project inquiry link
+- Services section describing possible project scope, without implying prior client engagements
+- Process section describing a proposed scope/build/review/handoff flow
 - About section with education, focus, and community facts
-- Projects section: 4 featured projects (Nokma, HR Management System, Fraud Detection in Microfinance, Bangwit)
-- Skills section with categorized tech pills
+- Projects section: 4 featured projects (Nokma, HR Management System, Fraud Detection in Microfinance, Bangwit) with role, scope, stack, and available source/preview status
+- Skills section with technologies used in selected projects and this site
 - Certifications section: 10 credentials linked to real PDFs in `/public/certs/`
 - Contact section
 - Education section
+- GitHub activity section
 
 **Constraints:**
 - Featured projects must have verifiable code; collaborator-owned repositories are credited to their owner
@@ -56,6 +59,8 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 - Certifications must link to the actual PDFs in `/public/certs/`
 - No fabricated testimonials, fake live demo links, or invented credentials
 - Resume PDF at `/public/resume.pdf`
+- The public resume currently includes a phone number; review whether it should remain on the public download before republishing it.
+- Contact links should favor email, GitHub, and LinkedIn; do not add personal social links by default.
 - Chatbot Gemini requests must go through the server-side `/api/chat` route using `GEMINI_API_KEY`; never expose that key in client code
 
 ## Brand Commitments

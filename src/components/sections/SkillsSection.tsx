@@ -1,151 +1,54 @@
-import React, { useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { LayoutGrid } from 'lucide-react';
-
-const fullTechStack = [
+const technologyGroups = [
   {
-    category: 'Frontend',
-    skills: [
-      { name: 'React.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
-      { name: 'Next.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg', invertDark: true },
-      { name: 'React Native', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
-      { name: 'HTML5', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg' },
-      { name: 'CSS3', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg' },
-      { name: 'JavaScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg' },
-      { name: 'TypeScript', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg' },
-      { name: 'Tailwind CSS', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg' },
-      { name: 'Bootstrap', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg' },
-      { name: 'Expo', icon: '/expo-go-app-logo-png_seeklogo-457073.png' },
-    ]
+    category: "Frontend",
+    technologies: ["React", "Next.js", "React Native", "TypeScript", "Tailwind CSS", "Expo"],
   },
   {
-    category: 'Backend & Database',
-    skills: [
-      { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
-      { name: 'PHP', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg' },
-      { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
-      { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg' },
-      { name: 'C++', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg' },
-      { name: 'C', icon: '/c-logo.svg' },
-      { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
-      { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
-      { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
-    ]
+    category: "APIs and data",
+    technologies: ["Node.js", "Express", "PostgreSQL", "Supabase", "SQLite", "IndexedDB"],
   },
   {
-    category: 'Tools & Version Control',
-    skills: [
-      { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
-      { name: 'GitHub', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg', invertDark: true },
-      { name: 'VS Code', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg' },
-      { name: 'Figma', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg' },
-      { name: 'Obsidian', icon: '/obsidian-color.svg' }
-    ]
+    category: "Portfolio site",
+    technologies: ["Vite", "React", "TypeScript", "Tailwind CSS"],
   },
-  {
-    category: 'AI & Intelligent Systems',
-    skills: [
-      { name: 'Claude', icon: '/claude-color.svg' },
-      { name: 'OpenAI Codex', icon: '/codex-color.svg' },
-      { name: 'DeepSeek', icon: '/deepseek-color.svg' },
-      { name: 'Gemini', icon: '/gemini-color.svg' },
-    ]
-  }
 ];
 
-const allSkills = fullTechStack.flatMap(cat => cat.skills);
-
-const SkillBadge = ({ skill }: { skill: any }) => (
-  <span className="flex items-center gap-2 px-4 py-2 mx-2 text-sm font-medium rounded-lg border border-border bg-card text-foreground whitespace-nowrap hover:border-primary/50 transition-colors cursor-default">
-    <img 
-      src={skill.icon} 
-      alt="" 
-      className={`w-5 h-5 object-contain ${skill.invertDark ? 'dark:invert' : ''}`} 
-    />
-    {skill.name}
-  </span>
-);
-
-const SkillsSection = () => {
-  const { ref, isVisible } = useScrollAnimation();
-  const prefersReducedMotion = useReducedMotion();
-  const [isExpanded, setIsExpanded] = useState(false);
-
-  // Split into 3 rows for marquee
-  const row1 = allSkills.slice(0, Math.ceil(allSkills.length / 3));
-  const row2 = allSkills.slice(Math.ceil(allSkills.length / 3), Math.ceil(allSkills.length * 2 / 3));
-  const row3 = allSkills.slice(Math.ceil(allSkills.length * 2 / 3));
-
-  return (
-    <section id="skills" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
-      <div className={`max-w-5xl mx-auto px-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-3xl font-display font-medium text-foreground mb-2">
-              {isExpanded ? 'Full Tech Stack' : 'Technologies'}
-            </h2>
-            {isExpanded && (
-              <p className="text-muted-foreground text-sm">Comprehensive list of tools and technologies I use.</p>
-            )}
-          </div>
-          
-          <button 
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <LayoutGrid size={16} />
-            {isExpanded ? 'Show Less' : 'View All >'}
-          </button>
-        </div>
-
-        {/* Content */}
-        {!isExpanded && prefersReducedMotion ? (
-          <div className="flex flex-wrap gap-2">
-            {allSkills.map((skill) => <SkillBadge key={skill.name} skill={skill} />)}
-          </div>
-        ) : !isExpanded ? (
-          <div className="flex flex-col gap-4 overflow-hidden relative w-full [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)] pb-4">
-            
-            <div className="flex w-max animate-marquee">
-              {[...row1, ...row1].map((skill, idx) => (
-                <SkillBadge key={`${skill.name}-${idx}`} skill={skill} />
-              ))}
-            </div>
-
-            <div className="flex w-max animate-marquee-reverse">
-              {[...row2, ...row2].map((skill, idx) => (
-                <SkillBadge key={`${skill.name}-${idx}`} skill={skill} />
-              ))}
-            </div>
-
-            <div className="flex w-max animate-marquee">
-              {[...row3, ...row3].map((skill, idx) => (
-                <SkillBadge key={`${skill.name}-${idx}`} skill={skill} />
-              ))}
-            </div>
-
-          </div>
-        ) : (
-          <div className="space-y-12 animate-fade-in">
-            {fullTechStack.map((category) => (
-              <div key={category.category} className="border-b border-border/10 pb-8 last:border-0">
-                <h3 className="text-lg font-semibold text-foreground mb-6">{category.category}</h3>
-                <div className="flex flex-wrap gap-4">
-                  {category.skills.map((skill) => (
-                    <SkillBadge key={skill.name} skill={skill} />
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-
+const SkillsSection = () => (
+  <section id="skills" className="w-full relative py-2" aria-labelledby="skills-title">
+    <div className="section-container">
+      <div className="max-w-2xl">
+        <h2 id="skills-title" className="section-title">
+          Technologies in my work
+        </h2>
+        <p className="section-subtitle mb-0">
+          A focused list of tools used in the selected projects and this site.
+        </p>
       </div>
-    </section>
-  );
-};
+
+      <dl className="mt-8 divide-y divide-border border-y border-border">
+        {technologyGroups.map((group) => (
+          <div
+            key={group.category}
+            className="grid gap-3 py-5 md:grid-cols-[180px_minmax(0,1fr)] md:gap-8"
+          >
+            <dt className="pt-1 text-sm font-medium text-muted-foreground">
+              {group.category}
+            </dt>
+            <dd className="flex flex-wrap gap-2">
+              {group.technologies.map((technology) => (
+                <span
+                  key={`${group.category}-${technology}`}
+                  className="rounded-md border border-border bg-card px-3 py-1.5 text-sm text-foreground"
+                >
+                  {technology}
+                </span>
+              ))}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+);
 
 export default SkillsSection;

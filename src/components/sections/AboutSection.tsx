@@ -17,7 +17,11 @@ const AboutSection = () => {
           <div>
             <h2 className="section-title">About</h2>
             <p className="section-subtitle mb-0">
-              I build practical web and mobile applications, focusing on clear interfaces and useful systems.
+              I’m Joseph, an IT student at Bestlink College of the Philippines,
+              expected to graduate in 2027. I work across front-end interfaces,
+              APIs, and data-backed features, and build projects to learn by
+              shipping complete workflows. I’m part of App Builders PH and open
+              to scoped freelance collaborations.
             </p>
           </div>
 

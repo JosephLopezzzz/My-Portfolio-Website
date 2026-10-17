@@ -5,10 +5,10 @@ import { useActiveSection } from '@/hooks/useActiveSection';
 
 const navLinks = [
   { name: 'Home', href: '#home', id: 'home' },
+  { name: 'Work', href: '#projects', id: 'projects' },
+  { name: 'Services', href: '#services', id: 'services' },
+  { name: 'Process', href: '#process', id: 'process' },
   { name: 'About', href: '#about', id: 'about' },
-  { name: 'Projects', href: '#projects', id: 'projects' },
-  { name: 'Skills', href: '#skills', id: 'skills' },
-  { name: 'Certifications', href: '#certifications', id: 'certifications' },
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
@@ -59,7 +59,7 @@ const Navbar = () => {
         >
           <div className="w-full flex items-center gap-6 px-8">
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-6">
+            <nav aria-label="Primary navigation" className="hidden md:flex items-center gap-6">
               {navLinks.map((link) => (
                 <a 
                   key={link.name} 
@@ -73,7 +73,7 @@ const Navbar = () => {
                   {link.name}
                 </a>
               ))}
-            </div>
+            </nav>
 
             {/* Mobile Menu Button */}
             <div className="flex items-center gap-4">
@@ -82,6 +82,7 @@ const Navbar = () => {
                 className="md:hidden p-2 hover:bg-secondary transition-colors z-50 relative"
                 aria-label="Toggle menu"
                 aria-expanded={isOpen}
+                aria-controls="mobile-navigation"
               >
                 {isOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -91,13 +92,14 @@ const Navbar = () => {
 
         {/* Mobile Navigation */}
         <div
+          id="mobile-navigation"
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out relative z-50 mt-4 ${
             isOpen ? 'max-h-[32rem] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           {isOpen && (
             <GlassSurface width="100%" height="auto" borderRadius={16} backgroundOpacity={0.9} distortionScale={-15}>
-              <div className="w-full flex flex-col gap-1 p-4">
+              <nav aria-label="Mobile navigation" className="w-full flex flex-col gap-1 p-4">
                 {navLinks.map((link, index) => (
                   <a
                     key={link.name}
@@ -113,7 +115,7 @@ const Navbar = () => {
                     {link.name}
                   </a>
                 ))}
-              </div>
+              </nav>
             </GlassSurface>
           )}
         </div>
