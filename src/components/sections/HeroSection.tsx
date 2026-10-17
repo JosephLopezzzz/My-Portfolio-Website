@@ -6,6 +6,10 @@ import { ChatBot } from '@/components/ui/ChatBot';
 import PixelTransition from '@/components/ui/PixelTransition';
 import { useReducedMotion } from 'framer-motion';
 
+const HERO_NAME = 'Joseph T. Lopez';
+const TYPEWRITER_START_DELAY_MS = 300;
+const TYPEWRITER_CHARACTER_DELAY_MS = 115;
+
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
   const { resolvedTheme } = useTheme();
@@ -14,29 +18,39 @@ const HeroSection = () => {
   // Typewriter state
   const [text, setText] = useState("");
   const [isFinished, setIsFinished] = useState(false);
-  const name = "Joseph T. Lopez";
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Smooth typewriter entrance
+  // Run one clear typewriter sequence after mount. Reduced-motion users see
+  // the complete name immediately instead of the animated reveal.
   useEffect(() => {
     if (!mounted) return;
     if (prefersReducedMotion) {
-      if (text !== name) setText(name);
+      setText(HERO_NAME);
       setIsFinished(true);
       return;
     }
-    if (text.length < name.length) {
-      const timeout = setTimeout(() => {
-        setText(name.substring(0, text.length + 1));
-      }, 70 + Math.random() * 30);
-      return () => clearTimeout(timeout);
-    } else {
-      setIsFinished(true);
-    }
-  }, [text, mounted, prefersReducedMotion]);
+
+    let characterIndex = 0;
+    let timeout: number;
+    setText('');
+    setIsFinished(false);
+
+    const typeNextCharacter = () => {
+      characterIndex += 1;
+      setText(HERO_NAME.slice(0, characterIndex));
+      if (characterIndex === HERO_NAME.length) {
+        setIsFinished(true);
+        return;
+      }
+      timeout = window.setTimeout(typeNextCharacter, TYPEWRITER_CHARACTER_DELAY_MS);
+    };
+
+    timeout = window.setTimeout(typeNextCharacter, TYPEWRITER_START_DELAY_MS);
+    return () => window.clearTimeout(timeout);
+  }, [mounted, prefersReducedMotion]);
 
   const isDark = resolvedTheme === 'dark';
 
@@ -99,8 +113,8 @@ const HeroSection = () => {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <h1
-                  className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground"
-                  aria-label={name}
+                  className="font-display text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground"
+                  aria-label={HERO_NAME}
                   aria-live="polite"
                 >
                   <span aria-hidden="true">{text}</span>
