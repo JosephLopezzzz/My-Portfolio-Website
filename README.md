@@ -1,95 +1,132 @@
-# Welcome to your Lovable project
+# Joseph T. Lopez — Developer Portfolio
 
-## Project info
+A personal portfolio for Joseph T. Lopez, an IT student and web developer. It presents selected web and mobile projects, technical skills, education, certifications, and ways to get in touch.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+**Live portfolio:** [josephlopez.vercel.app](https://josephlopez.vercel.app)  
+**Source code:** [github.com/JosephLopezzzz/My-Portfolio-Website](https://github.com/JosephLopezzzz/My-Portfolio-Website)
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- Responsive, single-page portfolio with About, Projects, GitHub Activity, Skills, Education, Certifications, and Contact sections.
+- Light and dark themes, with reduced-motion preferences respected.
+- Featured project cards linking to source repositories and available project pages.
+- Resume and certificate PDFs served from the site.
+- Optional “Chat with Joseph” assistant that streams Gemini responses through a server-side API route.
 
-**Use Lovable**
+## Featured projects
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+- **Nokma** — nutrition and macro tracking mobile app.
+- **HR Management System**
+- **Fraud Detection in Microfinance**
+- **Bangwit** — Philippine fishing companion prototype.
 
-Changes made via Lovable will be committed automatically to this repo.
+Project links and technology labels in the portfolio provide more detail. A linked project page or repository does not necessarily mean that project has a public live demo.
 
-**Use your preferred IDE**
+## Technology
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Frontend:** React 18, TypeScript, Vite 5, Tailwind CSS 3, Radix UI components.
+- **Interface utilities:** React Router, next-themes, Lucide React, and React Icons.
+- **Chat API:** Vercel-compatible serverless function at `/api/chat`, using the Google GenAI SDK and a server-side `GEMINI_API_KEY`.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Run locally
 
-Follow these steps:
+You’ll need Node.js and npm installed.
+
+1. Clone the repository and open its folder:
+
+   ```sh
+   git clone https://github.com/JosephLopezzzz/My-Portfolio-Website.git
+   cd My-Portfolio-Website
+   ```
+
+2. Install dependencies:
+
+   ```sh
+   npm ci
+   ```
+
+3. To enable the chatbot locally, copy `.env.example` to `.env.local` and add your own Gemini API key:
+
+   **Windows PowerShell**
+
+   ```powershell
+   Copy-Item .env.example .env.local
+   ```
+
+   **macOS or Linux**
+
+   ```sh
+   cp .env.example .env.local
+   ```
+
+   Set the value in `.env.local`:
+
+   ```dotenv
+   GEMINI_API_KEY=your_gemini_api_key
+   ```
+
+   The chatbot is optional. The portfolio can run without this key, but it will not return Gemini replies.
+
+4. Start the development server:
+
+   ```sh
+   npm run dev
+   ```
+
+   Vite serves the site at [http://localhost:8080](http://localhost:8080). The development server also provides the local `/api/chat` middleware.
+
+## API key security
+
+Keep Gemini credentials on the server. Use `GEMINI_API_KEY` for the server route; do not put the key in frontend code or use the `VITE_GEMINI_API_KEY` name. Vite exposes `VITE_` variables to client code when they are referenced through `import.meta.env`.
+
+A previous build exposed a `VITE_GEMINI_API_KEY`. Treat that old key as compromised: revoke or rotate it with Google, then use the replacement only as `GEMINI_API_KEY`. Never commit `.env.local` or paste a real key into documentation. This repository's `.gitignore` excludes `.env.local`.
+
+## Deploy
+
+This project is configured for Vercel:
+
+1. Import the GitHub repository into Vercel.
+2. Use `npm run build` as the build command and `dist` as the output directory.
+3. In the Vercel project settings, add `GEMINI_API_KEY` as an environment variable for the environments where chat should work, then deploy or redeploy.
+
+Vercel serves `api/chat.ts` at `/api/chat`. A static-only host can serve the portfolio files, but Gemini chat requires a server-side `/api/chat` implementation and must not receive the API key in the browser.
+
+To build locally:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Configure the chatbot (optional but required for chat replies).
-cp .env.example .env.local
-# Then set GEMINI_API_KEY inside .env.local
-
-# Step 5: Start the development server with auto-reloading and an instant preview.
-npm run dev
+npm run build
 ```
 
-## Chatbot setup (`GEMINI_API_KEY`)
+The generated static site is written to `dist/`.
 
-The floating "Chat with Joseph" widget sends messages to the server-side
-`/api/chat` route. The Gemini API key stays on the server and is never included
-in the browser bundle.
+## Project structure
 
-- Local Vite development: put `GEMINI_API_KEY` in `.env.local` (gitignored, see
-  `.env.example`). The local API also accepts the old `VITE_GEMINI_API_KEY`
-  variable server-side for migration.
-- Vercel: add `GEMINI_API_KEY` under Project > Settings > Environment Variables
-  (Production + Preview), then redeploy. Vercel serves the `/api/chat` function.
-- If the key is missing, the widget shows `NOT CONFIGURED` and explains the
-  fix instead of failing silently.
-- Static-only hosts need an equivalent serverless `/api/chat` function to enable
-  replies; Vite's local middleware is available only during development.
-- Since an earlier build exposed the `VITE_GEMINI_API_KEY` in the browser, rotate
-  that key and deploy the replacement as `GEMINI_API_KEY`.
+```text
+api/
+  chat.ts                    Server-side Gemini chat handler
+public/
+  certs/                     Certificate PDFs and badge images
+  profile/                   Profile photos
+  resume.pdf                 Downloadable resume
+src/
+  components/
+    sections/                Portfolio page sections
+    ui/                      Shared interface components and chatbot
+  hooks/                     Reusable React hooks
+  lib/                       Shared utilities
+  pages/                     Portfolio, certificate viewer, and not-found pages
+  App.tsx                    App routes and providers
+  main.tsx                   Browser entry point
+vite.config.ts               Vite configuration and local chat middleware
+package.json                 Scripts and dependencies
+```
 
-**Edit a file directly in GitHub**
+## Available scripts
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Deploy the Vite site on [Vercel](https://vercel.com/) to host both the portfolio and its `/api/chat` serverless function. Set `GEMINI_API_KEY` in the project environment before deploying. Other hosts need an equivalent server-side `/api/chat` route for chatbot replies.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the local development server. |
+| `npm run build` | Build the production frontend into `dist/`. |
+| `npm run preview` | Preview the built frontend locally. |
+| `npm run lint` | Run ESLint. |
+| `npm test` | Run the Vitest test suite. |
