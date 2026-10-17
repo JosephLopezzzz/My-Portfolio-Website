@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Github, Linkedin, Mail, MessageCircle, ChevronRight, ArrowDown, ArrowUpRight } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Github, Linkedin, Mail, ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import ThemeToggle from '@/components/ThemeToggle';
 import { ChatBot } from '@/components/ui/ChatBot';
 import PixelTransition from '@/components/ui/PixelTransition';
 import { useReducedMotion } from 'framer-motion';
-
-const InlineBadge = ({ children, className = '' }: { children: React.ReactNode; className?: string }) => (
-  <span className={`inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono rounded-md border border-border bg-secondary/50 text-foreground translate-y-[-1px] ${className}`}>
-    {children}
-  </span>
-);
 
 const HeroSection = () => {
   const [mounted, setMounted] = useState(false);
@@ -138,7 +132,7 @@ const HeroSection = () => {
 
           {/* Heading */}
           <h2 className="text-2xl sm:text-3xl font-medium text-foreground mb-6 leading-tight">
-            Full-Stack Web Developer <span className="text-muted-foreground">— React & AI</span>
+            Full-Stack Web Developer
           </h2>
 
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground mb-4">
@@ -147,21 +141,7 @@ const HeroSection = () => {
 
           {/* Bio */}
           <p className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed max-w-2xl">
-            I build practical web and mobile applications around real workflows with
-            <InlineBadge className="mx-1">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="" className="w-3.5 h-3.5" />
-              React
-            </InlineBadge>
-            <InlineBadge className="mx-1">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="" className="w-3.5 h-3.5" />
-              Node.js
-            </InlineBadge>
-            and
-            <InlineBadge className="ml-1 mr-0">
-              <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="" className="w-3.5 h-3.5" />
-              Python
-            </InlineBadge>.
-            I focus on clear interfaces, useful systems, and AI integrations.
+            I build thoughtful web and mobile experiences that make real workflows clearer and easier to use. I focus on intuitive interactions, polished details, and practical outcomes for the people using them.
           </p>
 
           {/* CTA Group */}
