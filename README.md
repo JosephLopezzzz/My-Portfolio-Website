@@ -16,10 +16,10 @@ A personal portfolio for Joseph T. Lopez, an IT student and web developer. It pr
 ## Featured projects
 
 - **Nokma** — nutrition and macro tracking mobile app.
-- **HR Management System**
-- **Fraud Detection in Microfinance**
+- **HR Management System** — Human Resources Management System for managing employee data, attendance, and payroll efficiently.
+- **Fraud Detection in Microfinance** — A system designed to detect fraudulent activities and transactions within microfinance institutions.
 - **Bangwit** — Philippine fishing companion prototype.
-
+- **Fleet and Transportation Management System (Capstone project)** — A fleet and transportation management system for a hotel's guest transport operation. It runs the whole life of a transportation request: it arrives from an external Booking subsystem, gets reviewed and approved, is scheduled onto a vehicle and driver, executes as a trip with GPS tracking, and closes with odometer, fuel and maintenance consequences.
 Project links and technology labels in the portfolio provide more detail. A linked project page or repository does not necessarily mean that project has a public live demo.
 
 ## Technology
