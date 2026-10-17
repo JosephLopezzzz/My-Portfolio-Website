@@ -47,6 +47,7 @@ function friendlyError(error: unknown): string {
   if (api?.code === 'rate_limited' || api?.status === 429) return 'The chat is rate-limited right now. Please wait a moment and retry.';
   if (api?.code === 'invalid_configuration') return 'The chat service could not authorize its Gemini request. Please try again later.';
   if (api?.code === 'no_model') return 'The chat service has no compatible model available right now. Please try again later.';
+  if (api?.code === 'response_truncated' || api?.code === 'incomplete_response') return 'That reply was cut off before it finished. Please try again.';
   return GENERIC_ERROR_MESSAGE;
 }
 
@@ -69,6 +70,7 @@ async function streamChat(messages: ChatMessage[], onText: (piece: string) => vo
   const decoder = new TextDecoder();
   let buffer = '';
   let receivedText = false;
+  let receivedDone = false;
 
   const consumeEvent = (event: string) => {
     const data = event
@@ -76,7 +78,11 @@ async function streamChat(messages: ChatMessage[], onText: (piece: string) => vo
       .filter((line) => line.startsWith('data:'))
       .map((line) => line.slice(5).trimStart())
       .join('\n');
-    if (!data || data === '[DONE]') return;
+    if (!data) return;
+    if (data === '[DONE]') {
+      receivedDone = true;
+      return;
+    }
     let payload: { text?: string; error?: string };
     try {
       payload = JSON.parse(data);
@@ -103,6 +109,7 @@ async function streamChat(messages: ChatMessage[], onText: (piece: string) => vo
   }
   if (buffer.trim()) consumeEvent(buffer);
   if (!receivedText) throw apiError('empty_response');
+  if (!receivedDone) throw apiError('incomplete_response');
 }
 
 const MessageAvatar = React.memo(function MessageAvatar({ isDark }: { isDark: boolean }) {
@@ -286,7 +293,11 @@ export const ChatBot = () => {
         setMessages(next);
       });
     } catch (error) {
-      const next = [...messagesRef.current, { role: 'model' as const, text: friendlyError(error), isError: true }];
+      const current = messagesRef.current;
+      const errorMessage = { role: 'model' as const, text: friendlyError(error), isError: true };
+      const next = hasReplyBubble
+        ? [...current.slice(0, -1), errorMessage]
+        : [...current, errorMessage];
       messagesRef.current = next;
       setMessages(next);
     } finally {

@@ -1,4 +1,4 @@
-import { GoogleGenAI, HarmBlockThreshold, HarmCategory } from '@google/genai';
+import { GoogleGenAI, HarmBlockThreshold, HarmCategory, ThinkingLevel } from '@google/genai';
 
 type ChatInputMessage = { role: 'user' | 'model'; text: string };
 type ApiRequest = {
@@ -35,6 +35,17 @@ const MAX_BODY_CHARS = 16_000;
 const MAX_MESSAGE_CHARS = 2_000;
 const RATE_WINDOW_MS = 60_000;
 const RATE_LIMIT = 12;
+
+function thinkingConfigForModel(model: string) {
+  const normalizedModel = model.replace(/^models\//, '');
+  if (/^gemini-(?:3|4)(?:[.-]|$)/i.test(normalizedModel)) {
+    return { thinkingLevel: ThinkingLevel.LOW };
+  }
+  if (/^gemini-2\.5-flash(?:-lite)?(?:$|-)/i.test(normalizedModel)) {
+    return { thinkingBudget: 0 };
+  }
+  return undefined;
+}
 
 let cachedClient: GoogleGenAI | null = null;
 let cachedModelPromise: Promise<string> | null = null;
@@ -162,14 +173,14 @@ export function createChatHandler(getApiKey: () => string | undefined) {
     try {
       cachedClient ??= new GoogleGenAI({ apiKey });
       const model = await resolveModel(cachedClient);
+      const thinkingConfig = thinkingConfigForModel(model);
       const stream = await cachedClient.models.generateContentStream({
         model,
         contents: messages.map(({ role, text }) => ({ role, parts: [{ text }] })),
         config: {
           systemInstruction: SYSTEM_INSTRUCTION,
-          temperature: 0.7,
-          topP: 0.9,
-          maxOutputTokens: 300,
+          ...(thinkingConfig ? { thinkingConfig } : {}),
+          maxOutputTokens: 768,
           safetySettings: [
             { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
             { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
@@ -183,12 +194,20 @@ export function createChatHandler(getApiKey: () => string | undefined) {
       res.setHeader('Cache-Control', 'no-cache, no-transform');
       res.setHeader('X-Accel-Buffering', 'no');
       let sentText = false;
+      let finishReason: string | undefined;
       for await (const chunk of stream) {
         if (res.destroyed || res.writableEnded) return;
+        const reason = chunk.candidates?.[0]?.finishReason;
+        if (reason) finishReason = reason;
         const text = chunk.text;
         if (!text) continue;
         sentText = true;
         res.write(`data: ${JSON.stringify({ text })}\n\n`);
+      }
+      if (finishReason === 'MAX_TOKENS') {
+        res.write(`data: ${JSON.stringify({ error: 'response_truncated' })}\n\n`);
+        res.end();
+        return;
       }
       res.write(`data: ${sentText ? '[DONE]' : JSON.stringify({ error: 'empty_response' })}\n\n`);
       res.end();
