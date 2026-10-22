@@ -82,7 +82,7 @@ const SkillsSection = () => {
 
   return (
     <section id="skills" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
-      <div className={`max-w-5xl mx-auto px-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+      <div className={`max-w-3xl mx-auto px-6 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
 
         {/* Header */}
         <div className="flex items-center justify-between mb-6">

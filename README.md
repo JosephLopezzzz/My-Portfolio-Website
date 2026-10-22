@@ -22,17 +22,21 @@ A solo nutrition and macro-tracking mobile app built with React Native, Expo, Ty
 
 ### HR Management System
 
-A role-based HR application covering employee records, departments, attendance, leave, performance, payroll, audit logs, and settings. The public repository contains its setup instructions; there is no interactive demo link on the portfolio.
+A school project: a role-based HR application covering employee records, departments, attendance, leave, performance, payroll, audit logs, and settings. The public repository contains its setup instructions; there is no interactive demo link on the portfolio.
 
 ### Fraud Detection in Microfinance
 
-A thesis capstone built with React, TypeScript, Express, and Supabase/PostgreSQL. It includes rule-based alerts for transaction patterns such as duplicates, rapid activity, large amounts, and after-hours activity; it is not presented as machine-learning fraud detection.
+A school project built with React, TypeScript, Express, and Supabase/PostgreSQL. It includes rule-based alerts for transaction patterns such as duplicates, rapid activity, large amounts, and after-hours activity; it is not presented as machine-learning fraud detection.
 
 ### Bangwit
 
 A fishing companion prototype with a Cavite waterbody explorer, local catch journal, and personal species list. Catch data is stored in browser IndexedDB. Verified regional species records, fishing rules, and safety guidance are not available yet.
 
 ![Bangwit prototype showing its Cavite waterbody explorer](public/bangwit-preview.jpg)
+
+### Fleet and Transportation Management System
+
+A team capstone for hotel guest transportation operations. It handles booking requests, approvals, driver and vehicle scheduling, GPS-tracked trips, and odometer, fuel, and maintenance follow-up. The web dashboard uses Next.js and React; its driver app uses Expo and React Native, with PostgreSQL on Supabase. [Source repository](https://github.com/ro-mee/fleet-transpo).
 
 ## Stack
 

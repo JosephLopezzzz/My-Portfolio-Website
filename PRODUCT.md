@@ -44,7 +44,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 - Services section describing possible project scope, without implying prior client engagements
 - Process section describing a proposed scope/build/review/handoff flow
 - About section with education, focus, and community facts
-- Projects section: 4 featured projects (Nokma, HR Management System, Fraud Detection in Microfinance, Bangwit) with role, scope, stack, and available source/preview status
+- Projects section: 3 featured projects on the home page and 5 projects on the all-projects page, including Fleet and Transportation Management System
 - Skills section with animated technology icon rows and an expandable categorized list
 - Certifications section: 10 credentials linked to real PDFs in `/public/certs/`
 - Contact section

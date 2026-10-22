@@ -31,9 +31,9 @@ const ProcessSection = () => {
     <section id="process" className="w-full relative py-2" aria-labelledby="process-title">
       <div
         ref={ref}
-        className={`section-container grid items-start gap-8 transition-all duration-1000 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] md:gap-16 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+        className={`section-container transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
       >
-        <div>
+        <div className="mb-6 max-w-2xl">
           <h2 id="process-title" className="section-title">
             How I work
           </h2>
@@ -43,24 +43,24 @@ const ProcessSection = () => {
         </div>
 
         <SpotlightCard
-          className="rounded-3xl border border-border/80 bg-card/60 p-5 shadow-lg backdrop-blur-xl sm:p-7"
+          className="rounded-3xl border border-border/80 bg-card/60 p-4 shadow-lg backdrop-blur-xl sm:p-6"
           spotlightColor="rgba(255, 255, 255, 0.08)"
         >
-          <ol className="relative grid gap-x-8 md:grid-cols-2">
+          <ol className="relative grid md:grid-cols-2">
             {steps.map((step, index) => (
               <li
                 key={step.title}
-                className="relative flex gap-4 border-b border-border/70 py-5 first:pt-2 last:border-0 md:odd:border-r md:odd:pr-6 md:even:pl-2"
+                className="relative flex gap-4 border-b border-border/70 px-3 py-5 last:border-0 md:min-h-40 md:px-5 md:py-6 md:odd:border-r md:odd:pr-7 md:even:pl-7 md:[&:nth-last-child(-n+2)]:border-b-0"
               >
                 <span
                   aria-hidden="true"
-                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border bg-secondary/60 font-mono text-xs text-muted-foreground"
+                  className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-border bg-secondary/60 font-mono text-xs text-muted-foreground"
                 >
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <div>
-                  <h3 className="mb-1 text-lg font-semibold text-foreground">{step.title}</h3>
-                  <p className="leading-relaxed text-muted-foreground">{step.description}</p>
+                <div className="min-w-0">
+                  <h3 className="mb-2 text-lg font-semibold leading-snug text-foreground">{step.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">{step.description}</p>
                 </div>
               </li>
             ))}

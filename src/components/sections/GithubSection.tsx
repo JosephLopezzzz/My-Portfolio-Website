@@ -11,8 +11,25 @@ const activityTheme = {
 const GithubSection = () => {
   const { ref, isVisible } = useScrollAnimation();
   const { resolvedTheme } = useTheme();
+  const calendarContainerRef = React.useRef<HTMLDivElement>(null);
+  const [calendarWidth, setCalendarWidth] = React.useState(0);
 
   const isDark = resolvedTheme === 'dark';
+  const blockSize = calendarWidth > 0
+    ? Math.max(2, Math.min(12, Math.floor((calendarWidth - 32) / 53) - 1))
+    : 10;
+
+  React.useEffect(() => {
+    const container = calendarContainerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setCalendarWidth(entry.contentRect.width);
+    });
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section id="github" className="w-full relative py-2" ref={ref as React.RefObject<HTMLDivElement>}>
@@ -24,13 +41,13 @@ const GithubSection = () => {
           </h2>
         </div>
 
-        <div className="w-full flex justify-center minimal-card rounded-2xl overflow-x-auto overflow-y-hidden border border-border bg-card p-6 md:p-8">
+        <div ref={calendarContainerRef} className="w-full min-w-0 flex justify-center minimal-card rounded-2xl overflow-hidden border border-border bg-card p-6 md:p-8">
           <GitHubCalendar 
             username="JosephLopezzzz" 
             colorScheme={isDark ? 'dark' : 'light'}
             theme={activityTheme}
-            blockSize={12}
-            blockMargin={4}
+            blockSize={blockSize}
+            blockMargin={1}
             fontSize={12}
           />
         </div>

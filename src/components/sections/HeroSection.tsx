@@ -8,9 +8,15 @@ import { useReducedMotion } from 'framer-motion';
 
 const HERO_NAME = 'Joseph T. Lopez';
 const HERO_ROLES = [
-  { text: 'Full-Stack Web Developer', fontClassName: 'font-display' },
-  { text: 'Web & Mobile Developer', fontClassName: 'font-sans' },
+  { text: 'Web Development & Web Design', fontClassName: 'font-display' },
+  { text: 'Mobile Application Development', fontClassName: 'font-sans' },
+  { text: 'Custom Software Development', fontClassName: 'font-display' },
+  { text: 'Application Development', fontClassName: 'font-sans' },
+  { text: 'Database Development', fontClassName: 'font-display' },
+  { text: 'Technical Support & Software Testing', fontClassName: 'font-sans' },
+  { text: 'Search Engine Optimization (SEO)', fontClassName: 'font-display' },
 ] as const;
+const HERO_ROLES_LABEL = 'Web Development, Web Design, Mobile Application Development, Application Development, Custom Software Development, Database Development, Technical Support, Software Testing, and Search Engine Optimization (SEO)';
 const ROLE_TYPE_DELAY_MS = 85;
 const ROLE_ERASE_DELAY_MS = 40;
 const ROLE_PAUSE_DELAY_MS = 1400;
@@ -190,7 +196,7 @@ const HeroSection = () => {
           {/* Heading */}
           <h2
             className={`min-h-[2.4em] sm:min-h-[1.3em] text-2xl sm:text-3xl font-normal text-foreground mb-6 leading-tight ${HERO_ROLES[roleIndex].fontClassName}`}
-            aria-label="Full-Stack Web Developer and Web & Mobile Developer"
+            aria-label={HERO_ROLES_LABEL}
           >
             <span aria-hidden="true">{roleText}</span>
             {!prefersReducedMotion && (
