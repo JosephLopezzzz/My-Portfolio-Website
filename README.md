@@ -30,7 +30,7 @@ A school project built with React, TypeScript, Express, and Supabase/PostgreSQL.
 
 ### Bangwit
 
-A fishing companion prototype with a Cavite waterbody explorer, local catch journal, and personal species list. Catch data is stored in browser IndexedDB. Verified regional species records, fishing rules, and safety guidance are not available yet.
+Bangwit is a Philippines-focused fishing companion for anglers and local fishers. Explore aquatic species by location, keep a private catch journal, and build a personal species collection. Verified regional species records, fishing rules and seasons, and safety advisories are planned.
 
 ![Bangwit prototype showing its Cavite waterbody explorer](public/bangwit-preview.jpg)
 
