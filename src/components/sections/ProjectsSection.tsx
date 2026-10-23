@@ -68,6 +68,7 @@ interface Project {
   bgImage?: string;
   bgColor?: string;
   projectType?: "School project" | "Team capstone";
+  projectStatus?: "In progress";
 }
 
 const projects: Project[] = [
@@ -95,9 +96,10 @@ const projects: Project[] = [
     initials: "BW",
     accentChar: "",
     role: "Creator & Developer",
-    status: "Prototype · source repository available",
+    status: "In progress · source repository available",
+    projectStatus: "In progress",
     description:
-      "A Cavite waterbody explorer prototype with a private, browser-local catch journal and personal species list. Verified regional species records, fishing rules, and safety guidance are not available yet.",
+      "A Philippines-wide waterbody explorer and private catch journal in progress. The current prototype is a Cavite pilot while nationwide species coverage and verified fishing guidance are being expanded.",
     tags: ["TypeScript", "Next.js", "React", "IndexedDB"],
     github: "https://github.com/JosephLopezzzz/Bangwit",
     image: "/bangwit-preview.jpg",
@@ -272,14 +274,23 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
               </a>
 
               <div className="mt-3 flex flex-grow flex-col">
-                <div className="mb-1 flex items-start justify-between gap-2">
+                <div className="mb-2 flex flex-col items-start gap-1.5">
                   <h3 className="text-lg font-semibold leading-tight text-foreground transition-colors group-hover:text-primary">
                     {project.title}
                   </h3>
-                  {project.projectType && (
-                    <span className="flex-shrink-0 whitespace-nowrap rounded-sm border border-foreground/30 px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider text-muted-foreground">
-                      {project.projectType}
-                    </span>
+                  {(project.projectType || project.projectStatus) && (
+                    <div className="flex max-w-full flex-wrap gap-1.5">
+                      {project.projectType && (
+                        <span className="max-w-full whitespace-nowrap rounded-sm border border-foreground/30 px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider text-muted-foreground">
+                          {project.projectType}
+                        </span>
+                      )}
+                      {project.projectStatus && (
+                        <span className="whitespace-nowrap rounded-sm border border-primary/35 bg-primary/10 px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider text-primary">
+                          {project.projectStatus}
+                        </span>
+                      )}
+                    </div>
                   )}
                 </div>
 
