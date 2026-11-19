@@ -298,7 +298,7 @@ const CertificationsSection = () => {
                       <div className="min-w-0 flex-1">
                         <SpotlightCard
                           onClick={() => window.open(cert.badgeUrl || cert.link, '_blank')}
-                          className="group/card flex cursor-pointer items-center gap-4 rounded-2xl border border-border/60 bg-card/40 p-4 transition-all duration-300 hover:bg-card/70 sm:gap-6 sm:p-5"
+                          className="group/card relative z-0 flex cursor-pointer items-center gap-4 rounded-2xl border border-border/80 bg-card/40 p-4 shadow-lg transition-all duration-300 hover:z-10 hover:scale-[1.02] hover:border-foreground/30 hover:bg-card/70 hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.02] focus-within:border-foreground/30 focus-within:shadow-2xl motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100 sm:gap-6 sm:p-5"
                           spotlightColor="rgba(255, 255, 255, 0.08)"
                         >
                           <CertEmblem cert={cert} id={`${path.id}-${index}`} />
