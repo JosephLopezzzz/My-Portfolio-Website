@@ -73,12 +73,14 @@ interface Project {
   initials: string;
   accentChar: string;
   role?: string;
+  roleHighlight?: boolean;
   description: string;
   tags: string[];
   github?: string;
   link?: string;
   linkLabel?: string;
   download?: string;
+  downloadLabel?: string;
   livePreview?: string;
   image?: string;
   imageAlt?: string;
@@ -102,7 +104,8 @@ const projects: Project[] = [
     title: "Nokma",
     initials: "NK",
     accentChar: "ノ",
-    role: "Solo developer",
+    role: "Independent Developer",
+    roleHighlight: true,
     status: "Expo build and brand site available",
     description:
       "A mobile nutrition and macro-tracking app built with React Native and SQLite. The linked website is a brand overview; the app build is linked separately.",
@@ -121,7 +124,8 @@ const projects: Project[] = [
     title: "Bangwit",
     initials: "BW",
     accentChar: "",
-    role: "Creator & Developer",
+    role: "Independent Developer",
+    roleHighlight: true,
     status: "In progress · source repository available",
     projectStatus: "In progress",
     description:
@@ -140,12 +144,16 @@ const projects: Project[] = [
     title: "Navo",
     initials: "NV",
     accentChar: "",
-    status: "In progress · source repository available",
-    projectStatus: "In progress",
+    role: "Independent Developer",
+    roleHighlight: true,
+    status: "Android APK and source repository available",
     description:
       "A destination alarm for Philippine commuters. Riders can save a station or bus stop and choose how far in advance they want an alert.",
     tags: ["TypeScript", "React Native", "Expo", "SQLite"],
     github: "https://github.com/JosephLopezzzz/Navo",
+    download:
+      "https://expo.dev/artifacts/eas/---wn4_cZ5GA4S07Ra0HfZtHzEZNkF1nLjPda6huE3s.apk",
+    downloadLabel: "Download APK",
     coverImage: "/navo-iphone-cover.png",
     previewFrame: "iphone",
     previewScreens: {
@@ -511,9 +519,15 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                 </div>
 
                 {project.role && (
-                  <p className="mb-2 text-xs font-medium text-muted-foreground">
-                    {project.role}
-                  </p>
+                  project.roleHighlight ? (
+                    <p className="mb-2 inline-flex w-fit items-center rounded-full border border-primary/30 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
+                      {project.role}
+                    </p>
+                  ) : (
+                    <p className="mb-2 text-xs font-medium text-muted-foreground">
+                      {project.role}
+                    </p>
+                  )
                 )}
 
                 <p className="mb-4 flex-grow text-sm leading-relaxed text-muted-foreground">
@@ -578,7 +592,7 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                         className="relative z-20 flex items-center gap-1 text-[0.65rem] font-mono font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground group/link"
                       >
                         <Download size={14} />
-                        <span>Download</span>
+                        <span>{project.downloadLabel || "Download"}</span>
                         <ArrowUpRight
                           size={14}
                           className="group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5 transition-transform"
