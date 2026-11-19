@@ -135,7 +135,7 @@ const HeroSection = () => {
                     }
                     secondContent={
                       <img
-                        src={isDark ? '/profile/prof-night.png' : '/profile/prof-day.jpg'}
+                        src={isDark ? '/profile/prof-night.png' : '/profile/prof-day-hover.jpg'}
                         alt="Joseph Lopez Real"
                         className="absolute inset-0 w-full h-full object-cover"
                         draggable={false}
