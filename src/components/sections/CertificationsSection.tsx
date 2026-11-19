@@ -20,6 +20,36 @@ interface Certification {
 
 const certifications: Certification[] = [
   {
+    title: 'SQLite Fundamentals',
+    issuer: 'Coddy Team',
+    date: '2026',
+    link: '/certs/sqlite-fundamentals.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-sqlite-oRigJZ',
+    icons: [
+      { src: 'https://cdn.simpleicons.org/sqlite/003B57', alt: 'SQLite' },
+    ],
+  },
+  {
+    title: 'Excel Formulas and Data Analysis',
+    issuer: 'Coddy Team',
+    date: '2026',
+    link: '/certs/excel-formulas-and-data-analysis.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-excel-exc2_3',
+    icons: [
+      { src: 'https://cdn.simpleicons.org/microsoftexcel/217346', alt: 'Microsoft Excel' },
+    ],
+  },
+  {
+    title: 'Excel Fundamentals',
+    issuer: 'Coddy Team',
+    date: '2026',
+    link: '/certs/excel-fundamentals.pdf',
+    badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-excel-RJobxc',
+    icons: [
+      { src: 'https://cdn.simpleicons.org/microsoftexcel/217346', alt: 'Microsoft Excel' },
+    ],
+  },
+  {
     title: 'Networking Basics',
     issuer: 'Cisco Networking Academy',
     date: '2026',
