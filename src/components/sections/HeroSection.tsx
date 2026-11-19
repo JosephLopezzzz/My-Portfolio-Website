@@ -8,13 +8,13 @@ import { useReducedMotion } from 'framer-motion';
 
 const HERO_NAME = 'Joseph T. Lopez';
 const HERO_ROLES = [
-  { text: 'Web Development & Web Design', fontClassName: 'font-display' },
-  { text: 'Mobile Application Development', fontClassName: 'font-sans' },
-  { text: 'Custom Software Development', fontClassName: 'font-display' },
-  { text: 'Application Development', fontClassName: 'font-sans' },
-  { text: 'Database Development', fontClassName: 'font-display' },
-  { text: 'Technical Support & Software Testing', fontClassName: 'font-sans' },
-  { text: 'Search Engine Optimization (SEO)', fontClassName: 'font-display' },
+  { text: 'Web Development & Web Design', fontClassName: 'font-pixel' },
+  { text: 'Mobile Application Development', fontClassName: 'font-pixel' },
+  { text: 'Custom Software Development', fontClassName: 'font-pixel' },
+  { text: 'Application Development', fontClassName: 'font-pixel' },
+  { text: 'Database Development', fontClassName: 'font-pixel' },
+  { text: 'Technical Support & Software Testing', fontClassName: 'font-pixel' },
+  { text: 'Search Engine Optimization (SEO)', fontClassName: 'font-pixel' },
 ] as const;
 const HERO_ROLES_LABEL = 'Web Development, Web Design, Mobile Application Development, Application Development, Custom Software Development, Database Development, Technical Support, Software Testing, and Search Engine Optimization (SEO)';
 const ROLE_TYPE_DELAY_MS = 85;
@@ -43,7 +43,7 @@ const HeroSection = () => {
     setMounted(true);
   }, []);
 
-  // Cycle the role line through a type, pause, erase, and font-switch sequence.
+  // Cycle the role line through a type, pause, and erase sequence.
   // Keep a complete static label available to assistive technology.
   useEffect(() => {
     if (!mounted) return;

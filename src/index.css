@@ -121,6 +121,10 @@
     font-weight: 700;
   }
 
+  .font-pixel {
+    font-family: 'Silkscreen', monospace;
+  }
+
   code, pre {
     font-family: 'JetBrains Mono', monospace;
   }
