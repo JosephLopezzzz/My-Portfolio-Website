@@ -2,6 +2,7 @@ import React from 'react';
 import { GitHubCalendar } from 'react-github-calendar';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { useTheme } from 'next-themes';
+import SpotlightCard from '@/components/ui/SpotlightCard';
 
 const activityTheme = {
   light: ['#ededed', '#c8c8c8', '#969696', '#5c5c5c', '#222222'],
@@ -41,16 +42,21 @@ const GithubSection = () => {
           </h2>
         </div>
 
-        <div ref={calendarContainerRef} className="w-full min-w-0 flex justify-center minimal-card rounded-2xl overflow-hidden border border-border bg-card p-6 md:p-8">
-          <GitHubCalendar 
-            username="JosephLopezzzz" 
-            colorScheme={isDark ? 'dark' : 'light'}
-            theme={activityTheme}
-            blockSize={blockSize}
-            blockMargin={1}
-            fontSize={12}
-          />
-        </div>
+        <SpotlightCard
+          className="w-full min-w-0 minimal-card overflow-hidden shadow-lg transition-all duration-300 hover:z-10 hover:scale-[1.02] hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.02] focus-within:shadow-2xl motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100"
+          spotlightColor="rgba(255, 255, 255, 0.08)"
+        >
+          <div ref={calendarContainerRef} className="w-full min-w-0 flex justify-center">
+            <GitHubCalendar
+              username="JosephLopezzzz"
+              colorScheme={isDark ? 'dark' : 'light'}
+              theme={activityTheme}
+              blockSize={blockSize}
+              blockMargin={1}
+              fontSize={12}
+            />
+          </div>
+        </SpotlightCard>
 
       </div>
     </section>
