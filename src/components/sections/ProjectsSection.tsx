@@ -63,6 +63,7 @@ interface Project {
   livePreview?: string;
   image?: string;
   imageAlt?: string;
+  landscapeCover?: boolean;
   status: string;
   imageFit?: "cover" | "contain";
   bgImage?: string;
@@ -102,10 +103,23 @@ const projects: Project[] = [
       "A Philippines-wide waterbody explorer and private catch journal in progress. The current prototype is a Cavite pilot while nationwide species coverage and verified fishing guidance are being expanded.",
     tags: ["TypeScript", "Next.js", "React", "IndexedDB"],
     github: "https://github.com/JosephLopezzzz/Bangwit",
-    image: "/bangwit-preview.jpg",
-    imageAlt: "Bangwit prototype showing the Cavite waterbody explorer",
-    imageFit: "contain",
-    bgColor: "#ffffff",
+    image: "/bangwit-cover.webp",
+    imageAlt: "Bangwit’s Cavite explorer on desktop and phone beneath its fish mascot",
+    landscapeCover: true,
+  },
+  {
+    title: "Navo",
+    initials: "NV",
+    accentChar: "",
+    status: "In progress · source repository available",
+    projectStatus: "In progress",
+    description:
+      "A destination alarm for Philippine commuters. Riders can save a station or bus stop and choose how far in advance they want an alert.",
+    tags: ["TypeScript", "React Native", "Expo", "SQLite"],
+    github: "https://github.com/JosephLopezzzz/Navo",
+    image: "/navo-cover.webp",
+    imageAlt: "Navo’s Saved alarms home screen on a phone beside its route-pin logo",
+    landscapeCover: true,
   },
   {
     title: "Fraud Detection in Microfinance",
@@ -202,7 +216,7 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                 aria-label={`Open ${project.title}${project.livePreview ? " live site" : ""}`}
                 className="block w-full shrink-0"
               >
-                <div className="h-40 w-full rounded-lg border border-border/30 bg-white p-1.5">
+                <div className={`w-full rounded-lg border border-border/30 bg-white p-1.5 ${project.landscapeCover ? "aspect-[3/2] lg:h-40 lg:aspect-auto" : "h-40"}`}>
                   <div
                     className={`relative flex h-full w-full items-center justify-center overflow-hidden rounded-md ${project.bgImage || project.bgColor ? "" : "bg-white"}`}
                     style={{
