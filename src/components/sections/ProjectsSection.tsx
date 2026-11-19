@@ -82,8 +82,6 @@ interface Project {
   livePreview?: string;
   image?: string;
   imageAlt?: string;
-  coverBackground?: string;
-  coverLogo?: string;
   coverImage?: string;
   previewFrame?: "iphone";
   previewScreens?: {
@@ -130,8 +128,8 @@ const projects: Project[] = [
       "A Philippines-wide waterbody explorer and private catch journal in progress. The current prototype is a Cavite pilot while nationwide species coverage and verified fishing guidance are being expanded.",
     tags: ["TypeScript", "Next.js", "React", "IndexedDB"],
     github: "https://github.com/JosephLopezzzz/Bangwit",
-    coverBackground: "/bangwit-stage-bg.webp",
-    coverLogo: "/bangwit-icon.webp",
+    coverImage: "/bangwit-iphone-cover.png",
+    previewFrame: "iphone",
     previewScreens: {
       mobile: "/bangwit-mobile-screen.webp",
       desktop: "/bangwit-desktop-screen.webp",
@@ -204,98 +202,45 @@ const projects: Project[] = [
 ];
 
 const ProjectDeviceCover = ({ project }: { project: Project }) => {
-  const screens = project.previewScreens;
-  const isWebApp = Boolean(screens?.desktop);
-
   return (
     <div
-      className="relative h-full w-full overflow-hidden rounded-md bg-cover"
-      style={{
-        backgroundImage: project.coverBackground
-          ? `url('${project.coverBackground}')`
-          : undefined,
-        backgroundPosition: "center",
-      }}
+      className="relative h-full w-full overflow-hidden rounded-md"
     >
-      <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.05]">
-        {project.coverImage ? (
-          <img
-            src={project.coverImage}
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <>
-            {project.coverLogo && (
-              <div className="absolute left-1/2 top-[2%] z-30 flex h-[22%] w-[90%] -translate-x-1/2 items-center justify-center gap-2 rounded-full border border-[#c5e2d7] bg-[#def1e8] px-2 shadow-sm">
-                <img
-                  src={project.coverLogo}
-                  alt=""
-                  aria-hidden="true"
-                  className="h-[72%] w-auto object-contain"
-                />
-                <span className="text-xl font-bold tracking-tight text-[#064857] sm:text-2xl">
-                  {project.title}
-                </span>
-              </div>
-            )}
-
-            {screens?.desktop && (
-              <div className="absolute left-[4%] top-[27%] z-10 w-[91%] xl:top-[21%]">
-                <div className="overflow-hidden rounded-xl border-[3px] border-[#374345] bg-[#11191a] p-[3px] shadow-xl sm:border-4 sm:p-1">
-                  <img
-                    src={screens.desktop}
-                    alt=""
-                    aria-hidden="true"
-                    loading="lazy"
-                    decoding="async"
-                    className="block aspect-[1.75] w-full rounded-[5px] object-cover"
-                  />
-                </div>
-                <div className="mx-auto h-4 w-[24%] bg-gradient-to-b from-[#7d8d8f] to-[#b8c4c5] shadow-sm" />
-                <div className="mx-auto h-1.5 w-[40%] rounded-b-full bg-[#aebbbc] shadow-md" />
-              </div>
-            )}
-
-            {screens && (
-              <div
-                aria-hidden="true"
-                className={`absolute z-20 aspect-[0.47] rounded-[1.65rem] bg-gradient-to-br from-[#a9b3b6] via-[#31393c] to-[#101415] p-[3px] shadow-[0_12px_24px_rgba(0,0,0,0.42)] sm:rounded-[2rem] sm:p-1 ${isWebApp ? "right-[4%] top-[24%] h-[72%]" : "right-[1%] top-[8%] h-[84%]"}`}
-              >
-                <div className="h-full w-full overflow-hidden rounded-[1.45rem] border-2 border-[#111719] bg-white sm:rounded-[1.8rem]">
-                  <img
-                    src={screens.mobile}
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-            )}
-          </>
-        )}
-      </div>
+      <img
+        src={project.coverImage ?? project.previewScreens?.mobile ?? ""}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.05]"
+      />
     </div>
   );
 };
 
-const NavoIphonePreview = ({ src }: { src: string }) => (
+const IphoneScreenPreview = ({
+  src,
+  alt,
+  hideAndroidChrome = false,
+}: {
+  src: string;
+  alt: string;
+  hideAndroidChrome?: boolean;
+}) => (
   <div className="relative h-full w-auto max-h-full max-w-full shrink-0 aspect-[0.47] rounded-[2.8rem] border-[3px] border-[#737983] bg-gradient-to-br from-[#e4e8ed] via-[#293039] to-[#07090c] p-[7px] shadow-[0_28px_80px_rgba(0,0,0,0.5)]">
     <div className="relative h-full w-full overflow-hidden rounded-[2.25rem] border border-white/10 bg-[#f7faff]">
       <img
         src={src}
-        alt="Navo Saved alarms screen showing a monitored Blumentritt Station alarm and a PITX Station alarm"
-        className="absolute inset-0 h-full w-full object-contain object-center"
+        alt={alt}
+        className={`absolute object-contain object-center ${hideAndroidChrome ? "inset-0 h-full w-full" : "left-1/2 top-[5%] h-[92%] w-auto max-w-full -translate-x-1/2"}`}
         decoding="async"
       />
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-0 z-10 h-[5.5%] bg-[#f7faff]"
-      />
+      {hideAndroidChrome && (
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 z-10 h-[5.5%] bg-[#f7faff]"
+        />
+      )}
       <span className="absolute left-[8%] top-[1.4%] z-20 text-[11px] font-semibold tracking-tight text-[#101827]">
         9:41
       </span>
@@ -311,10 +256,12 @@ const NavoIphonePreview = ({ src }: { src: string }) => (
         <Wifi className="h-3 w-3" strokeWidth={2.5} />
         <BatteryFull className="h-[13px] w-[15px]" strokeWidth={2.5} />
       </div>
-      <div
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 z-10 h-[4%] bg-[#f7faff]"
-      />
+      {hideAndroidChrome && (
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 z-10 h-[4%] bg-[#f7faff]"
+        />
+      )}
       <span
         aria-hidden="true"
         className="absolute bottom-[2.2%] left-1/2 z-20 h-1 w-[34%] -translate-x-1/2 rounded-full bg-[#152031]"
@@ -449,7 +396,7 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                       <DialogTitle>{project.title} interface</DialogTitle>
                       <DialogDescription>
                         {project.previewScreens.desktop
-                          ? "Switch between the mobile and desktop views."
+                          ? "Switch between desktop and iPhone-framed mobile views."
                           : "Navo’s Saved alarms screen in an iPhone frame."}
                       </DialogDescription>
                     </DialogHeader>
@@ -473,14 +420,21 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
 
                         <TabsContent
                           value="mobile"
-                          className="mt-0 flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-muted/50 p-2 data-[state=inactive]:hidden"
+                          className="mt-0 flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-[#e7f5f1] p-2 data-[state=inactive]:hidden"
                         >
-                          <img
-                            src={project.previewScreens.mobile}
-                            alt="Bangwit mobile screen showing the Cavite waterbody explorer"
-                            className="h-full w-full object-contain"
-                            decoding="async"
-                          />
+                          {project.previewFrame === "iphone" ? (
+                            <IphoneScreenPreview
+                              src={project.previewScreens.mobile}
+                              alt="Bangwit mobile explorer screen showing the Cavite pilot area"
+                            />
+                          ) : (
+                            <img
+                              src={project.previewScreens.mobile}
+                              alt="Bangwit mobile screen showing the Cavite waterbody explorer"
+                              className="h-full w-full object-contain"
+                              decoding="async"
+                            />
+                          )}
                         </TabsContent>
 
                         <TabsContent
@@ -503,7 +457,11 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                             "radial-gradient(ellipse at 50% 20%, rgba(20, 190, 205, 0.22), transparent 40%), linear-gradient(145deg, #071629, #0c3140 55%, #071725)",
                         }}
                       >
-                        <NavoIphonePreview src={project.previewScreens.mobile} />
+                        <IphoneScreenPreview
+                          src={project.previewScreens.mobile}
+                          alt="Navo Saved alarms screen showing a monitored Blumentritt Station alarm and a PITX Station alarm"
+                          hideAndroidChrome
+                        />
                       </div>
                     ) : (
                       <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-muted/50 p-2">
