@@ -43,7 +43,7 @@ const GithubSection = () => {
         </div>
 
         <SpotlightCard
-          className="w-full min-w-0 minimal-card overflow-hidden shadow-lg transition-all duration-300 hover:z-10 hover:scale-[1.02] hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.02] focus-within:shadow-2xl motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100"
+          className="w-full min-w-0 cursor-pointer minimal-card overflow-hidden shadow-lg transition-all duration-300 hover:z-10 hover:scale-[1.02] hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.02] focus-within:shadow-2xl motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100"
           spotlightColor="rgba(255, 255, 255, 0.08)"
         >
           <div ref={calendarContainerRef} className="w-full min-w-0 flex justify-center">

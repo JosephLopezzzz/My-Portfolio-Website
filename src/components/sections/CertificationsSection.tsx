@@ -260,90 +260,96 @@ const CertificationsSection = () => {
 
         <div className="flex flex-col gap-3">
           {certificationPaths.map((path) => (
-            <details key={path.id} className="group/path rounded-2xl border border-border/60 bg-card/30 open:bg-card/45 transition-colors">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl p-4 sm:p-5 [&::-webkit-details-marker]:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset">
-                <span className="min-w-0">
-                  <span className="flex flex-wrap items-center gap-2.5">
-                    <span className="text-lg sm:text-xl font-semibold text-foreground">{path.title}</span>
-                    <span className="rounded-full border border-border/70 bg-secondary/70 px-2.5 py-0.5 text-xs font-mono text-muted-foreground">
-                      {path.certifications.length} {path.certifications.length === 1 ? 'certificate' : 'certificates'}
+            <SpotlightCard
+              key={path.id}
+              className="relative z-0 w-full overflow-hidden rounded-2xl border border-border/60 bg-card/30 p-0 transition-all duration-300 hover:z-10 hover:scale-[1.02] hover:border-foreground/30 hover:bg-card/45 hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.02] focus-within:border-foreground/30 focus-within:shadow-2xl motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100"
+              spotlightColor="rgba(255, 255, 255, 0.08)"
+            >
+              <details className="group/path rounded-2xl open:bg-card/45 transition-colors">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl p-4 sm:p-5 [&::-webkit-details-marker]:hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset">
+                  <span className="min-w-0">
+                    <span className="flex flex-wrap items-center gap-2.5">
+                      <span className="text-lg sm:text-xl font-semibold text-foreground">{path.title}</span>
+                      <span className="rounded-full border border-border/70 bg-secondary/70 px-2.5 py-0.5 text-xs font-mono text-muted-foreground">
+                        {path.certifications.length} {path.certifications.length === 1 ? 'certificate' : 'certificates'}
+                      </span>
                     </span>
+                    <span className="mt-1 block text-sm text-muted-foreground">{path.description}</span>
+                    {path.interest && (
+                      <span className="mt-2 block text-xs sm:text-sm text-primary/90">Area of interest: {path.interest.replace('Exploring ', '')}</span>
+                    )}
                   </span>
-                  <span className="mt-1 block text-sm text-muted-foreground">{path.description}</span>
-                  {path.interest && (
-                    <span className="mt-2 block text-xs sm:text-sm text-primary/90">Area of interest: {path.interest.replace('Exploring ', '')}</span>
-                  )}
-                </span>
-                <ChevronDown aria-hidden="true" className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 group-open/path:rotate-180" />
-              </summary>
+                  <ChevronDown aria-hidden="true" className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200 group-open/path:rotate-180" />
+                </summary>
 
-              <div className="flex flex-col gap-4 px-3 pb-4 sm:px-5 sm:pb-5" aria-label={`${path.title} certificates`}>
-                {path.certifications.map((cert, index) => {
-                  const isFirst = index === 0;
-                  const isLast = index === path.certifications.length - 1;
+                <div className="flex flex-col gap-4 px-3 pb-4 sm:px-5 sm:pb-5" aria-label={`${path.title} certificates`}>
+                  {path.certifications.map((cert, index) => {
+                    const isFirst = index === 0;
+                    const isLast = index === path.certifications.length - 1;
 
-                  return (
-                    <div key={`${path.id}-${cert.title}`} className="relative flex items-center gap-3 sm:gap-6 group">
-                      <div className="relative flex w-14 shrink-0 select-none items-center justify-end gap-2.5 self-stretch sm:w-20 sm:gap-4">
-                        <div
-                          aria-hidden="true"
-                          className={`absolute right-[5px] sm:right-[6px] w-[2px] bg-border/60 ${
-                            isFirst && isLast ? 'hidden' : isFirst ? 'top-1/2 -bottom-2' : isLast ? '-top-2 bottom-1/2' : '-top-2 -bottom-2'
-                          }`}
-                        />
-                        <span className="text-xs font-mono font-medium text-muted-foreground sm:text-sm">{cert.date}</span>
-                        <span aria-hidden="true" className="relative z-10 h-3 w-3 shrink-0 rounded-full border-2 border-background bg-zinc-400 ring-2 ring-border/80 transition-transform duration-300 group-hover:scale-125 group-hover:bg-primary group-hover:ring-primary/40 sm:h-3.5 sm:w-3.5" />
-                      </div>
+                    return (
+                      <div key={`${path.id}-${cert.title}`} className="relative flex items-center gap-3 sm:gap-6 group">
+                        <div className="relative flex w-14 shrink-0 select-none items-center justify-end gap-2.5 self-stretch sm:w-20 sm:gap-4">
+                          <div
+                            aria-hidden="true"
+                            className={`absolute right-[5px] sm:right-[6px] w-[2px] bg-border/60 ${
+                              isFirst && isLast ? 'hidden' : isFirst ? 'top-1/2 -bottom-2' : isLast ? '-top-2 bottom-1/2' : '-top-2 -bottom-2'
+                            }`}
+                          />
+                          <span className="text-xs font-mono font-medium text-muted-foreground sm:text-sm">{cert.date}</span>
+                          <span aria-hidden="true" className="relative z-10 h-3 w-3 shrink-0 rounded-full border-2 border-background bg-zinc-400 ring-2 ring-border/80 transition-transform duration-300 group-hover:scale-125 group-hover:bg-primary group-hover:ring-primary/40 sm:h-3.5 sm:w-3.5" />
+                        </div>
 
-                      <div className="min-w-0 flex-1">
-                        <SpotlightCard
-                          onClick={() => window.open(cert.badgeUrl || cert.link, '_blank')}
-                          className="group/card relative z-0 flex cursor-pointer items-center gap-4 rounded-2xl border border-border/80 bg-card/40 p-4 shadow-lg transition-all duration-300 hover:z-10 hover:scale-[1.02] hover:border-foreground/30 hover:bg-card/70 hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.02] focus-within:border-foreground/30 focus-within:shadow-2xl motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100 sm:gap-6 sm:p-5"
-                          spotlightColor="rgba(255, 255, 255, 0.08)"
-                        >
-                          <CertEmblem cert={cert} id={`${path.id}-${index}`} />
+                        <div className="min-w-0 flex-1">
+                          <SpotlightCard
+                            onClick={() => window.open(cert.badgeUrl || cert.link, '_blank')}
+                            className="group/card relative z-0 flex cursor-pointer items-center gap-4 rounded-2xl border border-border/80 bg-card/40 p-4 shadow-lg transition-all duration-300 hover:z-10 hover:scale-[1.02] hover:border-foreground/30 hover:bg-card/70 hover:shadow-2xl focus-within:z-10 focus-within:scale-[1.02] focus-within:border-foreground/30 focus-within:shadow-2xl motion-reduce:hover:scale-100 motion-reduce:focus-within:scale-100 sm:gap-6 sm:p-5"
+                            spotlightColor="rgba(255, 255, 255, 0.08)"
+                          >
+                            <CertEmblem cert={cert} id={`${path.id}-${index}`} />
 
-                          <div className="min-w-0 flex-1">
-                            <div className="mb-1">
-                              <span className="inline-block rounded-full border border-border/40 bg-secondary/80 px-2.5 py-0.5 text-xs font-mono font-medium text-muted-foreground">
-                                {cert.date}
-                              </span>
-                            </div>
-                            <h3 className="mb-0.5 break-words text-base font-bold leading-snug text-foreground transition-colors group-hover/card:text-primary sm:text-lg md:text-xl">
-                              {cert.title}
-                            </h3>
-                            <p className="mb-2.5 text-xs text-muted-foreground sm:text-sm">{cert.issuer}</p>
+                            <div className="min-w-0 flex-1">
+                              <div className="mb-1">
+                                <span className="inline-block rounded-full border border-border/40 bg-secondary/80 px-2.5 py-0.5 text-xs font-mono font-medium text-muted-foreground">
+                                  {cert.date}
+                                </span>
+                              </div>
+                              <h3 className="mb-0.5 break-words text-base font-bold leading-snug text-foreground transition-colors group-hover/card:text-primary sm:text-lg md:text-xl">
+                                {cert.title}
+                              </h3>
+                              <p className="mb-2.5 text-xs text-muted-foreground sm:text-sm">{cert.issuer}</p>
 
-                            <div className="flex flex-wrap items-center gap-3">
-                              <a
-                                href={cert.link}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-medium text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline sm:text-sm"
-                              >
-                                Credential <ExternalLink size={13} />
-                              </a>
-                              {cert.badgeUrl && (
+                              <div className="flex flex-wrap items-center gap-3">
                                 <a
-                                  href={cert.badgeUrl}
+                                  href={cert.link}
                                   target="_blank"
                                   rel="noreferrer"
                                   onClick={(e) => e.stopPropagation()}
-                                  className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-border/80 bg-secondary/60 px-2.5 py-1 text-xs font-mono text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                                  className="inline-flex cursor-pointer items-center gap-1.5 text-xs font-medium text-foreground underline-offset-4 transition-colors hover:text-primary hover:underline sm:text-sm"
                                 >
-                                  {getVerifyButtonLabel(cert.badgeUrl)} <ExternalLink size={11} />
+                                  Credential <ExternalLink size={13} />
                                 </a>
-                              )}
+                                {cert.badgeUrl && (
+                                  <a
+                                    href={cert.badgeUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    onClick={(e) => e.stopPropagation()}
+                                    className="inline-flex cursor-pointer items-center gap-1 rounded-md border border-border/80 bg-secondary/60 px-2.5 py-1 text-xs font-mono text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                                  >
+                                    {getVerifyButtonLabel(cert.badgeUrl)} <ExternalLink size={11} />
+                                  </a>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        </SpotlightCard>
+                          </SpotlightCard>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </details>
+                    );
+                  })}
+                </div>
+              </details>
+            </SpotlightCard>
           ))}
         </div>
       </div>
