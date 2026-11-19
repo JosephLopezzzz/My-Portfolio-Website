@@ -31,6 +31,15 @@ interface CertificationPath {
   certifications: Certification[];
 }
 
+const pythonProgrammingCertification: Certification = {
+  title: 'Python Programming',
+  issuer: 'freeCodeCamp',
+  date: '2026',
+  link: '/certs/python-programming.pdf',
+  badgeUrl: 'https://www.freecodecamp.org/certification/joseph_25/python-v9',
+  icons: [{ src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', alt: 'Python' }],
+};
+
 const certificationPaths: CertificationPath[] = [
   {
     id: 'data-analysis',
@@ -61,21 +70,62 @@ const certificationPaths: CertificationPath[] = [
         badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-sqlite-oRigJZ',
         icons: [{ component: SiSqlite, alt: 'SQLite', className: 'text-[#003B57]' }],
       },
+      pythonProgrammingCertification,
+    ],
+  },
+  {
+    id: 'ai-prompt-engineering',
+    title: 'AI & Prompt Engineering',
+    description: 'Prompt design · LLMs · Output evaluation',
+    interest: 'Exploring AI-assisted development',
+    certifications: [
       {
-        title: 'Python Programming',
-        issuer: 'freeCodeCamp',
+        title: 'Prompt Like an Engineer',
+        issuer: 'Cisco Networking Academy',
         date: '2026',
-        link: '/certs/python-programming.pdf',
-        badgeUrl: 'https://www.freecodecamp.org/certification/joseph_25/python-v9',
-        icons: [{ src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg', alt: 'Python' }],
+        link: '/certs/PromptLikeanEngineer20260828-21-b83sda.pdf',
+        badgeUrl: 'https://www.credly.com/badges/1b13d7c7-1e85-4adc-982d-b812aa4ca9d1',
+        image: '/certs/prompt-like-an-engineer.png',
       },
     ],
   },
   {
-    id: 'frontend-development',
-    title: 'Frontend Development',
-    description: 'HTML · CSS · JavaScript',
+    id: 'it-networking',
+    title: 'IT & Networking',
+    description: 'Computer hardware · Networking',
     certifications: [
+      {
+        title: 'Computer Hardware Basics',
+        issuer: 'Cisco Networking Academy',
+        date: '2026',
+        link: '/certs/computer-hardware-basics.pdf',
+        badgeUrl: 'https://www.credly.com/badges/37959b93-bd0b-4f72-a7ce-8eda8ff01f50/public_url',
+        image: '/certs/computer-hardware-basics.png',
+      },
+      {
+        title: 'Networking Basics',
+        issuer: 'Cisco Networking Academy',
+        date: '2026',
+        link: '/certs/networking-basics.pdf',
+        badgeUrl: 'https://www.credly.com/badges/8765bdb9-dd4e-4970-8144-10a204d2f075',
+        image: '/certs/networking-basics.png',
+      },
+    ],
+  },
+  {
+    id: 'programming-foundations',
+    title: 'Programming Foundations',
+    description: 'C · Python · HTML · CSS · JavaScript',
+    certifications: [
+      {
+        title: 'C Programming',
+        issuer: 'Coddy Team',
+        date: '2026',
+        link: '/certs/c.pdf',
+        badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-c-0xW5Z9',
+        icons: [{ src: '/c-logo.svg', alt: 'C' }],
+      },
+      pythonProgrammingCertification,
       {
         title: 'HTML Fundamentals',
         issuer: 'Coddy Team',
@@ -125,60 +175,6 @@ const certificationPaths: CertificationPath[] = [
           { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg', alt: 'CSS3' },
           { src: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg', alt: 'JavaScript' },
         ],
-      },
-    ],
-  },
-  {
-    id: 'ai-prompt-engineering',
-    title: 'AI & Prompt Engineering',
-    description: 'Prompt design · LLMs · Output evaluation',
-    interest: 'Exploring AI-assisted development',
-    certifications: [
-      {
-        title: 'Prompt Like an Engineer',
-        issuer: 'Cisco Networking Academy',
-        date: '2026',
-        link: '/certs/PromptLikeanEngineer20260828-21-b83sda.pdf',
-        badgeUrl: 'https://www.credly.com/badges/1b13d7c7-1e85-4adc-982d-b812aa4ca9d1',
-        image: '/certs/prompt-like-an-engineer.png',
-      },
-    ],
-  },
-  {
-    id: 'it-networking',
-    title: 'IT & Networking',
-    description: 'Computer hardware · Networking',
-    certifications: [
-      {
-        title: 'Computer Hardware Basics',
-        issuer: 'Cisco Networking Academy',
-        date: '2026',
-        link: '/certs/computer-hardware-basics.pdf',
-        badgeUrl: 'https://www.credly.com/badges/37959b93-bd0b-4f72-a7ce-8eda8ff01f50/public_url',
-        image: '/certs/computer-hardware-basics.png',
-      },
-      {
-        title: 'Networking Basics',
-        issuer: 'Cisco Networking Academy',
-        date: '2026',
-        link: '/certs/networking-basics.pdf',
-        badgeUrl: 'https://www.credly.com/badges/8765bdb9-dd4e-4970-8144-10a204d2f075',
-        image: '/certs/networking-basics.png',
-      },
-    ],
-  },
-  {
-    id: 'programming-foundations',
-    title: 'Programming Foundations',
-    description: 'C programming',
-    certifications: [
-      {
-        title: 'C Programming',
-        issuer: 'Coddy Team',
-        date: '2026',
-        link: '/certs/c.pdf',
-        badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-c-0xW5Z9',
-        icons: [{ src: '/c-logo.svg', alt: 'C' }],
       },
     ],
   },
