@@ -5,6 +5,7 @@ import { SiSqlite } from 'react-icons/si';
 import type { IconType } from 'react-icons';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { LayoutGrid } from 'lucide-react';
+import SpotlightCard from '@/components/ui/SpotlightCard';
 
 type Skill = { name: string; icon?: string; component?: IconType; iconClassName?: string; invertDark?: boolean };
 type SkillGroup = { category: string; skills: Skill[] };
@@ -37,14 +38,8 @@ const fullTechStack: SkillGroup[] = [
       { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
       { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
       { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
-    ]
-  },
-  {
-    category: 'Data & Analysis',
-    skills: [
       { name: 'Excel', component: FaFileExcel, iconClassName: 'text-[#217346]' },
       { name: 'SQLite', component: SiSqlite, iconClassName: 'text-[#003B57]' },
-      { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
     ]
   },
   {
@@ -74,18 +69,23 @@ const SkillBadge = ({ skill }: { skill: Skill }) => {
   const Icon = skill.component;
 
   return (
-    <span className="flex items-center gap-2 px-4 py-2 mx-2 text-sm font-medium rounded-lg border border-border bg-card text-foreground whitespace-nowrap hover:border-primary/50 transition-colors cursor-default">
-      {Icon ? (
-        <Icon aria-hidden="true" className={`w-5 h-5 shrink-0 ${skill.iconClassName ?? ''}`} />
-      ) : (
-        <img
-          src={skill.icon}
-          alt=""
-          className={`w-5 h-5 object-contain ${skill.invertDark ? 'dark:invert' : ''}`}
-        />
-      )}
-      {skill.name}
-    </span>
+    <SpotlightCard
+      className="mx-2 inline-flex items-center !p-0 !rounded-lg border border-border bg-card shadow-lg transition-all duration-300 cursor-default hover:border-primary/50 hover:z-10 hover:scale-[1.02] hover:shadow-2xl motion-reduce:hover:scale-100"
+      spotlightColor="rgba(255, 255, 255, 0.08)"
+    >
+      <span className="relative z-[2] inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-foreground whitespace-nowrap">
+        {Icon ? (
+          <Icon aria-hidden="true" className={`w-5 h-5 shrink-0 ${skill.iconClassName ?? ''}`} />
+        ) : (
+          <img
+            src={skill.icon}
+            alt=""
+            className={`w-5 h-5 object-contain ${skill.invertDark ? 'dark:invert' : ''}`}
+          />
+        )}
+        {skill.name}
+      </span>
+    </SpotlightCard>
   );
 };
 
