@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { ExternalLink } from 'lucide-react';
+import { FaFileExcel } from 'react-icons/fa';
+import { SiSqlite } from 'react-icons/si';
+import type { IconType } from 'react-icons';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 
 interface CertIcon {
-  src: string;
   alt: string;
+  src?: string;
+  component?: IconType;
+  className?: string;
 }
 
 interface Certification {
@@ -26,7 +31,7 @@ const certifications: Certification[] = [
     link: '/certs/sqlite-fundamentals.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-sqlite-oRigJZ',
     icons: [
-      { src: 'https://cdn.simpleicons.org/sqlite/003B57', alt: 'SQLite' },
+      { component: SiSqlite, alt: 'SQLite', className: 'text-[#003B57]' },
     ],
   },
   {
@@ -36,7 +41,7 @@ const certifications: Certification[] = [
     link: '/certs/excel-formulas-and-data-analysis.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-excel-exc2_3',
     icons: [
-      { src: 'https://cdn.simpleicons.org/microsoftexcel/217346', alt: 'Microsoft Excel' },
+      { component: FaFileExcel, alt: 'Microsoft Excel', className: 'text-[#217346]' },
     ],
   },
   {
@@ -46,7 +51,7 @@ const certifications: Certification[] = [
     link: '/certs/excel-fundamentals.pdf',
     badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-excel-RJobxc',
     icons: [
-      { src: 'https://cdn.simpleicons.org/microsoftexcel/217346', alt: 'Microsoft Excel' },
+      { component: FaFileExcel, alt: 'Microsoft Excel', className: 'text-[#217346]' },
     ],
   },
   {
@@ -186,20 +191,21 @@ const CertEmblem = ({ cert, index }: { cert: Certification; index: number }) => 
 
       {/* Central icons */}
       <div className="relative z-10 flex items-center justify-center gap-1.5 p-2">
-        {cert.icons?.map((icon, i) => (
-          <img
-            key={i}
-            src={icon.src}
-            alt={icon.alt}
-            className={`${
-              cert.icons && cert.icons.length > 2
-                ? 'w-4 h-4 sm:w-5 sm:h-5'
-                : cert.icons && cert.icons.length > 1
-                ? 'w-5 h-5 sm:w-6 sm:h-6'
-                : 'w-6 h-6 sm:w-8 sm:h-8'
-            } object-contain transition-transform duration-300 group-hover/card:scale-110`}
-          />
-        ))}
+        {cert.icons?.map((icon, i) => {
+          const sizeClass = cert.icons && cert.icons.length > 2
+            ? 'w-4 h-4 sm:w-5 sm:h-5'
+            : cert.icons && cert.icons.length > 1
+            ? 'w-5 h-5 sm:w-6 sm:h-6'
+            : 'w-6 h-6 sm:w-8 sm:h-8';
+          const className = `${sizeClass} object-contain transition-transform duration-300 group-hover/card:scale-110 ${icon.className ?? ''}`;
+          const Icon = icon.component;
+
+          return Icon ? (
+            <Icon key={i} role="img" aria-label={icon.alt} className={className} />
+          ) : (
+            <img key={i} src={icon.src} alt={icon.alt} className={className} />
+          );
+        })}
       </div>
     </div>
   );
