@@ -104,7 +104,7 @@ const HeroSection = () => {
 
           {/* Avatar and Name Block */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-6">
-            <div className="relative w-40 h-40 sm:w-48 sm:h-48 flex-shrink-0">
+            <div className="relative w-48 h-48 sm:w-64 sm:h-64 flex-shrink-0">
               <div className="absolute inset-0 rounded-full border border-border bg-card overflow-hidden">
                 {mounted && (prefersReducedMotion ? (
                   <img
