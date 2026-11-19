@@ -4,6 +4,15 @@ import { Github, ArrowRight, ArrowLeft, ArrowUpRight, Download, Database } from 
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import SpotlightCard from "@/components/ui/SpotlightCard";
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
   SiTypescript,
   SiReact,
   SiExpo,
@@ -63,7 +72,12 @@ interface Project {
   livePreview?: string;
   image?: string;
   imageAlt?: string;
-  landscapeCover?: boolean;
+  coverBackground?: string;
+  coverLogo?: string;
+  previewScreens?: {
+    mobile: string;
+    desktop?: string;
+  };
   status: string;
   imageFit?: "cover" | "contain";
   bgImage?: string;
@@ -103,9 +117,12 @@ const projects: Project[] = [
       "A Philippines-wide waterbody explorer and private catch journal in progress. The current prototype is a Cavite pilot while nationwide species coverage and verified fishing guidance are being expanded.",
     tags: ["TypeScript", "Next.js", "React", "IndexedDB"],
     github: "https://github.com/JosephLopezzzz/Bangwit",
-    image: "/bangwit-cover.webp",
-    imageAlt: "Bangwit’s Cavite explorer on desktop and phone beneath its fish mascot",
-    landscapeCover: true,
+    coverBackground: "/bangwit-stage-bg.webp",
+    coverLogo: "/bangwit-icon.webp",
+    previewScreens: {
+      mobile: "/bangwit-mobile-screen.webp",
+      desktop: "/bangwit-desktop-screen.webp",
+    },
   },
   {
     title: "Navo",
@@ -117,9 +134,10 @@ const projects: Project[] = [
       "A destination alarm for Philippine commuters. Riders can save a station or bus stop and choose how far in advance they want an alert.",
     tags: ["TypeScript", "React Native", "Expo", "SQLite"],
     github: "https://github.com/JosephLopezzzz/Navo",
-    image: "/navo-cover.webp",
-    imageAlt: "Navo’s Saved alarms home screen on a phone beside its route-pin logo",
-    landscapeCover: true,
+    coverBackground: "/navo-stage-bg.webp",
+    previewScreens: {
+      mobile: "/navo-mobile-screen.webp",
+    },
   },
   {
     title: "Fraud Detection in Microfinance",
@@ -169,6 +187,142 @@ const projects: Project[] = [
   },
 ];
 
+const ProjectDeviceCover = ({ project }: { project: Project }) => {
+  const screens = project.previewScreens;
+  const isWebApp = Boolean(screens?.desktop);
+
+  return (
+    <div
+      className="relative h-full w-full overflow-hidden rounded-md bg-cover"
+      style={{
+        backgroundImage: project.coverBackground
+          ? `url('${project.coverBackground}')`
+          : undefined,
+        backgroundPosition:
+          project.coverBackground === "/navo-stage-bg.webp"
+            ? "left center"
+            : "center",
+      }}
+    >
+      {project.coverLogo && (
+        <div className="absolute left-1/2 top-[2%] z-30 flex h-[22%] w-[90%] -translate-x-1/2 items-center justify-center gap-2 rounded-full border border-[#c5e2d7] bg-[#def1e8] px-2 shadow-sm">
+          <img
+            src={project.coverLogo}
+            alt=""
+            aria-hidden="true"
+            className="h-[72%] w-auto object-contain"
+          />
+          <span className="text-xl font-bold tracking-tight text-[#064857] sm:text-2xl">
+            {project.title}
+          </span>
+        </div>
+      )}
+
+      {screens?.desktop && (
+        <div className="absolute left-[4%] top-[27%] z-10 w-[91%] xl:top-[21%]">
+          <div className="overflow-hidden rounded-xl border-[3px] border-[#374345] bg-[#11191a] p-[3px] shadow-xl sm:border-4 sm:p-1">
+            <img
+              src={screens.desktop}
+              alt=""
+              aria-hidden="true"
+              loading="lazy"
+              decoding="async"
+              className="block aspect-[1.75] w-full rounded-[5px] object-cover"
+            />
+          </div>
+          <div className="mx-auto h-4 w-[24%] bg-gradient-to-b from-[#7d8d8f] to-[#b8c4c5] shadow-sm" />
+          <div className="mx-auto h-1.5 w-[40%] rounded-b-full bg-[#aebbbc] shadow-md" />
+        </div>
+      )}
+
+      {screens && (
+        <div
+          aria-hidden="true"
+          className={`absolute z-20 aspect-[0.47] rounded-[1.65rem] bg-gradient-to-br from-[#a9b3b6] via-[#31393c] to-[#101415] p-[3px] shadow-[0_12px_24px_rgba(0,0,0,0.42)] sm:rounded-[2rem] sm:p-1 ${isWebApp ? "right-[4%] top-[24%] h-[72%]" : "right-[1%] top-[8%] h-[84%]"}`}
+        >
+          <div className="h-full w-full overflow-hidden rounded-[1.45rem] border-2 border-[#111719] bg-white sm:rounded-[1.8rem]">
+            <img
+              src={screens.mobile}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover"
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const ProjectStandardCover = ({ project }: { project: Project }) => (
+  <div
+    className={`relative flex h-full w-full items-center justify-center overflow-hidden rounded-md ${project.bgImage || project.bgColor ? "" : "bg-white"}`}
+    style={{
+      ...(project.bgImage
+        ? {
+            backgroundImage: `url('${project.bgImage}')`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }
+        : {}),
+      ...(project.bgColor ? { backgroundColor: project.bgColor } : {}),
+    }}
+  >
+    {project.livePreview ? (
+      <>
+        <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.05]">
+          <iframe
+            src={project.livePreview}
+            title={`${project.title} live preview`}
+            aria-hidden="true"
+            tabIndex={-1}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            sandbox="allow-scripts"
+            className="pointer-events-none absolute left-0 top-0 h-[300%] w-[300%] origin-top-left border-0"
+            style={{ transform: "scale(0.3333)" }}
+          />
+        </div>
+        <span className="absolute right-2 top-2 z-20 rounded-full border border-white/30 bg-black/60 px-2 py-1 text-[0.6rem] font-mono uppercase tracking-wider text-white backdrop-blur-sm">
+          Brand site preview
+        </span>
+      </>
+    ) : project.image ? (
+      <img
+        src={project.image}
+        alt={project.imageAlt ?? project.title}
+        loading="lazy"
+        decoding="async"
+        className={`relative z-10 h-full w-full ${project.imageFit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-[1.05]`}
+      />
+    ) : (
+      <>
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage:
+              "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <span
+          className="pointer-events-none absolute select-none font-mono text-8xl font-bold"
+          style={{
+            color: "hsl(var(--foreground)/0.1)",
+            letterSpacing: "-0.05em",
+          }}
+        >
+          {project.accentChar}
+        </span>
+        <span className="relative z-10 font-mono text-5xl font-bold tracking-tighter text-foreground/80">
+          {project.initials}
+        </span>
+      </>
+    )}
+  </div>
+);
+
 type ProjectsSectionProps = {
   mode?: "featured" | "all";
 };
@@ -184,9 +338,9 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
       ref={ref as React.RefObject<HTMLDivElement>}
     >
       <div
-        className={`section-container transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+        className={`section-container !max-w-7xl transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
       >
-        <div className="mx-auto w-full max-w-[45rem]">
+        <div className="mx-auto w-full max-w-7xl">
           <div className="mb-5 flex items-center justify-between gap-4">
             <h2 className="mb-0 font-display text-[1.75rem] font-normal leading-tight tracking-tight text-foreground">
               Projects
@@ -202,90 +356,107 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
             )}
           </div>
 
-          <div id="project-grid" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div id="project-grid" className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {(isAllProjectsPage ? projects : projects.slice(0, 3)).map((project, index) => (
             <SpotlightCard
               key={index}
               className="group flex h-full flex-col !rounded-xl !border-dotted !border-border/60 !bg-transparent !p-2.5"
             >
-              {/* Project thumbnail or live site preview */}
-              <a
-                href={project.link || project.download || project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Open ${project.title}${project.livePreview ? " live site" : ""}`}
-                className="block w-full shrink-0"
-              >
-                <div className={`w-full rounded-lg border border-border/30 bg-white p-1.5 ${project.landscapeCover ? "aspect-[3/2] lg:h-40 lg:aspect-auto" : "h-40"}`}>
-                  <div
-                    className={`relative flex h-full w-full items-center justify-center overflow-hidden rounded-md ${project.bgImage || project.bgColor ? "" : "bg-white"}`}
-                    style={{
-                      ...(project.bgImage
-                        ? {
-                            backgroundImage: `url('${project.bgImage}')`,
-                            backgroundSize: "cover",
-                            backgroundPosition: "center",
-                          }
-                        : {}),
-                      ...(project.bgColor
-                        ? {
-                            backgroundColor: project.bgColor,
-                          }
-                        : {}),
-                    }}
-                  >
-                    {project.livePreview ? (
-                      <>
-                        <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-[1.05]">
-                          <iframe
-                            src={project.livePreview}
-                            title={`${project.title} live preview`}
-                            aria-hidden="true"
-                            tabIndex={-1}
-                            loading="lazy"
-                            referrerPolicy="no-referrer"
-                            sandbox="allow-scripts"
-                            className="pointer-events-none absolute left-0 top-0 h-[300%] w-[300%] origin-top-left border-0"
-                            style={{ transform: "scale(0.3333)" }}
-                          />
-                        </div>
-                        <span className="absolute right-2 top-2 z-20 rounded-full border border-white/30 bg-black/60 px-2 py-1 text-[0.6rem] font-mono uppercase tracking-wider text-white backdrop-blur-sm">
-                          Brand site preview
-                        </span>
-                      </>
-                    ) : project.image ? (
-                      <img
-                        src={project.image}
-                        alt={project.imageAlt ?? project.title}
-                        className={`relative z-10 h-full w-full ${project.imageFit === "contain" ? "object-contain" : "object-cover"} transition-transform duration-500 group-hover:scale-[1.05]`}
-                      />
-                    ) : (
-                      <>
-                        <div
-                          className="absolute inset-0 opacity-20"
-                          style={{
-                            backgroundImage:
-                              "linear-gradient(hsl(var(--foreground)) 1px, transparent 1px), linear-gradient(90deg, hsl(var(--foreground)) 1px, transparent 1px)",
-                            backgroundSize: "24px 24px",
-                          }}
-                        />
-                        <span
-                          className="pointer-events-none absolute select-none font-mono text-8xl font-bold"
-                          style={{
-                            color: "hsl(var(--foreground)/0.1)",
-                            letterSpacing: "-0.05em",
-                          }}
+              {project.previewScreens ? (
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <button
+                      type="button"
+                      aria-label={`Open ${project.title} screen preview`}
+                      className="block w-full shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    >
+                      <div className="aspect-square w-full rounded-lg border border-border/30 bg-white p-1.5">
+                        <ProjectDeviceCover project={project} />
+                      </div>
+                    </button>
+                  </DialogTrigger>
+
+                  <DialogContent className="flex h-[100dvh] max-h-[100dvh] w-[100vw] max-w-none flex-col gap-3 overflow-hidden rounded-none border-0 bg-background p-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:h-[calc(100dvh-2rem)] sm:max-h-[calc(100dvh-2rem)] sm:w-[calc(100vw-2rem)] sm:max-w-6xl sm:rounded-lg sm:border sm:p-5">
+                    <DialogHeader className="shrink-0 pr-10 text-left">
+                      <DialogTitle>{project.title} interface</DialogTitle>
+                      <DialogDescription>
+                        {project.previewScreens.desktop
+                          ? "Switch between the mobile and desktop views."
+                          : "Navo’s Saved alarms screen."}
+                      </DialogDescription>
+                    </DialogHeader>
+
+                    {project.previewScreens.desktop ? (
+                      <Tabs
+                        defaultValue="mobile"
+                        className="flex min-h-0 flex-1 flex-col gap-3"
+                      >
+                        <TabsList
+                          aria-label={`${project.title} screen sizes`}
+                          className="grid h-11 w-full shrink-0 grid-cols-2 sm:w-64"
                         >
-                          {project.accentChar}
-                        </span>
-                        <span className="relative z-10 font-mono text-5xl font-bold tracking-tighter text-foreground/80">
-                          {project.initials}
-                        </span>
-                      </>
+                          <TabsTrigger value="mobile" className="min-h-11">
+                            Mobile
+                          </TabsTrigger>
+                          <TabsTrigger value="desktop" className="min-h-11">
+                            Desktop
+                          </TabsTrigger>
+                        </TabsList>
+
+                        <TabsContent
+                          value="mobile"
+                          className="mt-0 flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-muted/50 p-2 data-[state=inactive]:hidden"
+                        >
+                          <img
+                            src={project.previewScreens.mobile}
+                            alt="Bangwit mobile screen showing the Cavite waterbody explorer"
+                            className="h-full w-full object-contain"
+                            decoding="async"
+                          />
+                        </TabsContent>
+
+                        <TabsContent
+                          value="desktop"
+                          className="mt-0 flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-muted/50 p-2 data-[state=inactive]:hidden"
+                        >
+                          <img
+                            src={project.previewScreens.desktop}
+                            alt="Bangwit desktop screen showing the Cavite waterbody explorer"
+                            className="h-full w-full object-contain"
+                            decoding="async"
+                          />
+                        </TabsContent>
+                      </Tabs>
+                    ) : (
+                      <div className="flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-xl bg-muted/50 p-2">
+                        <img
+                          src={project.previewScreens.mobile}
+                          alt="Navo Saved alarms screen showing its route reminder interface"
+                          className="h-full w-full object-contain"
+                          decoding="async"
+                        />
+                      </div>
                     )}
+                  </DialogContent>
+                </Dialog>
+              ) : (
+                <a
+                  href={project.link || project.download || project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`Open ${project.title}${project.livePreview ? " live site" : ""}`}
+                  className="block w-full shrink-0"
+                >
+                  <div className="aspect-square w-full rounded-lg border border-border/30 bg-white p-1.5">
+                    <ProjectStandardCover project={project} />
                   </div>
-                </div>
-              </a>
+                </a>
+              )}
+              {project.previewScreens && (
+                <p className="mt-2 px-1 text-xs text-muted-foreground">
+                  Tap the image to inspect the screen.
+                </p>
+              )}
 
               <div className="mt-3 flex flex-grow flex-col">
                 <div className="mb-2 flex flex-col items-start gap-1.5">
