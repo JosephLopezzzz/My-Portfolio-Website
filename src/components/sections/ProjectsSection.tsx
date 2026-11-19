@@ -78,6 +78,7 @@ interface Project {
     mobile: string;
     desktop?: string;
   };
+  landscapeCover?: boolean;
   status: string;
   imageFit?: "cover" | "contain";
   bgImage?: string;
@@ -123,6 +124,7 @@ const projects: Project[] = [
       mobile: "/bangwit-mobile-screen.webp",
       desktop: "/bangwit-desktop-screen.webp",
     },
+    landscapeCover: true,
   },
   {
     title: "Navo",
@@ -138,6 +140,7 @@ const projects: Project[] = [
     previewScreens: {
       mobile: "/navo-mobile-screen.webp",
     },
+    landscapeCover: true,
   },
   {
     title: "Fraud Detection in Microfinance",
@@ -338,9 +341,9 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
       ref={ref as React.RefObject<HTMLDivElement>}
     >
       <div
-        className={`section-container !max-w-7xl transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+        className={`section-container transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
       >
-        <div className="mx-auto w-full max-w-7xl">
+        <div className="mx-auto w-full max-w-[45rem]">
           <div className="mb-5 flex items-center justify-between gap-4">
             <h2 className="mb-0 font-display text-[1.75rem] font-normal leading-tight tracking-tight text-foreground">
               Projects
@@ -356,7 +359,7 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
             )}
           </div>
 
-          <div id="project-grid" className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+          <div id="project-grid" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {(isAllProjectsPage ? projects : projects.slice(0, 3)).map((project, index) => (
             <SpotlightCard
               key={index}
@@ -370,7 +373,7 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                       aria-label={`Open ${project.title} screen preview`}
                       className="block w-full shrink-0 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                     >
-                      <div className="aspect-square w-full rounded-lg border border-border/30 bg-white p-1.5">
+                      <div className={`w-full rounded-lg border border-border/30 bg-white p-1.5 ${project.landscapeCover ? "aspect-[3/2] lg:h-40 lg:aspect-auto" : "h-40"}`}>
                         <ProjectDeviceCover project={project} />
                       </div>
                     </button>
@@ -447,15 +450,10 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                   aria-label={`Open ${project.title}${project.livePreview ? " live site" : ""}`}
                   className="block w-full shrink-0"
                 >
-                  <div className="aspect-square w-full rounded-lg border border-border/30 bg-white p-1.5">
+                  <div className={`w-full rounded-lg border border-border/30 bg-white p-1.5 ${project.landscapeCover ? "aspect-[3/2] lg:h-40 lg:aspect-auto" : "h-40"}`}>
                     <ProjectStandardCover project={project} />
                   </div>
                 </a>
-              )}
-              {project.previewScreens && (
-                <p className="mt-2 px-1 text-xs text-muted-foreground">
-                  Tap the image to inspect the screen.
-                </p>
               )}
 
               <div className="mt-3 flex flex-grow flex-col">
