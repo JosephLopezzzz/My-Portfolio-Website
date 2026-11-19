@@ -44,6 +44,7 @@ const fullTechStack: SkillGroup[] = [
     skills: [
       { name: 'Excel', component: FaFileExcel, iconClassName: 'text-[#217346]' },
       { name: 'SQLite', component: SiSqlite, iconClassName: 'text-[#003B57]' },
+      { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
     ]
   },
   {
