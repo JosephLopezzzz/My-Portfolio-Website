@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
+import { FaFileExcel } from 'react-icons/fa';
+import { SiSqlite } from 'react-icons/si';
+import type { IconType } from 'react-icons';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { LayoutGrid } from 'lucide-react';
 
-type Skill = { name: string; icon: string; invertDark?: boolean };
+type Skill = { name: string; icon?: string; component?: IconType; iconClassName?: string; invertDark?: boolean };
 type SkillGroup = { category: string; skills: Skill[] };
 
 const fullTechStack: SkillGroup[] = [
@@ -37,6 +40,13 @@ const fullTechStack: SkillGroup[] = [
     ]
   },
   {
+    category: 'Data & Analysis',
+    skills: [
+      { name: 'Excel', component: FaFileExcel, iconClassName: 'text-[#217346]' },
+      { name: 'SQLite', component: SiSqlite, iconClassName: 'text-[#003B57]' },
+    ]
+  },
+  {
     category: 'Tools & Version Control',
     skills: [
       { name: 'Git', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg' },
@@ -59,16 +69,24 @@ const fullTechStack: SkillGroup[] = [
 
 const allSkills = fullTechStack.flatMap(cat => cat.skills);
 
-const SkillBadge = ({ skill }: { skill: Skill }) => (
-  <span className="flex items-center gap-2 px-4 py-2 mx-2 text-sm font-medium rounded-lg border border-border bg-card text-foreground whitespace-nowrap hover:border-primary/50 transition-colors cursor-default">
-    <img
-      src={skill.icon}
-      alt=""
-      className={`w-5 h-5 object-contain ${skill.invertDark ? 'dark:invert' : ''}`}
-    />
-    {skill.name}
-  </span>
-);
+const SkillBadge = ({ skill }: { skill: Skill }) => {
+  const Icon = skill.component;
+
+  return (
+    <span className="flex items-center gap-2 px-4 py-2 mx-2 text-sm font-medium rounded-lg border border-border bg-card text-foreground whitespace-nowrap hover:border-primary/50 transition-colors cursor-default">
+      {Icon ? (
+        <Icon aria-hidden="true" className={`w-5 h-5 shrink-0 ${skill.iconClassName ?? ''}`} />
+      ) : (
+        <img
+          src={skill.icon}
+          alt=""
+          className={`w-5 h-5 object-contain ${skill.invertDark ? 'dark:invert' : ''}`}
+        />
+      )}
+      {skill.name}
+    </span>
+  );
+};
 
 const SkillsSection = () => {
   const { ref, isVisible } = useScrollAnimation();
