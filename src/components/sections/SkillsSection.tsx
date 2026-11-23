@@ -31,14 +31,12 @@ const fullTechStack: SkillGroup[] = [
     skills: [
       { name: 'Node.js', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
       { name: 'PHP', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg' },
-      { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
       { name: 'Java', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg' },
       { name: 'C++', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg' },
       { name: 'C', icon: '/c-logo.svg' },
       { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
       { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
       { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
-      { name: 'SQLite', component: SiSqlite, iconClassName: 'text-[#003B57]' },
     ]
   },
   {
@@ -46,6 +44,8 @@ const fullTechStack: SkillGroup[] = [
     skills: [
       { name: 'Excel', component: FaFileExcel, iconClassName: 'text-[#217346]' },
       { name: 'Power BI', component: FaChartBar, iconClassName: 'text-[#F2C811]' },
+      { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg' },
+      { name: 'SQLite', component: SiSqlite, iconClassName: 'text-[#003B57]' },
     ]
   },
   {
