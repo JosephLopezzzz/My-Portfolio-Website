@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronDown, ExternalLink } from 'lucide-react';
-import { FaFileExcel } from 'react-icons/fa';
+import { FaChartBar, FaFileExcel } from 'react-icons/fa';
 import { SiSqlite } from 'react-icons/si';
 import type { IconType } from 'react-icons';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
@@ -44,7 +44,7 @@ const certificationPaths: CertificationPath[] = [
   {
     id: 'data-analysis',
     title: 'Data Analysis',
-    description: 'Excel · SQL with SQLite · Python',
+    description: 'Excel · Power BI · SQL with SQLite · Python',
     certifications: [
       {
         title: 'Excel Fundamentals',
@@ -63,11 +63,27 @@ const certificationPaths: CertificationPath[] = [
         icons: [{ component: FaFileExcel, alt: 'Microsoft Excel', className: 'text-[#217346]' }],
       },
       {
+        title: 'Power BI Basics',
+        issuer: 'Coddy Team',
+        date: '2026',
+        link: '/certs/power-bi-basics.pdf',
+        badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-power_bi-RP4bx1',
+        icons: [{ component: FaChartBar, alt: 'Power BI', className: 'text-[#F2C811]' }],
+      },
+      {
         title: 'SQLite Fundamentals',
         issuer: 'Coddy Team',
         date: '2026',
         link: '/certs/sqlite-fundamentals.pdf',
         badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-sqlite-oRigJZ',
+        icons: [{ component: SiSqlite, alt: 'SQLite', className: 'text-[#003B57]' }],
+      },
+      {
+        title: 'SQLite Beyond the Basics',
+        issuer: 'Coddy Team',
+        date: '2026',
+        link: '/certs/sqlite-beyond-the-basics.pdf',
+        badgeUrl: 'https://coddy.tech/certifications/sx1ZOs-sqlite-PcA4IJ',
         icons: [{ component: SiSqlite, alt: 'SQLite', className: 'text-[#003B57]' }],
       },
       pythonProgrammingCertification,

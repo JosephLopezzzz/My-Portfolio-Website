@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import { FaFileExcel } from 'react-icons/fa';
+import { FaChartBar, FaFileExcel } from 'react-icons/fa';
 import { SiSqlite } from 'react-icons/si';
 import type { IconType } from 'react-icons';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
@@ -38,8 +38,14 @@ const fullTechStack: SkillGroup[] = [
       { name: 'MySQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg' },
       { name: 'PostgreSQL', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg' },
       { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg' },
-      { name: 'Excel', component: FaFileExcel, iconClassName: 'text-[#217346]' },
       { name: 'SQLite', component: SiSqlite, iconClassName: 'text-[#003B57]' },
+    ]
+  },
+  {
+    category: 'Data & Analytics',
+    skills: [
+      { name: 'Excel', component: FaFileExcel, iconClassName: 'text-[#217346]' },
+      { name: 'Power BI', component: FaChartBar, iconClassName: 'text-[#F2C811]' },
     ]
   },
   {

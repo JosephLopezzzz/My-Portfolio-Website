@@ -3,7 +3,7 @@ import { Github, Linkedin, Mail, ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import ThemeToggle from '@/components/ThemeToggle';
 import { ChatBot } from '@/components/ui/ChatBot';
-import PixelTransition from '@/components/ui/PixelTransition';
+import DitherVeil from '@/components/ui/DitherVeil';
 import { useReducedMotion } from 'framer-motion';
 
 const HERO_NAME = 'Joseph T. Lopez';
@@ -114,36 +114,14 @@ const HeroSection = () => {
                     draggable={false}
                   />
                 ) : (
-                  <PixelTransition
-                    firstContent={
-                      <>
-                        <img
-                          src="/pfp/white1x1.png"
-                          alt="Joseph Lopez"
-                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-                          style={{ opacity: isDark ? 0 : 1 }}
-                          draggable={false}
-                        />
-                        <img
-                          src="/pfp/black1x1.png"
-                          alt="Joseph Lopez"
-                          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-                          style={{ opacity: isDark ? 1 : 0 }}
-                          draggable={false}
-                        />
-                      </>
-                    }
-                    secondContent={
-                      <img
-                        src={isDark ? '/profile/prof-night.png' : '/profile/prof-day-hover.jpg'}
-                        alt="Joseph Lopez Real"
-                        className="absolute inset-0 w-full h-full object-cover"
-                        draggable={false}
-                      />
-                    }
-                    gridSize={10}
-                    pixelColor={isDark ? '#000000' : '#ffffff'}
-                    animationStepDuration={0.4}
+                  <DitherVeil
+                    baseSrc={isDark ? '/pfp/black1x1.png' : '/pfp/white1x1.png'}
+                    src={isDark ? '/profile/prof-night.png' : '/profile/prof-day-hover.jpg'}
+                    alt="Joseph Lopez"
+                    pixelSize={4}
+                    revealRadius={84}
+                    softness={0.65}
+                    linger={0.7}
                     className="w-full h-full"
                   />
                 ))}
