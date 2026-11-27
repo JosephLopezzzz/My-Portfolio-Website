@@ -70,6 +70,7 @@ const getTechIcon = (tag: string) => {
 
 interface Project {
   title: string;
+  category: "Side project" | "School project" | "Team capstone";
   initials: string;
   accentChar: string;
   role?: string;
@@ -102,6 +103,7 @@ interface Project {
 const projects: Project[] = [
   {
     title: "Nokma",
+    category: "Side project",
     initials: "NK",
     accentChar: "ノ",
     role: "Independent Developer",
@@ -122,6 +124,7 @@ const projects: Project[] = [
   },
   {
     title: "Bangwit",
+    category: "Side project",
     initials: "BW",
     accentChar: "",
     role: "Independent Developer",
@@ -142,6 +145,7 @@ const projects: Project[] = [
   },
   {
     title: "Navo",
+    category: "Side project",
     initials: "NV",
     accentChar: "",
     role: "Independent Developer",
@@ -162,7 +166,28 @@ const projects: Project[] = [
     landscapeCover: true,
   },
   {
+    title: "MatchBite",
+    category: "Side project",
+    initials: "MB",
+    accentChar: "🍴",
+    role: "Independent Developer",
+    roleHighlight: true,
+    status: "Responsive mobile and desktop previews available",
+    description:
+      "A food-finding web app that matches cravings with pantry ingredients and budget, with mobile and desktop experiences.",
+    tags: ["JavaScript", "PWA", "Supabase"],
+    github: "https://github.com/JosephLopezzzz/BiteMatch",
+    coverImage: "/matchbite-desktop-screen.png",
+    previewFrame: "iphone",
+    previewScreens: {
+      mobile: "/matchbite-mobile-screen.png",
+      desktop: "/matchbite-desktop-screen.png",
+    },
+    landscapeCover: true,
+  },
+  {
     title: "Fraud Detection in Microfinance",
+    category: "School project",
     initials: "FD",
     accentChar: "∑",
     role: "Full-stack development",
@@ -179,6 +204,7 @@ const projects: Project[] = [
   },
   {
     title: "HR Management System",
+    category: "School project",
     initials: "HR",
     accentChar: "///",
     role: "Full Stack Developer",
@@ -195,6 +221,7 @@ const projects: Project[] = [
   },
   {
     title: "FleetOps",
+    category: "Team capstone",
     initials: "FT",
     accentChar: "F",
     projectType: "Team capstone",
@@ -208,6 +235,12 @@ const projects: Project[] = [
     imageAlt: "FleetOps fleet and transportation management system",
   },
 ];
+
+const projectCategoryLabels: Record<Project["category"], string> = {
+  "Side project": "Side Projects",
+  "School project": "School Projects",
+  "Team capstone": "Team Capstone",
+};
 
 const ProjectDeviceCover = ({ project }: { project: Project }) => {
   return (
@@ -353,6 +386,8 @@ type ProjectsSectionProps = {
 const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
   const { ref, isVisible } = useScrollAnimation();
   const isAllProjectsPage = mode === "all";
+  const visibleProjects = isAllProjectsPage ? projects : projects.slice(0, 3);
+  const ProjectTitle = isAllProjectsPage ? "h4" : "h3";
 
   return (
     <section
@@ -380,9 +415,14 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
           </div>
 
           <div id="project-grid" className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {(isAllProjectsPage ? projects : projects.slice(0, 3)).map((project, index) => (
+            {visibleProjects.map((project, index) => (
+            <React.Fragment key={project.title}>
+            {isAllProjectsPage && (index === 0 || visibleProjects[index - 1].category !== project.category) && (
+              <h3 className="col-span-full mb-[-0.5rem] pt-3 font-display text-xl font-medium leading-tight text-foreground">
+                {projectCategoryLabels[project.category]}
+              </h3>
+            )}
             <SpotlightCard
-              key={index}
               className="group flex h-full flex-col !rounded-xl !border-dotted !border-border/60 !bg-transparent !p-2.5"
             >
               {project.previewScreens ? (
@@ -405,7 +445,7 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                       <DialogDescription>
                         {project.previewScreens.desktop
                           ? "Switch between desktop and iPhone-framed mobile views."
-                          : "Navo’s Saved alarms screen in an iPhone frame."}
+                          : "This mobile screen is shown in an iPhone frame."}
                       </DialogDescription>
                     </DialogHeader>
 
@@ -433,12 +473,12 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                           {project.previewFrame === "iphone" ? (
                             <IphoneScreenPreview
                               src={project.previewScreens.mobile}
-                              alt="Bangwit mobile explorer screen showing the Cavite pilot area"
+                              alt={`${project.title} mobile experience shown in an iPhone frame`}
                             />
                           ) : (
                             <img
                               src={project.previewScreens.mobile}
-                              alt="Bangwit mobile screen showing the Cavite waterbody explorer"
+                              alt={`${project.title} mobile experience`}
                               className="h-full w-full object-contain"
                               decoding="async"
                             />
@@ -451,7 +491,7 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                         >
                           <img
                             src={project.previewScreens.desktop}
-                            alt="Bangwit desktop screen showing the Cavite waterbody explorer"
+                            alt={`${project.title} desktop experience`}
                             className="h-full w-full object-contain"
                             decoding="async"
                           />
@@ -499,12 +539,12 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
 
               <div className="mt-3 flex flex-grow flex-col">
                 <div className="mb-2 flex flex-col items-start gap-1.5">
-                  <h3 className="text-lg font-semibold leading-tight text-foreground transition-colors group-hover:text-primary">
+                  <ProjectTitle className="text-lg font-semibold leading-tight text-foreground transition-colors group-hover:text-primary">
                     {project.title}
-                  </h3>
-                  {(project.projectType || project.projectStatus) && (
+                  </ProjectTitle>
+                  {(project.projectStatus || (!isAllProjectsPage && project.projectType)) && (
                     <div className="flex max-w-full flex-wrap gap-1.5">
-                      {project.projectType && (
+                      {!isAllProjectsPage && project.projectType && (
                         <span className="max-w-full whitespace-nowrap rounded-sm border border-foreground/30 px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider text-muted-foreground">
                           {project.projectType}
                         </span>
@@ -618,6 +658,7 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                 </div>
               </div>
             </SpotlightCard>
+            </React.Fragment>
           ))}
           </div>
 
