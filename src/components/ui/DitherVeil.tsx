@@ -210,14 +210,13 @@ export default function DitherVeil({
     let image: HTMLImageElement | null = null;
     let raf = 0;
     let last = performance.now();
-    let presence = 0;
     let trailUntil = 0;
     let visible = true;
     let resizePending = true;
     let pinned = false;
     let pointerOver = false;
     const pointer = { x: 0, y: 0, inside: false, fresh: true, placed: false };
-    const brush = { x: 0, y: 0, px: 0, py: 0 };
+    const brush = { x: 0, y: 0 };
 
     const clearMasks = () => {
       maskUniforms.uFade.value = 1;
@@ -269,40 +268,26 @@ export default function DitherVeil({
         applyLayout();
       }
 
-      const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+      const dt = Math.max(0, (now - last) / 1000);
       last = now;
-      const targetPresence = pointer.inside ? 1 : 0;
-      presence += (targetPresence - presence) * (1 - Math.exp(-dt / 0.16));
 
-      if (pointer.fresh) {
-        brush.x = brush.px = pointer.x;
-        brush.y = brush.py = pointer.y;
-        pointer.fresh = false;
-      } else {
-        const follow = 1 - Math.exp(-dt / 0.035);
-        brush.x += (pointer.x - brush.x) * follow;
-        brush.y += (pointer.y - brush.y) * follow;
-      }
-
+      // Stamp the whole path between frames, with a solid core and a dithered edge.
+      const fading = !pointer.inside && now < trailUntil;
       maskUniforms.tPrev.value = masks[0].texture;
-      maskUniforms.uFrom.value = [brush.px, brush.py];
-      maskUniforms.uTo.value = [brush.x, brush.y];
-      maskUniforms.uStrength.value = presence;
-      maskUniforms.uFade.value = pointer.inside ? 0 : linger > 0 ? dt / linger : 1;
+      maskUniforms.uFrom.value = pointer.fresh ? [pointer.x, pointer.y] : [brush.x, brush.y];
+      maskUniforms.uTo.value = [pointer.x, pointer.y];
+      maskUniforms.uStrength.value = pointer.inside ? 1 : 0;
+      maskUniforms.uFade.value = pointer.inside ? 0 : fading ? dt / linger : 1;
       renderer.render({ scene: maskMesh, target: masks[1], clear: true });
       masks = [masks[1], masks[0]];
       maskUniforms.tPrev.value = masks[0].texture;
       viewUniforms.tMask.value = masks[0].texture;
       renderer.render({ scene: viewMesh, clear: true });
-      brush.px = brush.x;
-      brush.py = brush.y;
+      brush.x = pointer.x;
+      brush.y = pointer.y;
+      pointer.fresh = false;
 
-      if (presence > 0.002 && !pointer.inside) {
-        trailUntil = Math.max(trailUntil, now + linger * 1000 + 100);
-      }
-
-      const stillChanging = Math.abs(targetPresence - presence) > 0.002;
-      if (stillChanging || (!pointer.inside && now < trailUntil)) {
+      if (fading) {
         raf = requestAnimationFrame(frame);
       }
     };
@@ -314,7 +299,7 @@ export default function DitherVeil({
       pointer.placed = true;
     };
     const refreshTrail = () => {
-      trailUntil = performance.now() + linger * 1000 + 100;
+      trailUntil = performance.now() + linger * 1000;
     };
     const onMove = (event: PointerEvent) => {
       locate(event);
@@ -323,7 +308,6 @@ export default function DitherVeil({
         pointer.inside = true;
         pointer.fresh = true;
       }
-      refreshTrail();
       wake();
     };
     const onLeave = () => {

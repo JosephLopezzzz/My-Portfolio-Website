@@ -120,7 +120,7 @@ const HeroSection = () => {
                     alt="Joseph Lopez"
                     pixelSize={3}
                     revealRadius={84}
-                    softness={0.65}
+                    softness={0.45}
                     linger={0.7}
                     className="w-full h-full"
                   />
