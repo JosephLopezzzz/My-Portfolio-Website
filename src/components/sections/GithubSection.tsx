@@ -4,11 +4,6 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { useTheme } from 'next-themes';
 import SpotlightCard from '@/components/ui/SpotlightCard';
 
-const activityTheme = {
-  light: ['#ededed', '#c8c8c8', '#969696', '#5c5c5c', '#222222'],
-  dark: ['#222222', '#4a4a4a', '#7a7a7a', '#b0b0b0', '#f2f2f2'],
-};
-
 const GithubSection = () => {
   const { ref, isVisible } = useScrollAnimation();
   const { resolvedTheme } = useTheme();
@@ -50,7 +45,6 @@ const GithubSection = () => {
             <GitHubCalendar
               username="JosephLopezzzz"
               colorScheme={isDark ? 'dark' : 'light'}
-              theme={activityTheme}
               blockSize={blockSize}
               blockMargin={1}
               fontSize={12}

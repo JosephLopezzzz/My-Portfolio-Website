@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Github, Linkedin, Mail, ArrowDown, ArrowUpRight } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import ThemeToggle from '@/components/ThemeToggle';
-import { ChatBot } from '@/components/ui/ChatBot';
+import { contactEmail, linkedInUrl } from '@/lib/contact';
 import DitherVeil from '@/components/ui/DitherVeil';
 import { useReducedMotion } from 'framer-motion';
 
@@ -159,11 +159,11 @@ const HeroSection = () => {
                   <Github size={20} />
                   <span className="sr-only">GitHub</span>
                 </a>
-                <a href="https://www.linkedin.com/in/joseph-lopez-5a2090412" target="_blank" rel="noreferrer" className={HERO_SOCIAL_LINK_CLASS_NAME}>
+                <a href={linkedInUrl} target="_blank" rel="noreferrer" className={HERO_SOCIAL_LINK_CLASS_NAME}>
                   <Linkedin size={20} />
                   <span className="sr-only">LinkedIn</span>
                 </a>
-                <a href="mailto:josephlopez102004@gmail.com" className={HERO_SOCIAL_LINK_CLASS_NAME}>
+                <a href={`mailto:${contactEmail}`} className={HERO_SOCIAL_LINK_CLASS_NAME}>
                   <Mail size={20} />
                   <span className="sr-only">Email</span>
                 </a>
@@ -197,7 +197,7 @@ const HeroSection = () => {
           {/* CTA Group */}
           <div className="flex flex-wrap items-center gap-3">
             <a
-              href="mailto:josephlopez102004@gmail.com?subject=Project%20inquiry"
+              href={`mailto:${contactEmail}?subject=Project%20inquiry`}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 font-medium text-background bg-foreground rounded-lg hover:opacity-90 hover:-translate-y-0.5 active:translate-y-0 transition-all shadow-sm"
             >
               <Mail size={16} />
@@ -225,9 +225,6 @@ const HeroSection = () => {
 
           </div>
       </section>
-
-      {/* Floating Chat Button */}
-      <ChatBot />
     </>
   );
 };

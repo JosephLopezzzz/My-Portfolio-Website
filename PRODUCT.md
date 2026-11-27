@@ -61,7 +61,7 @@ Joseph's work is technical and earnest: real systems (HR management, fraud detec
 - Resume PDF at `/public/resume.pdf`
 - The public resume currently includes a phone number; review whether it should remain on the public download before republishing it.
 - Contact links should favor email, GitHub, and LinkedIn; do not add personal social links by default.
-- Chatbot Gemini requests must go through the server-side `/api/chat` route using `GEMINI_API_KEY`; never expose that key in client code
+- The Work with me panel offers email, LinkedIn, and a public Google Calendar booking link.
 
 ## Brand Commitments
 

@@ -18,6 +18,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
+import { contactEmail, linkedInUrl } from "@/lib/contact";
 
 const socialLinks = [
   {
@@ -29,7 +30,7 @@ const socialLinks = [
   {
     label: "LinkedIn",
     value: "Joseph T. Lopez",
-    href: "https://www.linkedin.com/in/joseph-lopez-5a2090412",
+    href: linkedInUrl,
     icon: Linkedin,
   },
 ];
@@ -111,7 +112,7 @@ const ContactSection = () => {
     e.preventDefault();
     e.stopPropagation();
     try {
-      await navigator.clipboard.writeText("josephlopez102004@gmail.com");
+      await navigator.clipboard.writeText(contactEmail);
       setCopied(true);
       toast.success("Email copied to clipboard!");
       window.setTimeout(() => setCopied(false), 2500);
@@ -155,6 +156,7 @@ const ContactSection = () => {
             onTouchEnd={handlePointerLeave}
             onTouchCancel={handlePointerLeave}
             className="w-full cursor-grab active:cursor-grabbing rounded-3xl"
+            data-cursor="native"
           >
             <SpotlightCard className="flex flex-col gap-6 bg-card/60 backdrop-blur-xl border border-border/80 hover:border-foreground/30 shadow-lg hover:shadow-2xl transition-all duration-300 relative overflow-hidden group">
               {/* Top Meta Bar: Status & Quickest way to reach me */}
@@ -180,14 +182,14 @@ const ContactSection = () => {
               {/* Interactive Email Actions: Open Mailto + Quick Copy with instant tactile feedback */}
               <div className="flex flex-wrap items-center gap-3 z-10">
                 <a
-                  href="mailto:josephlopez102004@gmail.com"
+                  href={`mailto:${contactEmail}`}
                   className="minimal-btn group/email active:scale-95 transition-transform"
                 >
                   <Mail
                     size={16}
                     className="group-hover/email:scale-110 transition-transform"
                   />
-                  <span>josephlopez102004@gmail.com</span>
+                  <span>{contactEmail}</span>
                 </a>
 
                 <button

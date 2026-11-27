@@ -10,9 +10,9 @@ Personal portfolio for selected web and mobile projects, technical skills, educa
 - A responsive, single-page portfolio with a light and dark theme.
 - Project summaries that identify role, scope, stack, and available source or preview links.
 - A direct project inquiry path, Services and Process sections, plus skills, education, and certificates.
-- An optional streaming Gemini assistant backed by the server-side `/api/chat` route.
-- Ambient particles, cursor sparks, and an animated portrait, with reduced-motion preferences respected.
-- Gemini credentials stay server-side; the browser does not receive the API key.
+- A Work with me panel with direct email, LinkedIn, and Google Calendar booking.
+- Ambient particles, an animated cursor, click sparks, and an animated portrait, with reduced motion preferences respected.
+- An optional live estimate of active browser tabs in the footer.
 
 ## Selected projects
 
@@ -42,7 +42,7 @@ A team capstone for hotel guest transportation operations. It handles booking re
 
 - **Frontend:** React 18, TypeScript, Vite 5, Tailwind CSS 3, Radix UI.
 - **UI utilities:** React Router, next-themes, Lucide React, React Icons, and Framer Motion.
-- **Chat API:** Vercel serverless function at `/api/chat`, using the Google GenAI SDK and a server-only `GEMINI_API_KEY`.
+- **Visitor presence:** Vercel function at `/api/presence` backed by Upstash Redis.
 
 ## Run locally
 
@@ -54,33 +54,13 @@ cd My-Portfolio-Website
 npm ci
 ```
 
-To enable Gemini chat in local development, copy the example environment file and add a key from your own Google AI project:
-
-**Windows PowerShell**
-
-```powershell
-Copy-Item .env.example .env.local
-```
-
-**macOS or Linux**
-
-```sh
-cp .env.example .env.local
-```
-
-Set `GEMINI_API_KEY` in `.env.local`. The key is read by the server-side chat handler; do not rename it to a `VITE_` variable or put it in frontend code. Chat is optional, so the rest of the portfolio runs without it.
-
-### Gemini key security
-
-An earlier version used `VITE_GEMINI_API_KEY` in a browser build. Treat any key previously used with that name as compromised and revoke or rotate it if you have not already. The current route reads `GEMINI_API_KEY` on the server only. Vite exposes `VITE_` variables to client-side code, so do not put secrets in that namespace.
-
 Start the site:
 
 ```sh
 npm run dev
 ```
 
-Vite serves the site at [http://localhost:8080](http://localhost:8080) and provides a local `/api/chat` middleware for development.
+Vite serves the site at [http://localhost:8080](http://localhost:8080). Use `vercel dev` when running the presence function locally.
 
 ## Build and deploy
 
@@ -90,7 +70,9 @@ Create a production frontend build with:
 npm run build
 ```
 
-The frontend output is written to `dist/`. The repository includes `api/chat.ts` for Vercel’s serverless `/api/chat` route. On Vercel, configure `GEMINI_API_KEY` in the project’s environment settings if chat should be enabled, then deploy. A static-only host can serve the site but needs its own server-side `/api/chat` implementation for Gemini responses.
+The frontend output is written to `dist/`. The public appointment schedule link is in `src/lib/contact.ts`.
+
+Set the server-only `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` in the Vercel project environment to enable the visitor count. For local use with Vercel Dev, set them in `.env.local`. The site sends a random, temporary tab ID while the tab is visible. The API reports only the approximate number of tabs seen in the past 75 seconds, including the current tab. The row is hidden when the service is unavailable.
 
 Environment files, local overrides, and private key files are excluded by `.gitignore`. If a credential is ever committed or exposed, rotate it with its provider; adding it to `.gitignore` does not remove it from Git history.
 
@@ -98,7 +80,7 @@ Environment files, local overrides, and private key files are excluded by `.giti
 
 ```text
 api/
-  chat.ts                    Server-side Gemini chat handler
+  presence.ts                Anonymous active-tab count
 public/
   certs/                     Certificate PDFs and badge images used by the site
   profile/                   Light and dark profile portraits
@@ -106,13 +88,13 @@ public/
 src/
   components/
     sections/                Portfolio sections, including services and process
-    ui/                      Shared controls and chat interface
+    ui/                      Shared controls and contact panel
   hooks/                     Reusable React hooks
   lib/                       Shared utilities
   pages/                     Portfolio and supporting routes
   App.tsx                    Routes and providers
   main.tsx                   Browser entry point
-vite.config.ts               Vite configuration and local chat middleware
+vite.config.ts               Vite configuration
 .github/workflows/ci.yml     Lint, tests, and production build checks
 ```
 

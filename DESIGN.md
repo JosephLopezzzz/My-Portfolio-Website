@@ -147,16 +147,16 @@ The navbar floats `top: 1.5rem` above the content, centered, capped at `max-widt
 This system uses **translucency, blur, and interactive lighting** to communicate hierarchy and depth, rather than traditional drop shadows.
 
 - **Spotlight Glow:** Cards use an interactive radial gradient (`SpotlightCard`) that follows the mouse, creating a sense of physical material reacting to light.
-- **Glassmorphism:** Overlays, floating panels (like the ChatBot), and the navbar use `backdrop-blur` and translucent backgrounds to float above the content and ambient particles.
+- **Glassmorphism:** Overlays, floating panels, and the navbar use `backdrop-blur` and translucent backgrounds to float above the content and ambient particles.
 
 ### Named Rules
-**The Glass Substrate Rule.** Floating UI elements (navbars, chat windows, sticky headers) must use translucency (`bg-background/90`, `bg-card/90`) and backdrop-blur to create optical depth. Completely opaque floating panels break the immersion of the ambient background layers.
+**The Glass Substrate Rule.** Floating UI elements (navbars, contact panels, sticky headers) use translucency and backdrop-blur to create optical depth.
 
 ## Shapes
 
 The form language is **soft and tactile**. Corners are generously rounded to invite interaction and complement the fluid motion of the background.
 
-- **Cards and Panels:** `1rem` to `1.5rem` (`rounded-2xl` to `rounded-3xl`) for large container elements like Project cards, Spotlight cards, and the Chatbot window.
+- **Cards and Panels:** `1rem` to `1.5rem` (`rounded-2xl` to `rounded-3xl`) for project cards, Spotlight cards, and the contact panel.
 - **Buttons:** `0.5rem` to `1rem` (`rounded-lg` to `rounded-xl`) to match the softer aesthetic.
 - **Tech pills:** `rounded-full`, mono font, small horizontal padding.
 - **Glass nav pill**: 32px radius.
@@ -189,9 +189,9 @@ The form language is **soft and tactile**. Corners are generously rounded to inv
 - **Links:** `text-sm font-medium text-muted-foreground`. Active / hover: `text-foreground`. No underlines.
 - **Theme toggle:** Spin SVG button (toggles.dev), 32px icon, `hover:bg-secondary` subtle fill.
 
-### ChatBot Window
-- **Style:** Floating panel at bottom right. Uses `rounded-2xl` or `rounded-3xl` and `SpotlightCard` container for interactive glow.
-- **Background:** `bg-card/90` with `backdrop-blur-xl` to float gracefully above the background particles.
+### Work with me
+- **Style:** Floating bottom-right trigger with a rounded contact panel above it.
+- **Background:** Translucent card color with backdrop blur.
 
 ## Do's and Don'ts
 

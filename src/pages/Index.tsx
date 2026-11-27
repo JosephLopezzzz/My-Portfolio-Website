@@ -16,6 +16,9 @@ import ThemeToggle from "@/components/ThemeToggle";
 import { useDocumentMetadata } from "@/hooks/useDocumentMetadata";
 import ClickSpark from "@/components/ui/ClickSpark";
 import Particles from "@/components/ui/Particles";
+import RotatingCursor from "@/components/ui/RotatingCursor";
+import WorkWithMe from "@/components/ui/WorkWithMe";
+import { createPortal } from "react-dom";
 import { useTheme } from "next-themes";
 import { useReducedMotion } from "framer-motion";
 
@@ -34,7 +37,7 @@ const Index = () => {
   const prefersReducedMotion = useReducedMotion();
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative z-10">
+    <div className="min-h-screen bg-background pb-16 text-foreground overflow-x-hidden relative z-10 sm:pb-0">
       {!prefersReducedMotion && (
         <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
           <Particles
@@ -49,15 +52,17 @@ const Index = () => {
           />
         </div>
       )}
-      {!prefersReducedMotion && (
+      {!prefersReducedMotion && createPortal(
         <ClickSpark
           sparkColor={isDark ? "#ffffff" : "#000000"}
           sparkSize={12}
           sparkRadius={20}
           sparkCount={8}
           duration={500}
-        />
+        />,
+        document.body,
       )}
+      <RotatingCursor />
       <ScrollProgress />
       <div className="fixed top-6 right-6 z-[60]">
         <ThemeToggle />
@@ -77,6 +82,7 @@ const Index = () => {
       </main>
       <Footer />
       <BackToTop />
+      <WorkWithMe />
     </div>
   );
 };
