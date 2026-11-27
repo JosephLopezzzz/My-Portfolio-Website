@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useTheme } from 'next-themes';
 import { flushSync } from 'react-dom';
 import { Spin } from '@/components/ui/spin';
@@ -5,6 +6,7 @@ import { Spin } from '@/components/ui/spin';
 const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   const isDark = theme === 'dark';
+  const revealSequence = useRef(0);
 
   const toggleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -27,7 +29,10 @@ const ThemeToggle = () => {
     document.documentElement.style.setProperty('--y', `${y}px`);
     document.documentElement.style.setProperty('--r', `${maxRadius}px`);
 
-    document.startViewTransition(() => {
+    const root = document.documentElement;
+    const reveal = ++revealSequence.current;
+    root.setAttribute('data-theme-reveal', '');
+    const transition = document.startViewTransition(() => {
       if (nextTheme === 'dark') {
         document.documentElement.classList.add('dark');
         document.documentElement.style.colorScheme = 'dark';
@@ -39,6 +44,10 @@ const ThemeToggle = () => {
         setTheme(nextTheme);
       });
     });
+    const clearReveal = () => {
+      if (revealSequence.current === reveal) root.removeAttribute('data-theme-reveal');
+    };
+    void transition.finished.then(clearReveal, clearReveal);
   };
 
   return (

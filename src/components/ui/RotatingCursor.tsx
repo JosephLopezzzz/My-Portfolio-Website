@@ -47,7 +47,15 @@ export default function RotatingCursor() {
         return;
       }
 
-      const action = target.closest(clickable);
+      let action = target.closest(clickable);
+      if (target === root && root.hasAttribute("data-theme-reveal")) {
+        // The browser can report the page root as the target during the reveal.
+        const toggle = document.getElementById("theme-toggle-button");
+        const bounds = toggle?.getBoundingClientRect();
+        if (bounds && x >= bounds.left && x < bounds.right && y >= bounds.top && y < bounds.bottom) {
+          action = toggle;
+        }
+      }
       const isClickable = action !== null && !action.matches(":disabled") && !action.closest('[aria-disabled="true"]');
       const nativeArea = target.closest('[data-cursor="native"]');
       const isNativeArea = nativeArea && (!isClickable || action === nativeArea || !nativeArea.contains(action));
@@ -98,30 +106,32 @@ export default function RotatingCursor() {
   }, []);
 
   return createPortal(
-    <div ref={positionRef} hidden aria-hidden="true" className="group pointer-events-none fixed left-0 top-0 z-[100000]">
-      <svg
-        ref={arrowRef}
-        width="26"
-        height="22"
-        viewBox="-2 -11 26 22"
-        className="absolute -left-[2px] -top-[11px] origin-[2px_11px] fill-background stroke-foreground drop-shadow-sm transition-transform duration-100 ease-out group-data-[hand-pointer]:hidden"
-        style={{ transform: `rotate(${restAngle}deg)` }}
-      >
-        <path d="M0 0 20-8l-4 8 4 8Z" strokeWidth="1.6" strokeLinejoin="round" />
-      </svg>
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        className="absolute -left-2 -top-0.5 hidden fill-background stroke-foreground drop-shadow-sm group-data-[hand-pointer]:block"
-      >
-        <path
-          d="M6 13V4a2 2 0 0 1 4 0v6a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v2a8 8 0 0 1-8 8h-2c-2.2 0-3.9-.8-5.4-2.3l-4-4a2 2 0 0 1 2.8-2.8L8 15.5Z"
-          strokeWidth="1.6"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
+    <div aria-hidden="true" className="portfolio-cursor-layer pointer-events-none fixed inset-0 z-[100000]">
+      <div ref={positionRef} hidden className="group absolute left-0 top-0">
+        <svg
+          ref={arrowRef}
+          width="26"
+          height="22"
+          viewBox="-2 -11 26 22"
+          className="absolute -left-[2px] -top-[11px] origin-[2px_11px] fill-background stroke-foreground drop-shadow-sm transition-transform duration-100 ease-out group-data-[hand-pointer]:hidden"
+          style={{ transform: `rotate(${restAngle}deg)` }}
+        >
+          <path d="M0 0 20-8l-4 8 4 8Z" strokeWidth="1.6" strokeLinejoin="round" />
+        </svg>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          className="absolute -left-2 -top-0.5 hidden fill-background stroke-foreground drop-shadow-sm group-data-[hand-pointer]:block"
+        >
+          <path
+            d="M6 13V4a2 2 0 0 1 4 0v6a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v2a8 8 0 0 1-8 8h-2c-2.2 0-3.9-.8-5.4-2.3l-4-4a2 2 0 0 1 2.8-2.8L8 15.5Z"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </div>
     </div>,
     document.body,
   );
