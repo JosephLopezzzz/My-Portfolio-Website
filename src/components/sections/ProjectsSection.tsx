@@ -70,7 +70,7 @@ const getTechIcon = (tag: string) => {
 
 interface Project {
   title: string;
-  category: "Side project" | "School project" | "Team capstone";
+  category: "Side project" | "School project";
   initials: string;
   accentChar: string;
   role?: string;
@@ -221,7 +221,7 @@ const projects: Project[] = [
   },
   {
     title: "FleetOps",
-    category: "Team capstone",
+    category: "School project",
     initials: "FT",
     accentChar: "F",
     projectType: "Team capstone",
@@ -239,7 +239,6 @@ const projects: Project[] = [
 const projectCategoryLabels: Record<Project["category"], string> = {
   "Side project": "Side Projects",
   "School project": "School Projects",
-  "Team capstone": "Team Capstone",
 };
 
 const ProjectDeviceCover = ({ project }: { project: Project }) => {
@@ -542,10 +541,10 @@ const ProjectsSection = ({ mode = "featured" }: ProjectsSectionProps) => {
                   <ProjectTitle className="text-lg font-semibold leading-tight text-foreground transition-colors group-hover:text-primary">
                     {project.title}
                   </ProjectTitle>
-                  {(project.projectStatus || (!isAllProjectsPage && project.projectType)) && (
+                  {(project.projectStatus || (!isAllProjectsPage && project.projectType) || project.projectType === "Team capstone") && (
                     <div className="flex max-w-full flex-wrap gap-1.5">
-                      {!isAllProjectsPage && project.projectType && (
-                        <span className="max-w-full whitespace-nowrap rounded-sm border border-foreground/30 px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider text-muted-foreground">
+                      {(!isAllProjectsPage || project.projectType === "Team capstone") && project.projectType && (
+                        <span className={`max-w-full whitespace-nowrap rounded-sm border px-1.5 py-0.5 font-mono text-[0.6rem] uppercase tracking-wider ${project.projectType === "Team capstone" ? "border-primary/35 bg-primary/10 text-primary" : "border-foreground/30 text-muted-foreground"}`}>
                           {project.projectType}
                         </span>
                       )}
