@@ -103,6 +103,14 @@ const certificationPaths: CertificationPath[] = [
         badgeUrl: 'https://www.credly.com/badges/1b13d7c7-1e85-4adc-982d-b812aa4ca9d1',
         image: '/certs/prompt-like-an-engineer.png',
       },
+      {
+        title: 'Introduction to Modern AI',
+        issuer: 'Cisco Networking Academy',
+        date: '2026',
+        link: '/certs/introduction-to-modern-ai.pdf',
+        badgeUrl: 'https://www.credly.com/badges/5bcbc7b0-2f44-4f63-9161-f311ec0999ee/public_url',
+        image: '/certs/introduction-to-modern-ai.png',
+      },
     ],
   },
   {

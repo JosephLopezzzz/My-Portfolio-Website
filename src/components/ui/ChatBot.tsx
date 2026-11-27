@@ -19,7 +19,7 @@ const INSTANT_ANSWERS: { pattern: RegExp; reply: string }[] = [
   },
   {
     pattern: /\b(certificat\w*|credly|cisco|freecodecamp|coddy)\b/i,
-    reply: 'Joseph holds Cisco Networking Academy certificates (Networking Basics, Computer Hardware Basics, and Prompt Like an Engineer, with verification links on Credly), a freeCodeCamp Python certification, and several Coddy courses covering HTML, CSS, and C.',
+    reply: 'Joseph holds Cisco Networking Academy certificates (Networking Basics, Computer Hardware Basics, Prompt Like an Engineer, and Introduction to Modern AI, with verification links on Credly), a freeCodeCamp Python certification, and several Coddy courses covering HTML, CSS, and C.',
   },
   {
     pattern: /\b(education|school|college|degree|studying|university)\b/i,
