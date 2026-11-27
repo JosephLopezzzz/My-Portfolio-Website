@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import ProjectsSection from "@/components/sections/ProjectsSection";
 import ThemeToggle from "@/components/ThemeToggle";
+import RotatingCursor from "@/components/ui/RotatingCursor";
 import { useDocumentMetadata } from "@/hooks/useDocumentMetadata";
 
 const ProjectsPage = () => {
@@ -17,6 +18,7 @@ const ProjectsPage = () => {
 
   return (
     <div className="relative z-10 min-h-screen overflow-x-hidden bg-background text-foreground">
+      <RotatingCursor />
       <ScrollProgress />
       <div className="fixed right-6 top-6 z-[60]">
         <ThemeToggle />
