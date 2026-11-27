@@ -93,8 +93,8 @@ const Navbar = () => {
         {/* Mobile Navigation */}
         <div
           id="mobile-navigation"
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out relative z-50 mt-4 ${
-            isOpen ? 'max-h-[32rem] opacity-100' : 'max-h-0 opacity-0'
+          className={`md:hidden relative z-50 mt-4 overflow-hidden rounded-2xl transition-all duration-300 ease-in-out ${
+            isOpen ? 'max-h-[32rem] opacity-100 shadow-[0_18px_44px_rgba(0,0,0,0.35)]' : 'max-h-0 opacity-0 shadow-none'
           }`}
         >
           {isOpen && (
@@ -105,7 +105,7 @@ const Navbar = () => {
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`px-4 py-3 transition-all duration-300 ${
+                    className={`rounded-xl px-4 py-3 transition-all duration-300 ${
                       activeSection === link.id
                         ? 'bg-secondary/50 text-foreground font-semibold'
                         : 'text-muted-foreground hover:text-foreground hover:bg-secondary/30'
