@@ -63,6 +63,7 @@ const SpotlightCard = ({
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
+      data-cursor={props.onClick ? "pointer" : undefined}
       className={`card-spotlight ${isTouchActive ? "is-touch-active" : ""} ${className}`}
       {...props}
     >
