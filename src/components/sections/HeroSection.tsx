@@ -118,7 +118,7 @@ const HeroSection = () => {
                     baseSrc={isDark ? '/pfp/black1x1.png' : '/pfp/white1x1.png'}
                     src={isDark ? '/profile/prof-night.png' : '/profile/prof-day-hover.jpg'}
                     alt="Joseph Lopez"
-                    pixelSize={4}
+                    pixelSize={3}
                     revealRadius={84}
                     softness={0.65}
                     linger={0.7}

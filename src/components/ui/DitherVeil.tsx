@@ -77,15 +77,21 @@ float bayer(vec2 cell) {
 }
 
 void main() {
-  vec2 sampleUv = (vUv - 0.5) * uCover + 0.5;
-  vec3 color = texture(tImage, sampleUv).rgb;
   vec2 pixels = vec2(gl_FragCoord.x, uResolution.y - gl_FragCoord.y);
   vec2 cell = floor(pixels / uCell);
   vec2 center = (cell + 0.5) * uCell;
   vec2 maskUv = vec2(center.x / uResolution.x, 1.0 - center.y / uResolution.y);
-  float reveal = clamp(texture(tMask, maskUv).r, 0.0, 1.0);
-  float opacity = step(bayer(cell), reveal);
-  fragColor = vec4(color, opacity);
+  float reveal = texture(tMask, maskUv).r;
+  if (reveal < bayer(cell)) {
+    fragColor = vec4(0.0);
+    return;
+  }
+
+  vec2 sampleUv = (vUv - 0.5) * uCover + 0.5;
+  // Explicit gradients keep mipmap selection stable inside the dither mask.
+  vec2 uvStep = uCover / uResolution;
+  vec3 color = textureGrad(tImage, sampleUv, vec2(uvStep.x, 0.0), vec2(0.0, uvStep.y)).rgb;
+  fragColor = vec4(color, 1.0);
 }
 `;
 
