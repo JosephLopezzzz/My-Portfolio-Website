@@ -13,7 +13,7 @@ const nativeControl = 'textarea, iframe, [contenteditable]:not([contenteditable=
 
 export default function RotatingCursor() {
   const positionRef = useRef<HTMLDivElement>(null);
-  const arrowRef = useRef<SVGSVGElement>(null);
+  const arrowRef = useRef<SVGGElement>(null);
 
   useEffect(() => {
     const position = positionRef.current;
@@ -109,14 +109,23 @@ export default function RotatingCursor() {
     <div aria-hidden="true" className="portfolio-cursor-layer pointer-events-none fixed inset-0 z-[100000]">
       <div ref={positionRef} hidden className="group absolute left-0 top-0">
         <svg
-          ref={arrowRef}
-          width="26"
-          height="22"
-          viewBox="-2 -11 26 22"
-          className="absolute -left-[2px] -top-[11px] origin-[2px_11px] fill-background stroke-foreground drop-shadow-sm transition-transform duration-100 ease-out group-data-[hand-pointer]:hidden"
-          style={{ transform: `rotate(${restAngle}deg)` }}
+          width="48"
+          height="48"
+          viewBox="0 0 48 48"
+          className="absolute -left-6 -top-6 fill-background stroke-foreground drop-shadow-sm group-data-[hand-pointer]:hidden"
         >
-          <path d="M0 0 20-8l-4 8 4 8Z" strokeWidth="1.6" strokeLinejoin="round" />
+          <g
+            ref={arrowRef}
+            className="origin-center transition-transform duration-100 ease-out [transform-box:view-box]"
+            style={{ transform: `rotate(${restAngle}deg)` }}
+          >
+            <path
+              d="M0 0 Q0-.9 1.3-1.4 L18.6-8 Q21.2-9 20.1-6.4 L17.8-.9 Q17.4 0 17.8.9 L20.1 6.4 Q21.2 9 18.6 8 L1.3 1.4 Q0 .9 0 0 Z"
+              transform="translate(24 24)"
+              strokeWidth="2.2"
+              strokeLinejoin="round"
+            />
+          </g>
         </svg>
         <svg
           width="24"
