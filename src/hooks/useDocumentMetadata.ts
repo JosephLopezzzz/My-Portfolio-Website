@@ -52,15 +52,16 @@ export const useDocumentMetadata = (metadata: DocumentMetadata = {}) => {
 
     // Update or create link tags (for favicon)
     const updateLinkTag = (rel: string, href: string, type?: string) => {
-      let link = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
-      if (!link) {
-        link = document.createElement('link');
+      const links = Array.from(document.querySelectorAll<HTMLLinkElement>(`link[rel="${rel}"]`));
+      if (!links.length) {
+        const link = document.createElement('link');
         link.setAttribute('rel', rel);
         document.head.appendChild(link);
+        links.push(link);
       }
-      link.setAttribute('href', href);
-      if (type) {
-        link.setAttribute('type', type);
+      for (const link of links) {
+        link.href = href;
+        if (type) link.type = type;
       }
     };
 
@@ -69,10 +70,9 @@ export const useDocumentMetadata = (metadata: DocumentMetadata = {}) => {
     const activePfp = isDark ? '/pfp/black1x1.png' : '/pfp/white1x1.png';
 
     // Update favicon with round avatar matching current theme
+    const img = new Image();
     const updateFavicon = () => {
-      const img = new Image();
       img.crossOrigin = 'anonymous';
-      img.src = activePfp;
       img.onload = () => {
         try {
           const canvas = document.createElement('canvas');
@@ -116,6 +116,7 @@ export const useDocumentMetadata = (metadata: DocumentMetadata = {}) => {
         updateLinkTag('shortcut icon', activePfp, 'image/png');
         updateLinkTag('apple-touch-icon', activePfp, 'image/png');
       };
+      img.src = activePfp;
     };
 
     updateFavicon();
@@ -140,5 +141,10 @@ export const useDocumentMetadata = (metadata: DocumentMetadata = {}) => {
 
     updateMetaTag('twitter:card', pageTwitterCard);
     updateMetaTag('twitter:image', pageTwitterImage);
+
+    return () => {
+      img.onload = null;
+      img.onerror = null;
+    };
   }, [title, description, ogTitle, ogDescription, ogImage, twitterCard, twitterImage, resolvedTheme]);
 };

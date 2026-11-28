@@ -213,7 +213,7 @@ const HeroSection = () => {
             </a>
 
             <a
-              href="/resume.pdf"
+              href="/resume"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-5 py-3 font-medium text-foreground bg-transparent border border-border rounded-lg hover:bg-secondary/60 hover:border-foreground/30 hover:-translate-y-0.5 active:translate-y-0 transition-all"
